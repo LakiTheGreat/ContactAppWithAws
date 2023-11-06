@@ -3,6 +3,7 @@ import { useRoutes, Navigate } from "react-router-dom";
 
 import DashboardLayout from "../layouts/mainLayout";
 import { Loadable } from "./Loadable";
+import { RequireAuth } from "components/guards/RequireAuth";
 
 export default function Router() {
   return useRoutes([
@@ -21,7 +22,11 @@ export default function Router() {
     },
     {
       path: "contacts",
-      element: <DashboardLayout />,
+      element: (
+        <RequireAuth>
+          <DashboardLayout />
+        </RequireAuth>
+      ),
       children: [
         {
           path: "all",
@@ -52,11 +57,7 @@ export default function Router() {
     },
     {
       path: "*",
-      element: <DashboardLayout />,
-      children: [
-        { path: "404", element: <>404</> },
-        { path: "*", element: <Navigate to="/404" replace /> },
-      ],
+      element: <>NEMA DALJE</>,
     },
   ]);
 }
