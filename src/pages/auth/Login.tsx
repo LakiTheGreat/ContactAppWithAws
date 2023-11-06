@@ -11,6 +11,7 @@ import Page from "components/Page";
 import Logo from "components/Logo";
 
 import LoginForm from "./LoginForm";
+import Test from "./test";
 
 // ----------------------------------------------------------------------
 
@@ -62,7 +63,7 @@ export default function Login() {
 
   return (
     <Page title={"LOGIN"}>
-      <RootStyle>
+      {/* <RootStyle>
         <HeaderStyle>
           <Logo />
         </HeaderStyle>
@@ -97,7 +98,8 @@ export default function Login() {
             <LoginForm />
           </ContentStyle>
         </Container>
-      </RootStyle>
+      </RootStyle> */}
+      <Test />
     </Page>
   );
 }
