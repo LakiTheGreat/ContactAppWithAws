@@ -3,6 +3,7 @@ function path(root: string, sublink: string) {
 }
 
 const ROOT = "/contacts";
+const AUTH = "/contacts";
 
 export const CONTACTS_ROUTES = {
   all: path(ROOT, "/all"),
@@ -10,4 +11,5 @@ export const CONTACTS_ROUTES = {
   labels: path(ROOT, "/labels"),
   new: path(ROOT, "/new_contact"),
   edit: path(ROOT, "/edit_contact"),
+  login: path(AUTH, "/login"),
 };

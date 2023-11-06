@@ -7,46 +7,60 @@ import { Loadable } from "./Loadable";
 export default function Router() {
   return useRoutes([
     {
-      path: "/",
+      path: "auth",
+      children: [
+        {
+          path: "login",
+          element: <Login />,
+        },
+        {
+          path: "*",
+          children: [{ path: "*", element: <Navigate to="login" replace /> }],
+        },
+      ],
+    },
+    {
+      path: "contacts",
       element: <DashboardLayout />,
       children: [
         {
-          path: "/", // Use a trailing slash
-          element: <Navigate to="contacts/all" replace />,
-        },
-        {
-          path: "contacts/all",
+          path: "all",
           element: <ContactsList />,
         },
         {
-          path: "contacts/favorites",
+          path: "favorites",
           element: <ContactsList />,
         },
         {
-          path: "contacts/labels/*",
+          path: "labels/*",
           element: <ContactsList />,
         },
         {
-          path: "contacts/new_contact",
+          path: "new_contact",
           element: <CreateNewContact />,
         },
         {
-          path: "contacts/edit_contact/:id",
+          path: "edit_contact/:id",
           element: <EditContact />,
         },
       ],
     },
-    // {
-    //   path: "*",
-    //   element: <DashboardLayout />,
-    //   children: [
-    //     { path: "404", element: <>404</> },
-    //     { path: "*", element: <Navigate to="/404" replace /> },
-    //   ],
-    // },
+    {
+      // Set the default route when the app is opened
+      index: true,
+      element: <Navigate to="auth/login" replace />,
+    },
+    {
+      path: "*",
+      element: <DashboardLayout />,
+      children: [
+        { path: "404", element: <>404</> },
+        { path: "*", element: <Navigate to="/404" replace /> },
+      ],
+    },
   ]);
 }
-
+const Login = Loadable(lazy(() => import("../pages/auth/Login")));
 const ContactsList = Loadable(lazy(() => import("../pages/contactsList")));
 const CreateNewContact = Loadable(
   lazy(() => import("../pages/contactsForm/CreateContact"))
