@@ -4,6 +4,8 @@ import { useRoutes, Navigate } from "react-router-dom";
 import DashboardLayout from "../layouts/mainLayout";
 import { Loadable } from "./Loadable";
 import { RequireAuth } from "components/guards/RequireAuth";
+import GuestGuard from "components/guards/GuestGuard";
+import { AUTH_ROUTES } from "./paths";
 
 export default function Router() {
   return useRoutes([
@@ -12,11 +14,17 @@ export default function Router() {
       children: [
         {
           path: "login",
-          element: <Login />,
+          element: (
+            <GuestGuard>
+              <Login />
+            </GuestGuard>
+          ),
         },
         {
           path: "*",
-          children: [{ path: "*", element: <Navigate to="login" replace /> }],
+          children: [
+            { path: "*", element: <Navigate to={AUTH_ROUTES.login} replace /> },
+          ],
         },
       ],
     },

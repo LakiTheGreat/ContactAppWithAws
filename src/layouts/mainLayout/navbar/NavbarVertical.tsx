@@ -19,6 +19,7 @@ import { NAVBAR } from "../../../config";
 import LabelModal from "components/LabelModal";
 import { CONTACTS_ROUTES } from "routes/paths";
 import Logo from "components/Logo";
+import { Auth } from "aws-amplify";
 
 const RootStyle = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("lg")]: {
@@ -100,14 +101,23 @@ export default function NavbarVertical({
       </Stack>
       <Stack direction="row" sx={{ ml: 3 }}>
         {!isCollapse && (
-          <Button
-            sx={{ width: "fit-content" }}
-            startIcon={<AddIcon />}
-            variant="contained"
-            onClick={() => navigate(CONTACTS_ROUTES.new)}
-          >
-            Create contact
-          </Button>
+          <>
+            <Button
+              sx={{ width: "fit-content" }}
+              startIcon={<AddIcon />}
+              variant="contained"
+              onClick={() => navigate(CONTACTS_ROUTES.new)}
+            >
+              Create contact
+            </Button>
+            <Button
+              sx={{ width: "fit-content" }}
+              variant="contained"
+              onClick={() => Auth.signOut()}
+            >
+              Logout
+            </Button>
+          </>
         )}
       </Stack>
 
