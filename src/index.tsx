@@ -6,9 +6,9 @@ import { Authenticator } from "@aws-amplify/ui-react";
 
 import App from "./App";
 import { CollapseDrawerProvider } from "./contexts/CollapseDrawerContext";
-import awsmobile from "aws-exports";
+import awsExports from "./aws-exports";
 
-Amplify.configure(awsmobile);
+Amplify.configure(awsExports);
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
