@@ -10,6 +10,7 @@ import useContactsColumns from "./useContactsColumns";
 import mockedContacts from "__mocks__/mockedContacts.json";
 import useConfirmDialog from "hooks/useConfirmDialog";
 import { CONTACTS_ROUTES } from "routes/paths";
+import firstCharToUpperCase from "utils/firstCharToUpperCase";
 
 export default function AllContacts() {
   const { pathname } = useLocation();
@@ -18,26 +19,33 @@ export default function AllContacts() {
 
   const [getConfirmation, Confirmation] = useConfirmDialog();
   const navigate = useNavigate();
+  let title;
 
   function filterContacts() {
     const partsWithoutBackslashAtTheEnd = pathname.replace(/\/$/, ""); // removes "/" at the end of the string if it exists
     const parts = partsWithoutBackslashAtTheEnd.split("/");
     const urlTarget = parts[parts.length - 1];
 
+    title = firstCharToUpperCase(urlTarget);
+
     if (urlTarget === "all") {
       return mockedContacts;
-    } else if (urlTarget === "favorites") {
+    }
+
+    if (urlTarget === "favorites") {
       const favoriteContacts = mockedContacts.filter(
         (contact) => contact.isFavorite === true
       );
       return favoriteContacts;
-    } else {
-      const filteredContactsByLabel = mockedContacts.filter((contact) =>
-        contact.labels.some((label) => label.labelName === urlTarget)
-      );
-      return filteredContactsByLabel;
     }
+
+    const filteredContactsByLabel = mockedContacts.filter((contact) =>
+      contact.labels.some((label) => label.labelName === urlTarget)
+    );
+    return filteredContactsByLabel;
   }
+
+  const filteredContacts = filterContacts();
 
   const handleBatchDelete = () => {
     console.log("handleBatchDelete", selectedIds);
@@ -68,7 +76,7 @@ export default function AllContacts() {
   const isLoading = false;
 
   return (
-    <Page title="All contacts">
+    <Page title={`${title}`}>
       <Card sx={{ m: 5 }}>
         <DataGrid
           pageSize={pageSize}
@@ -77,7 +85,7 @@ export default function AllContacts() {
           initialState={{
             sorting: { sortModel: [{ field: "name", sort: "asc" }] },
           }}
-          rows={filterContacts() || mockedContacts}
+          rows={filteredContacts}
           columns={columns}
           loading={isLoading}
           getRowId={(row) => row._id}
