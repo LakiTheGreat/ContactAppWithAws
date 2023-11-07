@@ -11,7 +11,7 @@ type Props = {
 export default function AuthGuard({ children }: Props) {
   const location = useLocation();
 
-  const { data, isLoading, error } = useGetCurrentUserQuery(undefined);
+  const { data, isLoading } = useGetCurrentUserQuery(undefined);
 
   if (isLoading) {
     return <></>;

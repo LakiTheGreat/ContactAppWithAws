@@ -9,7 +9,7 @@ type Props = {
 };
 export default function GuestGuard({ children }: Props) {
   const location = useLocation();
-  const { data, isLoading, error } = useGetCurrentUserQuery(undefined);
+  const { data, isLoading } = useGetCurrentUserQuery(undefined);
 
   if (isLoading) {
     return <></>;

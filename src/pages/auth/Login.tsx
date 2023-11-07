@@ -1,10 +1,28 @@
-import { Authenticator, View } from "@aws-amplify/ui-react";
+import { Authenticator } from "@aws-amplify/ui-react";
+import { Hub } from "aws-amplify";
 import "@aws-amplify/ui-react/styles.css";
+import Stack from "@mui/material/Stack";
+import { useNavigate } from "react-router-dom";
+import { CONTACTS_ROUTES } from "routes/paths";
 
 export default function Login() {
+  const navigate = useNavigate();
+
+  const listener = (data: any) => {
+    switch (data?.payload?.event) {
+      case "signIn":
+        navigate(CONTACTS_ROUTES.all);
+        break;
+      case "autoSignIn":
+        navigate(CONTACTS_ROUTES.all);
+        break;
+    }
+  };
+
+  Hub.listen("auth", listener);
   return (
-    <View className="auth-wrapper">
+    <Stack sx={{ height: "100%" }} justifyContent="center">
       <Authenticator></Authenticator>
-    </View>
+    </Stack>
   );
 }

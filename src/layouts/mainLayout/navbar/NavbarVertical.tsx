@@ -20,6 +20,7 @@ import LabelModal from "components/LabelModal";
 import { AUTH_ROUTES, CONTACTS_ROUTES } from "routes/paths";
 import Logo from "components/Logo";
 import { Auth } from "aws-amplify";
+import { useSignOutMutation } from "api/auth/authApi";
 
 const RootStyle = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("lg")]: {
@@ -47,14 +48,26 @@ export default function NavbarVertical({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const isDesktop = useResponsive("up", "lg");
   const navConfig = navConfigFunction();
-
+  const [signOut] = useSignOutMutation();
+  const listener = (data: any) => {
+    switch (data?.payload?.event) {
+      case "signIn":
+        navigate(CONTACTS_ROUTES.all);
+        break;
+      case "autoSignIn":
+        navigate(CONTACTS_ROUTES.all);
+        break;
+    }
+  };
   const handleCreateNewLabel = () => {
     setIsOpen(true);
   };
-  const handleLogout = async () => {
+
+  const handleLogout = () => {
     try {
-      await Auth.signOut();
-      navigate(AUTH_ROUTES.login);
+      console.log("usao");
+      const x = signOut(undefined);
+      console.log("x", x);
     } catch (e) {
       console.log(e);
     }

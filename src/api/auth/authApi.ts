@@ -1,12 +1,12 @@
 import { api } from "api/api";
-import { getCurrentUser, signInUser } from "./authQueries";
+import { getCurrentUser, signOutUser } from "./authQueries";
 
 const authApiEndpoints = api.injectEndpoints({
   endpoints: (build) => ({
-    // signIn: build.query({
-    //   queryFn: signInUser,
-    //   //   invalidatesTags: (result: any) => (result ? ["Auth"] : []),
-    // }),
+    signOut: build.mutation({
+      queryFn: signOutUser,
+      invalidatesTags: ["Auth"],
+    }),
     getCurrentUser: build.query({
       queryFn: getCurrentUser,
       providesTags: ["Auth"],
@@ -15,4 +15,4 @@ const authApiEndpoints = api.injectEndpoints({
   overrideExisting: false,
 });
 
-export const { useGetCurrentUserQuery } = authApiEndpoints;
+export const { useGetCurrentUserQuery, useSignOutMutation } = authApiEndpoints;

@@ -19,7 +19,11 @@ export async function getCurrentUser(): Promise<
   }
 }
 
-export async function signInUser({ email, password }: Credentials) {
-  const user = await Auth.signIn(email, password);
-  return { data: user };
+export async function signOutUser() {
+  try {
+    const user = await Auth.signOut();
+    return user;
+  } catch (e) {
+    return e;
+  }
 }
