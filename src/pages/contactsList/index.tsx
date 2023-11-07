@@ -20,8 +20,10 @@ export default function AllContacts() {
   const navigate = useNavigate();
 
   function filterContacts() {
-    const parts = pathname.split("/");
+    const partsWithoutBackslashAtTheEnd = pathname.replace(/\/$/, ""); // removes "/" at the end of the string if it exists
+    const parts = partsWithoutBackslashAtTheEnd.split("/");
     const urlTarget = parts[parts.length - 1];
+
     if (urlTarget === "all") {
       return mockedContacts;
     } else if (urlTarget === "favorites") {
