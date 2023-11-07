@@ -1,10 +1,10 @@
 import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query/fetchBaseQuery";
 import { Auth } from "aws-amplify";
 
-interface Credentials {
-  email: string;
-  password: string;
-}
+// interface Credentials {
+//   email: string;
+//   password: string;
+// }
 
 export async function getCurrentUser(): Promise<
   { data: any } | { error: FetchBaseQueryError }
@@ -16,14 +16,5 @@ export async function getCurrentUser(): Promise<
     return {
       error: error as FetchBaseQueryError,
     };
-  }
-}
-
-export async function signOutUser() {
-  try {
-    const user = await Auth.signOut();
-    return user;
-  } catch (e) {
-    return e;
   }
 }

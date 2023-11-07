@@ -17,10 +17,9 @@ import { navConfigFunction } from "./NavConfig";
 import CollapseButton from "./CollapseButton";
 import { NAVBAR } from "../../../config";
 import LabelModal from "components/LabelModal";
-import { AUTH_ROUTES, CONTACTS_ROUTES } from "routes/paths";
+import { CONTACTS_ROUTES } from "routes/paths";
 import Logo from "components/Logo";
 import { Auth } from "aws-amplify";
-import { useSignOutMutation } from "api/auth/authApi";
 
 const RootStyle = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("lg")]: {
@@ -38,6 +37,13 @@ type Props = {
   onCloseSidebar: VoidFunction;
 };
 
+export async function signOut() {
+  try {
+    await Auth.signOut();
+  } catch (error) {
+    console.log("error signing out: ", error);
+  }
+}
 export default function NavbarVertical({
   isOpenSidebar,
   onCloseSidebar,
@@ -48,28 +54,17 @@ export default function NavbarVertical({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const isDesktop = useResponsive("up", "lg");
   const navConfig = navConfigFunction();
-  const [signOut] = useSignOutMutation();
-  const listener = (data: any) => {
-    switch (data?.payload?.event) {
-      case "signIn":
-        navigate(CONTACTS_ROUTES.all);
-        break;
-      case "autoSignIn":
-        navigate(CONTACTS_ROUTES.all);
-        break;
-    }
-  };
+
   const handleCreateNewLabel = () => {
     setIsOpen(true);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     try {
-      console.log("usao");
-      const x = signOut(undefined);
-      console.log("x", x);
-    } catch (e) {
-      console.log(e);
+      await signOut();
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -122,7 +117,7 @@ export default function NavbarVertical({
       </Stack>
       <Stack direction="row" sx={{ ml: 3 }}>
         {!isCollapse && (
-          <>
+          <Stack direction="row" gap={1}>
             <Button
               sx={{ width: "fit-content" }}
               startIcon={<AddIcon />}
@@ -133,12 +128,12 @@ export default function NavbarVertical({
             </Button>
             <Button
               sx={{ width: "fit-content" }}
-              variant="contained"
+              variant="outlined"
               onClick={handleLogout}
             >
               Logout
             </Button>
-          </>
+          </Stack>
         )}
       </Stack>
 
