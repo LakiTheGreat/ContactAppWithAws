@@ -3,8 +3,10 @@ import { BrowserRouter } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { Amplify } from "aws-amplify";
 import { Authenticator } from "@aws-amplify/ui-react";
+import { Provider } from "react-redux";
 
 import App from "./App";
+import { store } from "store";
 import { CollapseDrawerProvider } from "./contexts/CollapseDrawerContext";
 import awsExports from "./aws-exports";
 
@@ -16,11 +18,13 @@ const root = ReactDOM.createRoot(
 root.render(
   <HelmetProvider>
     <CollapseDrawerProvider>
-      <Authenticator.Provider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </Authenticator.Provider>
+      <Provider store={store}>
+        <Authenticator.Provider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </Authenticator.Provider>
+      </Provider>
     </CollapseDrawerProvider>
   </HelmetProvider>
 );
