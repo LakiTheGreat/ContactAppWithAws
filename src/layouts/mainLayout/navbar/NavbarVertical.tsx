@@ -17,7 +17,7 @@ import { navConfigFunction } from "./NavConfig";
 import CollapseButton from "./CollapseButton";
 import { NAVBAR } from "../../../config";
 import LabelModal from "components/LabelModal";
-import { CONTACTS_ROUTES } from "routes/paths";
+import { AUTH_ROUTES, CONTACTS_ROUTES } from "routes/paths";
 import Logo from "components/Logo";
 import { Auth } from "aws-amplify";
 
@@ -50,6 +50,14 @@ export default function NavbarVertical({
 
   const handleCreateNewLabel = () => {
     setIsOpen(true);
+  };
+  const handleLogout = async () => {
+    try {
+      await Auth.signOut();
+      navigate(AUTH_ROUTES.login);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const {
@@ -113,7 +121,7 @@ export default function NavbarVertical({
             <Button
               sx={{ width: "fit-content" }}
               variant="contained"
-              onClick={() => Auth.signOut()}
+              onClick={handleLogout}
             >
               Logout
             </Button>

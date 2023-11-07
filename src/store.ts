@@ -1,10 +1,18 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import userReducer from "./storeSlices/userSlice";
+import { api } from "api/api";
+
+const root = combineReducers({
+  user: userReducer,
+  [api.reducerPath]: api.reducer,
+});
 
 export const store = configureStore({
-  reducer: {
-    user: userReducer,
-  },
+  reducer: root,
+  middleware: (getDefault) =>
+    getDefault({
+      serializableCheck: false,
+    }).concat([api.middleware]),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

@@ -1,16 +1,23 @@
 import { ReactNode } from "react";
-import { useAuthenticator } from "@aws-amplify/ui-react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
+
 import { CONTACTS_ROUTES } from "routes/paths";
+import { useGetCurrentUserQuery } from "api/auth/authApi";
 
 type Props = {
   children: ReactNode;
 };
 export default function GuestGuard({ children }: Props) {
-  const { route } = useAuthenticator((context) => [context.route]);
+  const location = useLocation();
+  const { data, isLoading, error } = useGetCurrentUserQuery(undefined);
 
-  if (route === "authenticated") {
-    return <Navigate to={CONTACTS_ROUTES.all} />;
+  if (isLoading) {
+    return <></>;
+  }
+  if (data) {
+    return (
+      <Navigate to={CONTACTS_ROUTES.all} state={{ from: location }} replace />
+    );
   }
 
   return <>{children}</>;

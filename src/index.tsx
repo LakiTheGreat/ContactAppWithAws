@@ -2,7 +2,6 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { Amplify } from "aws-amplify";
-import { Authenticator } from "@aws-amplify/ui-react";
 import { Provider } from "react-redux";
 
 import App from "./App";
@@ -19,11 +18,9 @@ root.render(
   <HelmetProvider>
     <CollapseDrawerProvider>
       <Provider store={store}>
-        <Authenticator.Provider>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </Authenticator.Provider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </Provider>
     </CollapseDrawerProvider>
   </HelmetProvider>
