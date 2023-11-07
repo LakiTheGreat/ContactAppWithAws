@@ -3,7 +3,7 @@ import { useRoutes, Navigate } from "react-router-dom";
 
 import DashboardLayout from "../layouts/mainLayout";
 import { Loadable } from "./Loadable";
-import { RequireAuth } from "components/guards/RequireAuth";
+import AuthGuard from "components/guards/AuthGuard";
 import GuestGuard from "components/guards/GuestGuard";
 import { AUTH_ROUTES } from "./paths";
 
@@ -31,14 +31,18 @@ export default function Router() {
     {
       path: "contacts",
       element: (
-        <RequireAuth>
+        <AuthGuard>
           <DashboardLayout />
-        </RequireAuth>
+        </AuthGuard>
       ),
       children: [
         {
           path: "all",
-          element: <ContactsList />,
+          element: (
+            // <AuthGuard>
+            <ContactsList />
+            // </AuthGuard>
+          ),
         },
         {
           path: "favorites",

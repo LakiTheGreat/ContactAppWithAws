@@ -3,10 +3,10 @@ import { useAuthenticator } from "@aws-amplify/ui-react";
 import { Navigate } from "react-router-dom";
 import { CONTACTS_ROUTES } from "routes/paths";
 
-type GuestGuardProps = {
+type Props = {
   children: ReactNode;
 };
-export default function GuestGuard({ children }: GuestGuardProps) {
+export default function GuestGuard({ children }: Props) {
   const { route } = useAuthenticator((context) => [context.route]);
 
   if (route === "authenticated") {
