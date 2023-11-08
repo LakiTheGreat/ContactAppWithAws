@@ -14,7 +14,7 @@ export const navConfigFunction = () => {
         {
           title: "Create new contact",
           path: `${CONTACTS_ROUTES.new}`,
-          icon: <Iconify icon={"fluent-mdl2:contact"} />,
+          icon: <Iconify icon={"material-symbols:add"} />,
         },
       ],
     },

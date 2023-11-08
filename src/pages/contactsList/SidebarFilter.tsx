@@ -28,6 +28,7 @@ export default function SidebarFilter({
 Props) {
   const handleClick = () => {
     onResetAll();
+    onClose();
   };
 
   return (
