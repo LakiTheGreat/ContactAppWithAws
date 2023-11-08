@@ -20,8 +20,7 @@ import CollapseButton from "./CollapseButton";
 import { NAVBAR } from "../../../config";
 import { CONTACTS_ROUTES } from "routes/paths";
 import Logo from "components/Logo";
-import SidebarFilter from "pages/contactsList/SidebarFilter";
-import FormProvider from "components/hook-form/FormProvider";
+import LabelModal from "components/LabelModal";
 
 const RootStyle = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("lg")]: {
@@ -57,6 +56,10 @@ export default function NavbarVertical({
   const isDesktop = useResponsive("up", "lg");
   const navConfig = navConfigFunction();
 
+  const handleCreateNewLabel = () => {
+    setIsOpen(true);
+  };
+
   const handleLogout = async () => {
     try {
       await signOut();
@@ -66,21 +69,6 @@ export default function NavbarVertical({
     }
   };
 
-  const defaultValues: any = {
-    favoritesOnly: false,
-    labels: [],
-  };
-  const methods = useForm({
-    defaultValues,
-  });
-
-  const { reset, watch } = methods;
-  const values = watch();
-
-  const handleResetFilter = () => {
-    reset();
-  };
-  console.log("values", values);
   const {
     isCollapse,
     collapseClick,
@@ -151,13 +139,8 @@ export default function NavbarVertical({
       </Stack>
 
       {/* <NavSectionVertical navConfig={navConfig} isCollapse={isCollapse} /> */}
-      <FormProvider methods={methods}>
-        <SidebarFilter
-          onResetAll={handleResetFilter}
-          labels={[{ label: "work" }, { label: "home" }]}
-        />
-      </FormProvider>
-      {/* {!isCollapse && (
+
+      {!isCollapse && (
         <Button
           onClick={handleCreateNewLabel}
           startIcon={<AddIcon />}
@@ -165,8 +148,8 @@ export default function NavbarVertical({
         >
           Create new label
         </Button>
-      )} */}
-
+      )}
+      <LabelModal isOpen={isOpen} handleClose={() => setIsOpen(false)} />
       <Box sx={{ flexGrow: 1 }} />
     </Stack>
   );

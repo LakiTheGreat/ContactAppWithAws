@@ -4,7 +4,9 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
+import FilterListIcon from "@mui/icons-material/FilterList";
 import { GridToolbarQuickFilter } from "@mui/x-data-grid";
+import { Dispatch } from "react";
 
 const RootStyle = styled(Toolbar)(({ theme }) => ({
   height: 96,
@@ -16,9 +18,14 @@ const RootStyle = styled(Toolbar)(({ theme }) => ({
 type Props = {
   numSelected: number;
   onDelete: () => void;
+  setOpen: Dispatch<boolean>;
 };
 
-export default function DataGridToolbar({ numSelected, onDelete }: Props) {
+export default function DataGridToolbar({
+  numSelected,
+  onDelete,
+  setOpen,
+}: Props) {
   const theme = useTheme();
   const isLight = theme.palette.mode === "light";
 
@@ -46,6 +53,12 @@ export default function DataGridToolbar({ numSelected, onDelete }: Props) {
           </IconButton>
         </Tooltip>
       )}
+
+      <Tooltip title="Filter">
+        <IconButton aria-label="filter" onClick={() => setOpen(true)}>
+          <FilterListIcon />
+        </IconButton>
+      </Tooltip>
     </RootStyle>
   );
 }
