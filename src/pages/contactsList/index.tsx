@@ -22,7 +22,7 @@ export default function AllContacts() {
 
   const [getConfirmation, Confirmation] = useConfirmDialog();
   const navigate = useNavigate();
-  let title;
+
   const { data, isLoading } = useGetAllContactsQuery(undefined);
 
   const defaultValues: SidebarFilters = {
@@ -71,7 +71,7 @@ export default function AllContacts() {
     filteredContacts = applyFilterForContacts(data, values);
   }
   return (
-    <Page title={`${title}`}>
+    <Page title="List">
       <Card sx={{ m: 5 }}>
         <DataGrid
           pageSize={pageSize}
