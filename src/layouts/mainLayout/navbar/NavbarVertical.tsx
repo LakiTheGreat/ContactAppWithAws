@@ -8,18 +8,20 @@ import Drawer from "@mui/material/Drawer";
 import Typography from "@mui/material/Typography";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { Auth } from "aws-amplify";
 
 import useResponsive from "../../../hooks/useResponsive";
 import useCollapseDrawer from "../../../hooks/useCollapseDrawer";
 import cssStyles from "../../../utils/cssStyles";
-import { NavSectionVertical } from "../../../components/nav-section";
+// import { NavSectionVertical } from "../../../components/nav-section";
 import { navConfigFunction } from "./NavConfig";
 import CollapseButton from "./CollapseButton";
 import { NAVBAR } from "../../../config";
-import LabelModal from "components/LabelModal";
 import { CONTACTS_ROUTES } from "routes/paths";
 import Logo from "components/Logo";
-import { Auth } from "aws-amplify";
+import SidebarFilter from "pages/contactsList/SidebarFilter";
+import FormProvider from "components/hook-form/FormProvider";
 
 const RootStyle = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("lg")]: {
@@ -55,10 +57,6 @@ export default function NavbarVertical({
   const isDesktop = useResponsive("up", "lg");
   const navConfig = navConfigFunction();
 
-  const handleCreateNewLabel = () => {
-    setIsOpen(true);
-  };
-
   const handleLogout = async () => {
     try {
       await signOut();
@@ -68,6 +66,21 @@ export default function NavbarVertical({
     }
   };
 
+  const defaultValues: any = {
+    favoritesOnly: false,
+    labels: [],
+  };
+  const methods = useForm({
+    defaultValues,
+  });
+
+  const { reset, watch } = methods;
+  const values = watch();
+
+  const handleResetFilter = () => {
+    reset();
+  };
+  console.log("values", values);
   const {
     isCollapse,
     collapseClick,
@@ -85,7 +98,7 @@ export default function NavbarVertical({
   }, [pathname]);
 
   const renderContent = (
-    <>
+    <Stack>
       <Stack
         spacing={3}
         sx={{
@@ -137,8 +150,14 @@ export default function NavbarVertical({
         )}
       </Stack>
 
-      <NavSectionVertical navConfig={navConfig} isCollapse={isCollapse} />
-      {!isCollapse && (
+      {/* <NavSectionVertical navConfig={navConfig} isCollapse={isCollapse} /> */}
+      <FormProvider methods={methods}>
+        <SidebarFilter
+          onResetAll={handleResetFilter}
+          labels={[{ label: "work" }, { label: "home" }]}
+        />
+      </FormProvider>
+      {/* {!isCollapse && (
         <Button
           onClick={handleCreateNewLabel}
           startIcon={<AddIcon />}
@@ -146,10 +165,10 @@ export default function NavbarVertical({
         >
           Create new label
         </Button>
-      )}
-      <LabelModal isOpen={isOpen} handleClose={() => setIsOpen(false)} />
+      )} */}
+
       <Box sx={{ flexGrow: 1 }} />
-    </>
+    </Stack>
   );
 
   return (
