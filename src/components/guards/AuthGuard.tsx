@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 
 import { AUTH_ROUTES } from "routes/paths";
 import { useGetCurrentUserQuery } from "api/auth/authApi";
+import DashboardLayout from "layouts/mainLayout";
 
 type Props = {
   children: ReactNode;
@@ -14,7 +15,7 @@ export default function AuthGuard({ children }: Props) {
   const { data, isLoading } = useGetCurrentUserQuery(undefined);
 
   if (isLoading) {
-    return <></>;
+    return <DashboardLayout />;
   }
   if (!data) {
     return (
