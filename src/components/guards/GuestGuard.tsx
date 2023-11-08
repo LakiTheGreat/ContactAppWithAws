@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 
 import { CONTACTS_ROUTES } from "routes/paths";
-import { useGetCurrentUserQuery } from "api/auth/authApi";
+import { useGetCurrentUserQuery } from "api/auth";
 
 type Props = {
   children: ReactNode;

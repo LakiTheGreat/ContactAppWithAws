@@ -31,7 +31,7 @@ interface Props {
 export default function ContactForm({ title, value, onSubmit }: Props) {
   const NewContactSchema = Yup.object().shape({
     name: Yup.string().required("Must enter name"),
-    image: Yup.string().required("Must add image"),
+    // image: Yup.string().required("Must add image"),
     email: Yup.string().required("Must add email"),
     phoneNumber: Yup.string().required("Must add phone number"),
   });

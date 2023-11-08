@@ -14,16 +14,23 @@ type Actions = {
 export default function useContactsColumns(actions: Actions) {
   const columns: GridColDef[] = [
     {
-      field: "name",
-      headerName: "NAME",
+      field: "firstName",
+      headerName: "First name",
       flex: 1,
       minWidth: 350,
-      renderCell: ({ value, row }) => (
+      renderCell: ({ value }) => (
         <Stack gap={2} direction="row" alignItems="center">
-          <Avatar
-            alt="contact_image"
-            src={row?.image || "https://via.placeholder.com/150"}
-          />
+          <Typography variant="subtitle2">{value}</Typography>
+        </Stack>
+      ),
+    },
+    {
+      field: "lastName",
+      headerName: "Last name",
+      flex: 1,
+      minWidth: 350,
+      renderCell: ({ value }) => (
+        <Stack gap={2} direction="row" alignItems="center">
           <Typography variant="subtitle2">{value}</Typography>
         </Stack>
       ),
@@ -31,14 +38,14 @@ export default function useContactsColumns(actions: Actions) {
 
     {
       field: "email",
-      headerName: "EMAIL",
+      headerName: "Email",
       flex: 1,
       minWidth: 250,
       valueGetter: ({ row }) => row.email,
     },
     {
       field: "phoneNumber",
-      headerName: "PHONE NUMBER",
+      headerName: "Phone number",
       flex: 1,
       minWidth: 100,
       valueGetter: ({ row }) => row.phoneNumber,

@@ -2,7 +2,7 @@ import { useLocation, Navigate } from "react-router-dom";
 import { ReactNode } from "react";
 
 import { AUTH_ROUTES } from "routes/paths";
-import { useGetCurrentUserQuery } from "api/auth/authApi";
+import { useGetCurrentUserQuery } from "api/auth";
 import DashboardLayout from "layouts/mainLayout";
 
 type Props = {

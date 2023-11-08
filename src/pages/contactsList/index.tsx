@@ -11,6 +11,7 @@ import mockedContacts from "__mocks__/mockedContacts.json";
 import useConfirmDialog from "hooks/useConfirmDialog";
 import { CONTACTS_ROUTES } from "routes/paths";
 import firstCharToUpperCase from "utils/firstCharToUpperCase";
+import { useGetAllContactsQuery } from "api/contacts";
 
 export default function AllContacts() {
   const { pathname } = useLocation();
@@ -20,6 +21,7 @@ export default function AllContacts() {
   const [getConfirmation, Confirmation] = useConfirmDialog();
   const navigate = useNavigate();
   let title;
+  const { data, isLoading } = useGetAllContactsQuery(undefined);
 
   function filterContacts() {
     const partsWithoutBackslashAtTheEnd = pathname.replace(/\/$/, ""); // removes "/" at the end of the string if it exists
@@ -73,8 +75,6 @@ export default function AllContacts() {
     handleEdit,
   });
 
-  const isLoading = false;
-
   return (
     <Page title={`${title}`}>
       <Card sx={{ m: 5 }}>
@@ -85,10 +85,11 @@ export default function AllContacts() {
           initialState={{
             sorting: { sortModel: [{ field: "name", sort: "asc" }] },
           }}
-          rows={filteredContacts}
+          // rows={filteredContacts}
+          rows={data ? data : []}
           columns={columns}
           loading={isLoading}
-          getRowId={(row) => row._id}
+          getRowId={(row) => row.contactId}
           components={{ Toolbar: DataGridToolbar }}
           componentsProps={{
             toolbar: {
