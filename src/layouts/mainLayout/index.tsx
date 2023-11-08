@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
+import { Box } from "@mui/material";
+
+import useResponsive from "hooks/useResponsive";
+import useCollapseDrawer from "hooks/useCollapseDrawer";
+import { HEADER, NAVBAR } from "config";
 
 import NavbarVertical from "./navbar/NavbarVertical";
-
-import useCollapseDrawer from "../../hooks/useCollapseDrawer";
-import { HEADER, NAVBAR } from "../../config";
-import DashboardHeader from "../header";
+import DashboardHeader from "layouts/header";
+import NavbarHorizontal from "./navbar/NavbarHorizontal";
 
 type MainStyleProps = {
   collapseClick: boolean;
@@ -40,9 +42,11 @@ const MainStyle = styled("main", {
 export default function DashboardLayout() {
   const { collapseClick, isCollapse } = useCollapseDrawer();
 
+  const isDesktop = useResponsive("up", "lg");
+
   const [open, setOpen] = useState(false);
 
-  const verticalLayout = false;
+  const verticalLayout = true;
 
   if (verticalLayout) {
     return (
@@ -52,10 +56,14 @@ export default function DashboardLayout() {
           verticalLayout={verticalLayout}
         />
 
-        <NavbarVertical
-          isOpenSidebar={open}
-          onCloseSidebar={() => setOpen(false)}
-        />
+        {isDesktop ? (
+          <NavbarHorizontal />
+        ) : (
+          <NavbarVertical
+            isOpenSidebar={open}
+            onCloseSidebar={() => setOpen(false)}
+          />
+        )}
 
         <Box
           component="main"

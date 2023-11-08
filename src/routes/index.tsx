@@ -57,7 +57,7 @@ export default function Router() {
     },
     {
       path: "*",
-      element: <>NEMA DALJE</>,
+      element: <Page404 />,
     },
   ]);
 }
@@ -69,3 +69,4 @@ const CreateNewContact = Loadable(
 const EditContact = Loadable(
   lazy(() => import("../pages/contactsForm/EditContact"))
 );
+const Page404 = Loadable(lazy(() => import("../components/Page404")));

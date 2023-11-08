@@ -1,25 +1,21 @@
 import { useState } from "react";
 import Card from "@mui/material/Card";
 import { DataGrid } from "@mui/x-data-grid";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import FormProvider from "components/hook-form/FormProvider";
 import Page from "components/Page";
 import DataGridToolbar from "components/DataGridToolbar";
 import useContactsColumns from "./useContactsColumns";
-import mockedContacts from "__mocks__/mockedContacts.json";
 import useConfirmDialog from "hooks/useConfirmDialog";
 import { CONTACTS_ROUTES } from "routes/paths";
-import firstCharToUpperCase from "utils/firstCharToUpperCase";
 import { useGetAllContactsQuery } from "api/contacts";
 import SidebarFilter from "./SidebarFilter";
 import applyFilterForContacts from "utils/applyFilterForContacts";
 import { SidebarFilters } from "__mocks__/types";
-import LoadingScreen from "components/LoadingScreen";
 
 export default function AllContacts() {
-  const { pathname } = useLocation();
   const [pageSize, setPageSize] = useState<number>(5);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [open, setOpen] = useState<boolean>(false);
@@ -70,48 +66,46 @@ export default function AllContacts() {
     handleDelete,
     handleEdit,
   });
-
+  let filteredContacts = [];
   if (data) {
-    const filteredContacts = applyFilterForContacts(data, values);
-    return (
-      <Page title={`${title}`}>
-        <Card sx={{ m: 5 }}>
-          <DataGrid
-            pageSize={pageSize}
-            onPageSizeChange={(newPageSize: number) => setPageSize(newPageSize)}
-            rowsPerPageOptions={[5, 10, 20, 50, 100]}
-            initialState={{
-              sorting: { sortModel: [{ field: "name", sort: "asc" }] },
-            }}
-            rows={filteredContacts}
-            // rows={data ? data : []}
-            columns={columns}
-            loading={isLoading}
-            getRowId={(row) => row.contactId}
-            components={{ Toolbar: DataGridToolbar }}
-            componentsProps={{
-              toolbar: {
-                numSelected: selectedIds.length,
-                onDelete: handleBatchDelete,
-                setOpen: setOpen,
-                onClose: () => setOpen(false),
-              },
-            }}
-            onSelectionModelChange={(ids) => setSelectedIds(ids as string[])}
-            disableExtendRowFullWidth={true}
-          />
-          <FormProvider methods={methods}>
-            <SidebarFilter
-              open={open}
-              onResetAll={handleResetFilter}
-              labels={[{ label: "work" }, { label: "home" }]}
-              onClose={() => setOpen(false)}
-            />
-          </FormProvider>
-          <Confirmation />
-        </Card>
-      </Page>
-    );
+    filteredContacts = applyFilterForContacts(data, values);
   }
-  return <>No data</>;
+  return (
+    <Page title={`${title}`}>
+      <Card sx={{ m: 5 }}>
+        <DataGrid
+          pageSize={pageSize}
+          onPageSizeChange={(newPageSize: number) => setPageSize(newPageSize)}
+          rowsPerPageOptions={[5, 10, 20, 50, 100]}
+          initialState={{
+            sorting: { sortModel: [{ field: "name", sort: "asc" }] },
+          }}
+          rows={filteredContacts}
+          columns={columns}
+          loading={isLoading}
+          getRowId={(row) => row.contactId}
+          components={{ Toolbar: DataGridToolbar }}
+          componentsProps={{
+            toolbar: {
+              numSelected: selectedIds.length,
+              onDelete: handleBatchDelete,
+              setOpen: setOpen,
+              onClose: () => setOpen(false),
+            },
+          }}
+          onSelectionModelChange={(ids) => setSelectedIds(ids as string[])}
+          disableExtendRowFullWidth={true}
+        />
+        <FormProvider methods={methods}>
+          <SidebarFilter
+            open={open}
+            onResetAll={handleResetFilter}
+            labels={[{ label: "work" }, { label: "home" }]}
+            onClose={() => setOpen(false)}
+          />
+        </FormProvider>
+        <Confirmation />
+      </Card>
+    </Page>
+  );
 }
