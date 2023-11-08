@@ -9,11 +9,24 @@
       "UnauthRoleName": "amplify-contactapp-dev-90654-unauthRole",
       "StackName": "amplify-contactapp-dev-90654",
       "StackId": "arn:aws:cloudformation:us-east-1:739894200830:stack/amplify-contactapp-dev-90654/9e9ef610-7d44-11ee-b09f-0ad4585418c7",
-      "AmplifyAppId": "dpipikdmpqzi7"
+      "AmplifyAppId": "dpipikdmpqzi7",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-contactapp-dev-90654-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
       "auth": {
         "contactapp8a32b053": {}
+      },
+      "function": {
+        "contactsCRUDfunction": {
+          "deploymentBucketName": "amplify-contactapp-dev-90654-deployment",
+          "s3Key": "amplify-builds/contactsCRUDfunction-51523369425a6749742f-build.zip"
+        }
+      },
+      "storage": {
+        "dynamoTable": {}
+      },
+      "api": {
+        "contactsApi": {}
       }
     }
   }

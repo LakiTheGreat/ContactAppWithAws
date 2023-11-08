@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "paths": {
+    "/contacts": {
+      "name": "/contacts",
+      "lambdaFunction": "contactsCRUDfunction",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
+      }
+    }
+  }
+}
