@@ -11,10 +11,10 @@ export default function Login() {
   const listener = (data: any) => {
     switch (data?.payload?.event) {
       case "signIn":
-        navigate(CONTACTS_ROUTES.all);
+        navigate(CONTACTS_ROUTES.list);
         break;
       case "autoSignIn":
-        navigate(CONTACTS_ROUTES.all);
+        navigate(CONTACTS_ROUTES.list);
         break;
     }
   };

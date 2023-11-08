@@ -37,19 +37,7 @@ export default function Router() {
       ),
       children: [
         {
-          path: "all",
-          element: (
-            // <AuthGuard>
-            <ContactsList />
-            // </AuthGuard>
-          ),
-        },
-        {
-          path: "favorites",
-          element: <ContactsList />,
-        },
-        {
-          path: "labels/*",
+          path: "list",
           element: <ContactsList />,
         },
         {

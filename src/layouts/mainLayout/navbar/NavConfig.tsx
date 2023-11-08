@@ -37,7 +37,7 @@ export const navConfigFunction = () => {
       items: [
         {
           title: "All",
-          path: `${CONTACTS_ROUTES.all}`,
+          path: `${CONTACTS_ROUTES.list}`,
           icon: <Iconify icon={"fluent-mdl2:contact"} />,
           info: numberOfAllContacts,
         },

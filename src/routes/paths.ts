@@ -10,7 +10,7 @@ export const AUTH_ROUTES = {
 };
 
 export const CONTACTS_ROUTES = {
-  all: path(ROOT, "/all"),
+  list: path(ROOT, "/list"),
   favorites: path(ROOT, "/favorites"),
   labels: path(ROOT, "/labels"),
   new: path(ROOT, "/new_contact"),

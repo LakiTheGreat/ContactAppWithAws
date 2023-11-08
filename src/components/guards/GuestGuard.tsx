@@ -16,7 +16,7 @@ export default function GuestGuard({ children }: Props) {
   }
   if (data) {
     return (
-      <Navigate to={CONTACTS_ROUTES.all} state={{ from: location }} replace />
+      <Navigate to={CONTACTS_ROUTES.list} state={{ from: location }} replace />
     );
   }
 
