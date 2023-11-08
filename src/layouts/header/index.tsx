@@ -1,5 +1,9 @@
 import { styled } from "@mui/material/styles";
-import { Box, AppBar, Toolbar } from "@mui/material";
+import Box from "@mui/material/Box";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 
 import useOffSetTop from "hooks/useOffSetTop";
 import useResponsive from "hooks/useResponsive";
@@ -8,6 +12,7 @@ import { HEADER, NAVBAR } from "config";
 // import Logo from "components/Logo";
 import Iconify from "components/Iconify";
 import { IconButtonAnimate } from "components/animate";
+import Logo from "components/Logo";
 
 // ----------------------------------------------------------------------
 
@@ -75,7 +80,19 @@ export default function DashboardHeader({
           px: { lg: 5 },
         }}
       >
-        {isDesktop && verticalLayout && <>"LOGO"</>}
+        {isDesktop && verticalLayout && (
+          <Stack
+            direction="row"
+            alignItems="center"
+            sx={{ width: "100%", mt: 1 }}
+            gap={1}
+          >
+            <Logo disabledLink sx={{ width: 40, height: 40 }} />
+            <Typography color={"black"} variant="h3">
+              ContactsApp
+            </Typography>
+          </Stack>
+        )}
 
         {!isDesktop && (
           <IconButtonAnimate

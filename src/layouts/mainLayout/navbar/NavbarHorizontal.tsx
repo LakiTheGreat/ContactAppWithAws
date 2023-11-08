@@ -1,12 +1,9 @@
 import { memo } from "react";
-// @mui
 import { styled } from "@mui/material/styles";
-import { Container } from "@mui/material";
-// config
+import Container from "@mui/material/Container";
+
 import { HEADER } from "../../../config";
-// components
 import { NavSectionHorizontal } from "../../../components/nav-section";
-//
 import { navConfigFunction } from "./NavConfig";
 
 // ----------------------------------------------------------------------
