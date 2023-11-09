@@ -46,19 +46,19 @@ export default function DataGridToolbar({
         <GridToolbarQuickFilter variant="outlined" sx={{ width: 240 }} />
       )}
 
-      {numSelected > 0 && (
+      {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton aria-label="delete" onClick={onDelete}>
             <DeleteOutline />
           </IconButton>
         </Tooltip>
+      ) : (
+        <Tooltip title="Filter">
+          <IconButton aria-label="filter" onClick={() => setOpen(true)}>
+            <FilterListIcon />
+          </IconButton>
+        </Tooltip>
       )}
-
-      <Tooltip title="Filter">
-        <IconButton aria-label="filter" onClick={() => setOpen(true)}>
-          <FilterListIcon />
-        </IconButton>
-      </Tooltip>
     </RootStyle>
   );
 }
