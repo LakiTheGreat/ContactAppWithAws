@@ -1,5 +1,5 @@
 import { api } from "api/api";
-import { getAllContacts } from "api/asyncFunctions";
+import { getAllContacts, getContactById } from "api/asyncFunctions";
 
 const contactsApiEndpoints = api.injectEndpoints({
   endpoints: (build) => ({
@@ -7,8 +7,13 @@ const contactsApiEndpoints = api.injectEndpoints({
       queryFn: getAllContacts,
       providesTags: ["Contact"],
     }),
+    getContactById: build.query({
+      queryFn: getContactById,
+      providesTags: ["Contact"],
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useGetAllContactsQuery } = contactsApiEndpoints;
+export const { useGetAllContactsQuery, useGetContactByIdQuery } =
+  contactsApiEndpoints;

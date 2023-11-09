@@ -41,3 +41,15 @@ export async function getAllContacts(): Promise<
     };
   }
 }
+export async function getContactById(
+  contactId: string
+): Promise<{ data: any } | { error: FetchBaseQueryError }> {
+  try {
+    const data = await API.get(apiName, `${path}/${contactId}`, {});
+    return { data: data };
+  } catch (error) {
+    return {
+      error: error as FetchBaseQueryError,
+    };
+  }
+}
