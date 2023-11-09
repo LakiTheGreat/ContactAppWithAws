@@ -80,7 +80,12 @@ export default function ContactForm({ title, value, onSubmit }: Props) {
     },
   });
 
-  const { control, setValue, handleSubmit, reset } = methods;
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { isDirty },
+  } = methods;
 
   return (
     <Stack alignItems="center" sx={{ m: 5 }}>
@@ -234,11 +239,12 @@ export default function ContactForm({ title, value, onSubmit }: Props) {
               <Button
                 onClick={() => reset()}
                 size="large"
-                aria-label="cancel"
+                aria-label="reset"
                 variant="outlined"
                 sx={{ width: "fit-content" }}
+                disabled={!isDirty}
               >
-                Cancel
+                Reset
               </Button>
               <Button
                 size="large"
