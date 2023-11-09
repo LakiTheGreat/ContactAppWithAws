@@ -1,0 +1,92 @@
+[
+  {
+    "_id": "1",
+    "image": "https://robohash.org/johndoe.png",
+    "name": "Work Contact: John Doe",
+    "email": "john.doe@example.com",
+    "phoneNumber": "+1234567890",
+    "isFavorite": true,
+    "labels": [{ "_id": "l1", "labelName": "work" }]
+  },
+  {
+    "_id": "2",
+    "image": "https://robohash.org/alicesmith.png",
+    "name": "Work Contact: Alice Smith",
+    "email": "alice.smith@example.com",
+    "phoneNumber": "+9876543210",
+    "isFavorite": false,
+    "labels": [{ "_id": "l1", "labelName": "work" }]
+  },
+  {
+    "_id": "3",
+    "image": "https://robohash.org/bobjohnson.png",
+    "name": "Work Contact: Bob Johnson",
+    "email": "bob.johnson@example.com",
+    "phoneNumber": "+1122334455",
+    "isFavorite": true,
+    "labels": [{ "_id": "l1", "labelName": "work" }]
+  },
+  {
+    "_id": "4",
+    "image": "https://robohash.org/evawilliams.png",
+    "name": "Family Member: Eva Williams",
+    "email": "eva.williams@example.com",
+    "phoneNumber": "+9988776655",
+    "isFavorite": false,
+    "labels": [{ "_id": "l2", "labelName": "family" }]
+  },
+  {
+    "_id": "5",
+    "image": "https://robohash.org/mikebrown.png",
+    "name": "Family Member: Mike Brown",
+    "email": "mike.brown@example.com",
+    "phoneNumber": "+7654321098",
+    "isFavorite": true,
+    "labels": [{ "_id": "l2", "labelName": "family" }]
+  },
+  {
+    "_id": "6",
+    "image": "https://robohash.org/sarahjohnson.png",
+    "name": "Family Member: Sarah Johnson",
+    "email": "sarah.johnson@example.com",
+    "phoneNumber": "+1122336677",
+    "isFavorite": false,
+    "labels": [{ "_id": "l2", "labelName": "family" }]
+  },
+  {
+    "_id": "7",
+    "image": "https://robohash.org/davidwilson.png",
+    "name": "My Best Friend: David Wilson",
+    "email": "david.wilson@example.com",
+    "phoneNumber": "+8877665544",
+    "isFavorite": true,
+    "labels": [{ "_id": "l3", "labelName": "friends" }]
+  },
+  {
+    "_id": "8",
+    "image": "https://robohash.org/lindadavis.png",
+    "name": "My Best Friend: Linda Davis",
+    "email": "linda.davis@example.com",
+    "phoneNumber": "+4455667788",
+    "isFavorite": false,
+    "labels": [{ "_id": "l3", "labelName": "friends" }]
+  },
+  {
+    "_id": "9",
+    "image": "https://robohash.org/kevinmoore.png",
+    "name": "My Best Friend: Kevin Moore",
+    "email": "kevin.moore@example.com",
+    "phoneNumber": "+1122998877",
+    "isFavorite": true,
+    "labels": [{ "_id": "l3", "labelName": "friends" }]
+  },
+  {
+    "_id": "10",
+    "image": "https://robohash.org/emilywhite.png",
+    "name": "Work Contact: Emily White",
+    "email": "emily.white@example.com",
+    "phoneNumber": "+5544332211",
+    "isFavorite": false,
+    "labels": [{ "_id": "l1", "labelName": "work" }]
+  }
+]
