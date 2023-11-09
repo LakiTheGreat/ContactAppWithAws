@@ -8,7 +8,6 @@ import Drawer from "@mui/material/Drawer";
 import Typography from "@mui/material/Typography";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
-import { Auth } from "aws-amplify";
 
 import useResponsive from "../../../hooks/useResponsive";
 import useCollapseDrawer from "../../../hooks/useCollapseDrawer";
@@ -19,6 +18,7 @@ import { NAVBAR } from "../../../config";
 import { CONTACTS_ROUTES } from "routes/paths";
 import Logo from "components/Logo";
 import LabelModal from "components/LabelModal";
+import { signOut } from "api/asyncFunctions";
 
 const RootStyle = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("lg")]: {
@@ -36,13 +36,6 @@ type Props = {
   onCloseSidebar: VoidFunction;
 };
 
-export async function signOut() {
-  try {
-    await Auth.signOut();
-  } catch (error) {
-    console.log("error signing out: ", error);
-  }
-}
 export default function NavbarVertical({
   isOpenSidebar,
   onCloseSidebar,

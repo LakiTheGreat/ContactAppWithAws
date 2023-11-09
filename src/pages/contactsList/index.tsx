@@ -24,7 +24,6 @@ export default function AllContacts() {
   const navigate = useNavigate();
 
   const { data, isLoading } = useGetAllContactsQuery(undefined);
-  console.log(data);
   const defaultValues: SidebarFilters = {
     favoritesOnly: false,
     labels: [],
@@ -39,7 +38,7 @@ export default function AllContacts() {
   const handleResetFilter = () => {
     reset();
   };
-  console.log("values", values);
+  // console.log("values", values);
 
   const handleBatchDelete = () => {
     console.log("handleBatchDelete", selectedIds);

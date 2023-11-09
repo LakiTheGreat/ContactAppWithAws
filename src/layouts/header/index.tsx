@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
 import useOffSetTop from "hooks/useOffSetTop";
@@ -13,6 +14,7 @@ import { HEADER, NAVBAR } from "config";
 import Iconify from "components/Iconify";
 import { IconButtonAnimate } from "components/animate";
 import Logo from "components/Logo";
+import { signOut } from "api/asyncFunctions";
 
 // ----------------------------------------------------------------------
 
@@ -68,6 +70,15 @@ export default function DashboardHeader({
 
   const isDesktop = useResponsive("up", "lg");
 
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <RootStyle
       isCollapse={isCollapse}
@@ -84,13 +95,23 @@ export default function DashboardHeader({
           <Stack
             direction="row"
             alignItems="center"
+            justifyContent="space-between"
             sx={{ width: "100%", mt: 1 }}
             gap={1}
           >
-            <Logo disabledLink sx={{ width: 40, height: 40 }} />
-            <Typography color={"black"} variant="h3">
-              ContactsApp
-            </Typography>
+            <Stack direction="row">
+              <Logo disabledLink sx={{ width: 40, height: 40 }} />
+              <Typography color={"black"} variant="h3">
+                ContactsApp
+              </Typography>
+            </Stack>
+            <Button
+              sx={{ width: "fit-content" }}
+              variant="contained"
+              onClick={handleLogout}
+            >
+              Logout
+            </Button>
           </Stack>
         )}
 
