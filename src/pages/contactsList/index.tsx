@@ -24,7 +24,7 @@ export default function AllContacts() {
   const navigate = useNavigate();
 
   const { data, isLoading } = useGetAllContactsQuery(undefined);
-
+  console.log(data);
   const defaultValues: SidebarFilters = {
     favoritesOnly: false,
     labels: [],
