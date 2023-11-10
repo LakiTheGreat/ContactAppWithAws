@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License"). You may not use 
 or in the "license" file accompanying this file. This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and limitations under the License.
 */
-
+const { randomUUID } = require("crypto");
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
 const {
   DeleteCommand,
@@ -27,7 +27,7 @@ if (process.env.ENV && process.env.ENV !== "NONE") {
   tableName = tableName + "-" + process.env.ENV;
 }
 
-const userIdPresent = false; // TODO: update in case is required to use that definition
+const userIdPresent = true;
 const partitionKeyName = "userId";
 const partitionKeyType = "S";
 const sortKeyName = "contactId";
@@ -141,10 +141,10 @@ app.get(path + "/object" + sortKeyPath, async function (req, res) {
     req.apiGateway.event.requestContext.identity.cognitoAuthenticationProvider.split(
       ":CognitoSignIn:"
     )[1];
+
   const params = {};
   if (userIdPresent && req.apiGateway) {
-    params[partitionKeyName] =
-      req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
+    params[partitionKeyName] = userId || UNAUTH;
   } else {
     params[partitionKeyName] = userId;
   }
@@ -206,14 +206,26 @@ app.put(path, async function (req, res) {
  *************************************/
 
 app.post(path, async function (req, res) {
+  const contactId = randomUUID();
+  const userId =
+    req.apiGateway.event.requestContext.identity.cognitoAuthenticationProvider.split(
+      ":CognitoSignIn:"
+    )[1];
+
   if (userIdPresent) {
-    req.body["userId"] =
-      req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
+    req.body["userId"] = userId || UNAUTH;
   }
+
+  const contact = req.body;
+  const updatedContact = {
+    ...contact,
+    contactId,
+    userId,
+  };
 
   let putItemParams = {
     TableName: tableName,
-    Item: req.body,
+    Item: updatedContact,
   };
   try {
     let data = await ddbDocClient.send(new PutCommand(putItemParams));

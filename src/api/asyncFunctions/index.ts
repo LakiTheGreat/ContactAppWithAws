@@ -1,6 +1,7 @@
 import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query/fetchBaseQuery";
 import { CognitoUser } from "amazon-cognito-identity-js";
 import { API, Auth } from "aws-amplify";
+import { SingeContactFormValues } from "types";
 
 const apiName = "apiContactApp";
 const path = "/contacts";
@@ -62,15 +63,15 @@ export async function getContactById(
     };
   }
 }
-// export async function createOneContact(
-//   obj: AnyAction
-// ): Promise<{ data: any } | { error: FetchBaseQueryError }> {
-//   try {
-//     const data = await API.post(apiName, `${path}`, { obj });
-//     return { data: data };
-//   } catch (error) {
-//     return {
-//       error: error as FetchBaseQueryError,
-//     };
-//   }
-// }
+export async function createContact(
+  contact: SingeContactFormValues
+): Promise<{ data: any } | { error: FetchBaseQueryError }> {
+  try {
+    const data = await API.post(apiName, `${path}`, { body: contact });
+    return { data: data };
+  } catch (error) {
+    return {
+      error: error as FetchBaseQueryError,
+    };
+  }
+}

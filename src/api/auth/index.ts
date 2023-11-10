@@ -1,5 +1,5 @@
 import { api } from "api/api";
-import { getCurrentUser } from "api/asyncFunctions";
+import { createContact, getCurrentUser } from "api/asyncFunctions";
 
 const authApiEndpoints = api.injectEndpoints({
   endpoints: (build) => ({
@@ -7,8 +7,13 @@ const authApiEndpoints = api.injectEndpoints({
       queryFn: getCurrentUser,
       providesTags: ["Auth"],
     }),
+    createContact: build.mutation({
+      queryFn: createContact,
+      invalidatesTags: ["Contact"],
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useGetCurrentUserQuery } = authApiEndpoints;
+export const { useGetCurrentUserQuery, useCreateContactMutation } =
+  authApiEndpoints;
