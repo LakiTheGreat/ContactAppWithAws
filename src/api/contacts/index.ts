@@ -1,5 +1,9 @@
 import { api } from "api/api";
-import { getAllContacts, getContactById } from "api/asyncFunctions";
+import {
+  // createOneContact,
+  getAllContacts,
+  getContactById,
+} from "api/asyncFunctions";
 
 const contactsApiEndpoints = api.injectEndpoints({
   endpoints: (build) => ({
@@ -11,9 +15,16 @@ const contactsApiEndpoints = api.injectEndpoints({
       queryFn: getContactById,
       providesTags: ["Contact"],
     }),
+    // createOneContact: build.mutation({
+    //   queryFn: createOneContact,
+    //   invalidatesTags: ["Contact"],
+    // }),
   }),
   overrideExisting: false,
 });
 
-export const { useGetAllContactsQuery, useGetContactByIdQuery } =
-  contactsApiEndpoints;
+export const {
+  useGetAllContactsQuery,
+  useGetContactByIdQuery,
+  // useCreateOneContactMutation,
+} = contactsApiEndpoints;

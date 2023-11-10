@@ -1,6 +1,5 @@
 // import { useCallback } from "react";
 import * as Yup from "yup";
-import { useEffect } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
 import Chip from "@mui/material/Chip";
@@ -22,6 +21,7 @@ import mockedLabels from "__mocks__/mockedLabels.json";
 // import { extractExtensions } from "utils/extractExtensions";
 import firstCharToUpperCase from "utils/firstCharToUpperCase";
 import useResponsive from "hooks/useResponsive";
+// import { useCreateOneContactMutation } from "api/contacts";
 
 interface Props {
   title: string;

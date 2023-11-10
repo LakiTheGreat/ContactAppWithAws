@@ -53,3 +53,15 @@ export async function getContactById(
     };
   }
 }
+// export async function createOneContact(
+//   obj: AnyAction
+// ): Promise<{ data: any } | { error: FetchBaseQueryError }> {
+//   try {
+//     const data = await API.post(apiName, `${path}`, { obj });
+//     return { data: data };
+//   } catch (error) {
+//     return {
+//       error: error as FetchBaseQueryError,
+//     };
+//   }
+// }

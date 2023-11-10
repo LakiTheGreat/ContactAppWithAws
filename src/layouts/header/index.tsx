@@ -99,7 +99,7 @@ export default function DashboardHeader({
             sx={{ width: "100%", mt: 1 }}
             gap={1}
           >
-            <Stack direction="row">
+            <Stack direction="row" gap={1} alignItems="center">
               <Logo disabledLink sx={{ width: 40, height: 40 }} />
               <Typography color={"black"} variant="h3">
                 ContactsApp

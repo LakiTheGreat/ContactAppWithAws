@@ -17,7 +17,6 @@ const {
 const awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
 const bodyParser = require("body-parser");
 const express = require("express");
-const jsonwebtoken = require("jsonwebtoken");
 
 const ddbClient = new DynamoDBClient({ region: process.env.TABLE_REGION });
 const ddbDocClient = DynamoDBDocumentClient.from(ddbClient);
@@ -64,11 +63,8 @@ const convertUrlType = (param, type) => {
  * HTTP Get method to list objects *
  ************************************/
 // /contacts
-app.get(path, async function (req, res) {
-  const token = req.headers.authorization || req.headers.Authorization;
-  token = token.replace("Bearer ", "");
-  const user = jsonwebtoken.decode(token, { json: true });
-
+app.get(path + "/user/:" + sortKeyName, async function (req, res) {
+  const userId = req.params[sortKeyName];
   var params = {
     TableName: tableName,
     Select: "ALL_ATTRIBUTES",
@@ -77,7 +73,7 @@ app.get(path, async function (req, res) {
       "#key": "userId",
     },
     ExpressionAttributeValues: {
-      ":keyValue": user.sub,
+      ":keyValue": userId,
     },
     KeyConditionExpression: "#key = :keyValue",
     ScanIndexsForward: true,
@@ -96,20 +92,20 @@ app.get(path, async function (req, res) {
  * HTTP Get method to query objects *
  ************************************/
 //   /contacts/:contactId/
-app.get(path + "/:" + sortKeyName, async function (req, res) {
+app.get(path + hashKeyPath, async function (req, res) {
   const condition = {};
-  condition[sortKeyName] = {
+  condition[partitionKeyName] = {
     ComparisonOperator: "EQ",
   };
 
   if (userIdPresent && req.apiGateway) {
-    condition[sortKeyName]["AttributeValueList"] = [
+    condition[partitionKeyName]["AttributeValueList"] = [
       req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH,
     ];
   } else {
     try {
-      condition[sortKeyName]["AttributeValueList"] = [
-        convertUrlType(req.params[sortKeyName], partitionKeyType),
+      condition[partitionKeyName]["AttributeValueList"] = [
+        convertUrlType(req.params[partitionKeyName], partitionKeyType),
       ];
     } catch (err) {
       res.statusCode = 500;
@@ -130,40 +126,6 @@ app.get(path + "/:" + sortKeyName, async function (req, res) {
     res.json({ error: "Could not load items: " + err.message });
   }
 });
-// app.get(path + hashKeyPath, async function (req, res) {
-//   const condition = {};
-//   condition[partitionKeyName] = {
-//     ComparisonOperator: "EQ",
-//   };
-
-//   if (userIdPresent && req.apiGateway) {
-//     condition[partitionKeyName]["AttributeValueList"] = [
-//       req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH,
-//     ];
-//   } else {
-//     try {
-//       condition[partitionKeyName]["AttributeValueList"] = [
-//         convertUrlType(req.params[partitionKeyName], partitionKeyType),
-//       ];
-//     } catch (err) {
-//       res.statusCode = 500;
-//       res.json({ error: "Wrong column type " + err });
-//     }
-//   }
-
-//   let queryParams = {
-//     TableName: tableName,
-//     KeyConditions: condition,
-//   };
-
-//   try {
-//     const data = await ddbDocClient.send(new QueryCommand(queryParams));
-//     res.json(data.Items);
-//   } catch (err) {
-//     res.statusCode = 500;
-//     res.json({ error: "Could not load items: " + err.message });
-//   }
-// });
 
 /*****************************************
  * HTTP Get method for get single object *
