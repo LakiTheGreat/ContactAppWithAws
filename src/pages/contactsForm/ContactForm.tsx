@@ -257,7 +257,7 @@ export default function ContactForm({
                 aria-label="reset"
                 variant="outlined"
                 sx={{ width: "fit-content" }}
-                disabled={!isDirty}
+                disabled={!isDirty || isLoading}
               >
                 Reset
               </Button>
