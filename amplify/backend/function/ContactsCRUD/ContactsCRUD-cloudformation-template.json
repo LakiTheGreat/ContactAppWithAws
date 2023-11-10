@@ -16,13 +16,13 @@
     "s3Key": {
       "Type": "String"
     },
-    "storagedynamoTableName": {
+    "storageContactsDynamoDBName": {
       "Type": "String",
-      "Default": "storagedynamoTableName"
+      "Default": "storageContactsDynamoDBName"
     },
-    "storagedynamoTableArn": {
+    "storageContactsDynamoDBArn": {
       "Type": "String",
-      "Default": "storagedynamoTableArn"
+      "Default": "storageContactsDynamoDBArn"
     }
   },
   "Conditions": {
@@ -55,12 +55,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "contactsCRUDfunction",
+            "ContactsCRUD",
             {
               "Fn::Join": [
                 "",
                 [
-                  "contactsCRUDfunction",
+                  "ContactsCRUD",
                   "-",
                   {
                     "Ref": "env"
@@ -97,12 +97,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "contactappLambdaRole72ea3a35",
+            "contactappLambdaRolee440dd39",
             {
               "Fn::Join": [
                 "",
                 [
-                  "contactappLambdaRole72ea3a35",
+                  "contactappLambdaRolee440dd39",
                   "-",
                   {
                     "Ref": "env"
@@ -182,14 +182,14 @@
               ],
               "Resource": [
                 {
-                  "Ref": "storagedynamoTableArn"
+                  "Ref": "storageContactsDynamoDBArn"
                 },
                 {
                   "Fn::Join": [
                     "/",
                     [
                       {
-                        "Ref": "storagedynamoTableArn"
+                        "Ref": "storageContactsDynamoDBArn"
                       },
                       "index/*"
                     ]

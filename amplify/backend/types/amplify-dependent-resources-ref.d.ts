@@ -1,11 +1,4 @@
 export type AmplifyDependentResourcesAttributes = {
-  "api": {
-    "contactsApi": {
-      "ApiId": "string",
-      "ApiName": "string",
-      "RootUrl": "string"
-    }
-  },
   "auth": {
     "contactapp8a32b053": {
       "AppClientID": "string",
@@ -18,7 +11,7 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "function": {
-    "contactsCRUDfunction": {
+    "ContactsCRUD": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",
@@ -27,7 +20,7 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "storage": {
-    "dynamoTable": {
+    "ContactsDynamoDB": {
       "Arn": "string",
       "Name": "string",
       "PartitionKeyName": "string",

@@ -5,6 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License"). You may not use 
 or in the "license" file accompanying this file. This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and limitations under the License.
 */
+
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
 const {
   DeleteCommand,
@@ -21,15 +22,15 @@ const express = require("express");
 const ddbClient = new DynamoDBClient({ region: process.env.TABLE_REGION });
 const ddbDocClient = DynamoDBDocumentClient.from(ddbClient);
 
-let tableName = "ContactsDynamoDB";
+let tableName = "ContactsTable";
 if (process.env.ENV && process.env.ENV !== "NONE") {
   tableName = tableName + "-" + process.env.ENV;
 }
 
 const userIdPresent = false; // TODO: update in case is required to use that definition
-const partitionKeyName = "contactId";
+const partitionKeyName = "userId";
 const partitionKeyType = "S";
-const sortKeyName = "userId";
+const sortKeyName = "contactId";
 const sortKeyType = "S";
 const hasSortKey = sortKeyName !== "";
 const path = "/contacts";
@@ -62,13 +63,16 @@ const convertUrlType = (param, type) => {
 /************************************
  * HTTP Get method to list objects *
  ************************************/
-// /contacts
-app.get(path + "/user/:" + sortKeyName, async function (req, res) {
-  const userId = req.params[sortKeyName];
+
+app.get(path, async function (req, res) {
+  const userId =
+    req.apiGateway.event.requestContext.identity.cognitoAuthenticationProvider.split(
+      ":CognitoSignIn:"
+    )[1];
+
   var params = {
     TableName: tableName,
     Select: "ALL_ATTRIBUTES",
-    IndexName: "userId-index",
     ExpressionAttributeNames: {
       "#key": "userId",
     },
@@ -91,7 +95,8 @@ app.get(path + "/user/:" + sortKeyName, async function (req, res) {
 /************************************
  * HTTP Get method to query objects *
  ************************************/
-//   /contacts/:contactId/
+
+// /contacts/:userId
 app.get(path + hashKeyPath, async function (req, res) {
   const condition = {};
   condition[partitionKeyName] = {
@@ -130,7 +135,7 @@ app.get(path + hashKeyPath, async function (req, res) {
 /*****************************************
  * HTTP Get method for get single object *
  *****************************************/
-// /contacts/object/:contactId/:userId
+
 app.get(
   path + "/object" + hashKeyPath + sortKeyPath,
   async function (req, res) {

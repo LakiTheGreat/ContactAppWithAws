@@ -1,12 +1,12 @@
 {
-  "resourceName": "dynamoTable",
-  "tableName": "ContactsDynamoDB",
+  "resourceName": "ContactsDynamoDB",
+  "tableName": "ContactsTable",
   "partitionKey": {
-    "fieldName": "contactId",
+    "fieldName": "userId",
     "fieldType": "string"
   },
   "sortKey": {
-    "fieldName": "userId",
+    "fieldName": "contactId",
     "fieldType": "string"
   },
   "gsi": [],

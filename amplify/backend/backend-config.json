@@ -1,6 +1,6 @@
 {
   "api": {
-    "contactsApi": {
+    "ContactsApi": {
       "dependsOn": [
         {
           "attributes": [
@@ -8,7 +8,7 @@
             "Arn"
           ],
           "category": "function",
-          "resourceName": "contactsCRUDfunction"
+          "resourceName": "ContactsCRUD"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -44,7 +44,7 @@
     }
   },
   "function": {
-    "contactsCRUDfunction": {
+    "ContactsCRUD": {
       "build": true,
       "dependsOn": [
         {
@@ -57,7 +57,7 @@
             "Arn"
           ],
           "category": "storage",
-          "resourceName": "dynamoTable"
+          "resourceName": "ContactsDynamoDB"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -65,25 +65,25 @@
     }
   },
   "parameters": {
-    "AMPLIFY_function_contactsCRUDfunction_deploymentBucketName": {
+    "AMPLIFY_function_ContactsCRUD_deploymentBucketName": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "contactsCRUDfunction"
+          "resourceName": "ContactsCRUD"
         }
       ]
     },
-    "AMPLIFY_function_contactsCRUDfunction_s3Key": {
+    "AMPLIFY_function_ContactsCRUD_s3Key": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "contactsCRUDfunction"
+          "resourceName": "ContactsCRUD"
         }
       ]
     }
   },
   "storage": {
-    "dynamoTable": {
+    "ContactsDynamoDB": {
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"
     }

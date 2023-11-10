@@ -17,16 +17,16 @@
         "contactapp8a32b053": {}
       },
       "function": {
-        "contactsCRUDfunction": {
+        "ContactsCRUD": {
           "deploymentBucketName": "amplify-contactapp-dev-90654-deployment",
-          "s3Key": "amplify-builds/contactsCRUDfunction-764f536f6c6d4c32367a-build.zip"
+          "s3Key": "amplify-builds/ContactsCRUD-544c736a3139777a6d7a-build.zip"
         }
       },
-      "storage": {
-        "dynamoTable": {}
-      },
       "api": {
-        "contactsApi": {}
+        "ContactsApi": {}
+      },
+      "storage": {
+        "ContactsDynamoDB": {}
       }
     }
   }

@@ -34,7 +34,7 @@ export async function getAllContacts(): Promise<
   //   const token = user.getSignInUserSession()?.getAccessToken().getJwtToken();
   try {
     const data = await API.get(apiName, `${path}`, {});
-    // const data = await API.get(apiName, `${path}/user/${username}`, {});
+
     return { data: data };
   } catch (error) {
     return {
