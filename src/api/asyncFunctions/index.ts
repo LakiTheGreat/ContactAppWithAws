@@ -29,11 +29,12 @@ export async function getCurrentUser(): Promise<
 export async function getAllContacts(): Promise<
   { data: any } | { error: FetchBaseQueryError }
 > {
-  const user: CognitoUser = await Auth.currentAuthenticatedUser();
-  const username = await user.getUsername();
+  // const user: CognitoUser = await Auth.currentAuthenticatedUser();
+  // const username = await user.getUsername();
   //   const token = user.getSignInUserSession()?.getAccessToken().getJwtToken();
   try {
-    const data = await API.get(apiName, `${path}/user/${username}`, {});
+    const data = await API.get(apiName, `${path}`, {});
+    // const data = await API.get(apiName, `${path}/user/${username}`, {});
     return { data: data };
   } catch (error) {
     return {

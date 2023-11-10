@@ -5,6 +5,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { useTheme } from "@mui/material/styles";
 
 import useOffSetTop from "hooks/useOffSetTop";
 import useResponsive from "hooks/useResponsive";
@@ -15,6 +16,7 @@ import Iconify from "components/Iconify";
 import { IconButtonAnimate } from "components/animate";
 import Logo from "components/Logo";
 import { signOut } from "api/asyncFunctions";
+import { useAppDispatch, useAppSelector } from "hooks/storeHooks";
 
 // ----------------------------------------------------------------------
 
@@ -69,6 +71,8 @@ export default function DashboardHeader({
     useOffSetTop(HEADER.DASHBOARD_DESKTOP_HEIGHT) && !verticalLayout;
 
   const isDesktop = useResponsive("up", "lg");
+  const theme = useTheme();
+  const email = useAppSelector((state) => state.user.authUser?.email);
 
   const handleLogout = async () => {
     try {
@@ -101,8 +105,11 @@ export default function DashboardHeader({
           >
             <Stack direction="row" gap={1} alignItems="center">
               <Logo disabledLink sx={{ width: 40, height: 40 }} />
-              <Typography color={"black"} variant="h3">
-                ContactsApp
+              <Typography color={theme.palette.grey[800]} variant="h3">
+                {`ContactApp`}
+              </Typography>
+              <Typography color={theme.palette.grey[800]} variant="h6">
+                {`- ${email}`}
               </Typography>
             </Stack>
             <Button

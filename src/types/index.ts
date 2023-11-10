@@ -18,4 +18,10 @@ export type SidebarFilters = {
   labels: string[];
 };
 
+export type AuthUser = {
+  sub: string;
+  email: string;
+  email_verified: boolean;
+};
+
 export type SingeContactFormValues = Omit<SingleContact, "_id">;

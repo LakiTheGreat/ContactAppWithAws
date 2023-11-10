@@ -19,6 +19,7 @@ import { CONTACTS_ROUTES } from "routes/paths";
 import Logo from "components/Logo";
 import LabelModal from "components/LabelModal";
 import { signOut } from "api/asyncFunctions";
+import { useAppDispatch } from "hooks/storeHooks";
 
 const RootStyle = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("lg")]: {
@@ -46,7 +47,7 @@ export default function NavbarVertical({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const isDesktop = useResponsive("up", "lg");
   // const navConfig = navConfigFunction();
-
+  const dispatch = useAppDispatch();
   const handleCreateNewLabel = () => {
     setIsOpen(true);
   };
