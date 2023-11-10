@@ -2,7 +2,7 @@ import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query/fetchBaseQuery"
 import { CognitoUser } from "amazon-cognito-identity-js";
 import { API, Auth } from "aws-amplify";
 
-const apiName = "contactsApi";
+const apiName = "ContactsApi";
 const path = "/contacts";
 
 export async function signOut() {
@@ -32,9 +32,9 @@ export async function getAllContacts(): Promise<
   // const user: CognitoUser = await Auth.currentAuthenticatedUser();
   // const username = await user.getUsername();
   //   const token = user.getSignInUserSession()?.getAccessToken().getJwtToken();
+
   try {
     const data = await API.get(apiName, `${path}`, {});
-
     return { data: data };
   } catch (error) {
     return {
