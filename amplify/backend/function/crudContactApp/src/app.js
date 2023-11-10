@@ -135,57 +135,48 @@ app.get(path + hashKeyPath, async function (req, res) {
  * HTTP Get method for get single object *
  *****************************************/
 
-// /contacts/object/:userId/:contactId
-app.get(
-  path + "/object" + hashKeyPath + sortKeyPath,
-  async function (req, res) {
-    const params = {};
-    if (userIdPresent && req.apiGateway) {
-      params[partitionKeyName] =
-        req.apiGateway.event.requestContext.identity.cognitoIdentityId ||
-        UNAUTH;
-    } else {
-      params[partitionKeyName] = req.params[partitionKeyName];
-      try {
-        params[partitionKeyName] = convertUrlType(
-          req.params[partitionKeyName],
-          partitionKeyType
-        );
-      } catch (err) {
-        res.statusCode = 500;
-        res.json({ error: "Wrong column type " + err });
-      }
-    }
-    if (hasSortKey) {
-      try {
-        params[sortKeyName] = convertUrlType(
-          req.params[sortKeyName],
-          sortKeyType
-        );
-      } catch (err) {
-        res.statusCode = 500;
-        res.json({ error: "Wrong column type " + err });
-      }
-    }
-
-    let getItemParams = {
-      TableName: tableName,
-      Key: params,
-    };
-
+// /contacts/object/:contactId
+app.get(path + "/object" + sortKeyPath, async function (req, res) {
+  const userId =
+    req.apiGateway.event.requestContext.identity.cognitoAuthenticationProvider.split(
+      ":CognitoSignIn:"
+    )[1];
+  const params = {};
+  if (userIdPresent && req.apiGateway) {
+    params[partitionKeyName] =
+      req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
+  } else {
+    params[partitionKeyName] = userId;
+  }
+  if (hasSortKey) {
     try {
-      const data = await ddbDocClient.send(new GetCommand(getItemParams));
-      if (data.Item) {
-        res.json(data.Item);
-      } else {
-        res.json(data);
-      }
+      params[sortKeyName] = convertUrlType(
+        req.params[sortKeyName],
+        sortKeyType
+      );
     } catch (err) {
       res.statusCode = 500;
-      res.json({ error: "Could not load items: " + err.message });
+      res.json({ error: "Wrong column type " + err });
     }
   }
-);
+
+  let getItemParams = {
+    TableName: tableName,
+    Key: params,
+  };
+
+  try {
+    const data = await ddbDocClient.send(new GetCommand(getItemParams));
+    if (data.Item) {
+      res.json(data.Item);
+    } else {
+      res.json(data);
+    }
+  } catch (err) {
+    res.statusCode = 500;
+    res.json({ error: "Could not load items: " + err.message });
+  }
+});
 
 /************************************
  * HTTP put method for insert object *

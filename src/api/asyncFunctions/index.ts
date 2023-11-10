@@ -51,7 +51,8 @@ export async function getContactById(
 
     const data = await API.get(
       apiName,
-      `${path}/object/${userId}/${contactId}`,
+      `${path}/object/${contactId}`,
+      // `${path}/object/${userId}/${contactId}`,
       {}
     );
     return { data: data };
