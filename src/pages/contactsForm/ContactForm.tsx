@@ -11,6 +11,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
+import LoadingButton from "@mui/lab/LoadingButton";
 import InputLabel from "@mui/material/InputLabel";
 // import Resizer from "react-image-file-resizer";
 
@@ -21,15 +22,24 @@ import mockedLabels from "__mocks__/mockedLabels.json";
 // import { extractExtensions } from "utils/extractExtensions";
 import firstCharToUpperCase from "utils/firstCharToUpperCase";
 import useResponsive from "hooks/useResponsive";
+import { useEffect } from "react";
 // import { useCreateOneContactMutation } from "api/contacts";
 
 interface Props {
   title: string;
   value?: SingeContactFormValues;
+  isLoading: boolean;
+  isSuccess: boolean;
   onSubmit: (data: SingeContactFormValues) => void;
 }
 
-export default function ContactForm({ title, value, onSubmit }: Props) {
+export default function ContactForm({
+  title,
+  value,
+  onSubmit,
+  isLoading,
+  isSuccess,
+}: Props) {
   const NewContactSchema = Yup.object().shape({
     firstName: Yup.string().required("Must enter first name"),
     lastName: Yup.string().required("Must enter last name"),
@@ -86,6 +96,11 @@ export default function ContactForm({ title, value, onSubmit }: Props) {
     reset,
     formState: { isDirty },
   } = methods;
+
+  useEffect(() => {
+    isSuccess && reset();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess]);
 
   return (
     <Stack alignItems="center" sx={{ m: 5 }}>
@@ -246,7 +261,8 @@ export default function ContactForm({ title, value, onSubmit }: Props) {
               >
                 Reset
               </Button>
-              <Button
+              <LoadingButton
+                loading={isLoading}
                 size="large"
                 aria-label="submit"
                 type="submit"
@@ -254,7 +270,7 @@ export default function ContactForm({ title, value, onSubmit }: Props) {
                 sx={{ width: "fit-content" }}
               >
                 {value ? "Save" : "Create"}
-              </Button>
+              </LoadingButton>
             </Stack>
           </Stack>
         </FormProvider>

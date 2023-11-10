@@ -6,7 +6,6 @@ import {
   FormControlLabel,
   FormGroup,
   FormControlLabelProps,
-  Box,
   Typography,
   Stack,
 } from "@mui/material";

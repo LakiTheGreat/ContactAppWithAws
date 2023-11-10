@@ -15,6 +15,8 @@ export default function EditContact() {
     console.log("Edit contact:", value);
   };
 
+  const isSuccess = false; ///////////////////////////////////////////////////////
+
   if (isLoading) {
     return <LoadingScreen />;
   }
@@ -24,6 +26,8 @@ export default function EditContact() {
       <ContactForm
         title="Edit contact"
         onSubmit={handleEdit}
+        isLoading={false}
+        isSuccess={isSuccess}
         value={{
           firstName: data.firstName,
           lastName: data.lastName,

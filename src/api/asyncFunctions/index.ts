@@ -47,8 +47,8 @@ export async function getContactById(
   contactId: string
 ): Promise<{ data: any } | { error: FetchBaseQueryError }> {
   try {
-    const user = await Auth.currentAuthenticatedUser();
-    const userId = user.attributes.sub;
+    // const user = await Auth.currentAuthenticatedUser();
+    // const userId = user.attributes.sub;
 
     const data = await API.get(
       apiName,

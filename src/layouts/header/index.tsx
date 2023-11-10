@@ -8,12 +8,9 @@ import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material/styles";
 
 import useOffSetTop from "hooks/useOffSetTop";
-import useResponsive from "hooks/useResponsive";
 import cssStyles from "utils/cssStyles";
 import { HEADER, NAVBAR } from "config";
 // import Logo from "components/Logo";
-import Iconify from "components/Iconify";
-import { IconButtonAnimate } from "components/animate";
 import Logo from "components/Logo";
 import { signOut } from "api/asyncFunctions";
 import { useAppSelector } from "hooks/storeHooks";
@@ -70,7 +67,7 @@ export default function DashboardHeader({
   const isOffset =
     useOffSetTop(HEADER.DASHBOARD_DESKTOP_HEIGHT) && !verticalLayout;
 
-  const isDesktop = useResponsive("up", "lg");
+  // const isDesktop = useResponsive("up", "lg");
   const theme = useTheme();
   const username = useAppSelector((state) => state.user.authUser?.username);
 
@@ -95,7 +92,8 @@ export default function DashboardHeader({
           px: { lg: 5 },
         }}
       >
-        {isDesktop && verticalLayout && (
+        {/* {isDesktop && verticalLayout && ( */}
+        {verticalLayout && (
           <Stack
             direction="row"
             alignItems="center"
@@ -123,7 +121,7 @@ export default function DashboardHeader({
             </Button>
           </Stack>
         )}
-
+        {/* 
         {!isDesktop && (
           <IconButtonAnimate
             aria-label="open"
@@ -132,7 +130,7 @@ export default function DashboardHeader({
           >
             <Iconify icon="eva:menu-2-fill" />
           </IconButtonAnimate>
-        )}
+        )} */}
 
         <Box sx={{ flexGrow: 1 }} />
       </Toolbar>

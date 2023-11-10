@@ -1,6 +1,6 @@
 import { GridColDef } from "@mui/x-data-grid";
 import Stack from "@mui/material/Stack";
-import Avatar from "@mui/material/Avatar";
+// import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 
 import DataGridRowActions from "components/DataGridRowActions";

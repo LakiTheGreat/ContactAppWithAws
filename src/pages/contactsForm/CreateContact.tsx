@@ -6,23 +6,30 @@ import { useCreateContactMutation } from "api/auth";
 import { useEffect } from "react";
 
 export default function CreateContact() {
-  const [createContact, { data }] = useCreateContactMutation();
+  const [createContact, { data, isLoading }] = useCreateContactMutation();
   const { enqueueSnackbar } = useSnackbar();
   const handleCreate = (value: SingeContactFormValues) => {
     createContact(value);
   };
-  console.log(data?.data.$metadata.httpStatusCode);
+
+  const isSuccess = data?.data.$metadata.httpStatusCode === 200;
 
   useEffect(() => {
-    data &&
+    isSuccess &&
       enqueueSnackbar("Contact successfully created", {
         variant: "success",
       });
-  }, [data]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess]);
 
   return (
     <Page title="Create new contact">
-      <ContactForm title="Create new contact" onSubmit={handleCreate} />
+      <ContactForm
+        title="Create new contact"
+        onSubmit={handleCreate}
+        isLoading={isLoading}
+        isSuccess={isSuccess}
+      />
     </Page>
   );
 }

@@ -7,6 +7,7 @@ import { logInUser, logOutUser } from "storeSlices/userSlice";
 import { MotionLazyContainer } from "components/animate";
 import Router from "./routes";
 import ThemeProvider from "./theme";
+import NotistackProvider from "components/NotistackProvider";
 
 export default function App() {
   const navigate = useNavigate();
@@ -31,9 +32,11 @@ export default function App() {
   Hub.listen("auth", listener);
   return (
     <ThemeProvider>
-      <MotionLazyContainer>
-        <Router />
-      </MotionLazyContainer>
+      <NotistackProvider>
+        <MotionLazyContainer>
+          <Router />
+        </MotionLazyContainer>
+      </NotistackProvider>
     </ThemeProvider>
   );
 }
