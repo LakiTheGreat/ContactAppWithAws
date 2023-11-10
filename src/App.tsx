@@ -15,7 +15,7 @@ export default function App() {
   const listener = (data: any) => {
     switch (data?.payload?.event) {
       case "signIn":
-        dispatch(logInUser(data?.payload.data.attributes));
+        dispatch(logInUser(data?.payload.data));
         navigate(CONTACTS_ROUTES.list);
         break;
       case "autoSignIn":

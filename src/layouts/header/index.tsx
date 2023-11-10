@@ -16,7 +16,7 @@ import Iconify from "components/Iconify";
 import { IconButtonAnimate } from "components/animate";
 import Logo from "components/Logo";
 import { signOut } from "api/asyncFunctions";
-import { useAppDispatch, useAppSelector } from "hooks/storeHooks";
+import { useAppSelector } from "hooks/storeHooks";
 
 // ----------------------------------------------------------------------
 
@@ -72,7 +72,7 @@ export default function DashboardHeader({
 
   const isDesktop = useResponsive("up", "lg");
   const theme = useTheme();
-  const email = useAppSelector((state) => state.user.authUser?.email);
+  const username = useAppSelector((state) => state.user.authUser?.username);
 
   const handleLogout = async () => {
     try {
@@ -108,9 +108,11 @@ export default function DashboardHeader({
               <Typography color={theme.palette.grey[800]} variant="h3">
                 {`ContactApp`}
               </Typography>
-              <Typography color={theme.palette.grey[800]} variant="h6">
-                {`- ${email}`}
-              </Typography>
+              {username && (
+                <Typography color={theme.palette.grey[800]} variant="h6">
+                  {`- ${username}`}
+                </Typography>
+              )}
             </Stack>
             <Button
               sx={{ width: "fit-content" }}

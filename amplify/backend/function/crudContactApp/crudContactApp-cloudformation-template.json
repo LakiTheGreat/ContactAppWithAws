@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"Amplify\",\"createdWith\":\"12.7.1\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
+  "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"Amplify\",\"createdWith\":\"12.8.2\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
   "Parameters": {
     "CloudWatchRule": {
       "Type": "String",
@@ -16,13 +16,13 @@
     "s3Key": {
       "Type": "String"
     },
-    "storageContactsDynamoDBName": {
+    "storagedynamoContactAppName": {
       "Type": "String",
-      "Default": "storageContactsDynamoDBName"
+      "Default": "storagedynamoContactAppName"
     },
-    "storageContactsDynamoDBArn": {
+    "storagedynamoContactAppArn": {
       "Type": "String",
-      "Default": "storageContactsDynamoDBArn"
+      "Default": "storagedynamoContactAppArn"
     }
   },
   "Conditions": {
@@ -55,12 +55,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "ContactsCRUD",
+            "crudContactApp",
             {
               "Fn::Join": [
                 "",
                 [
-                  "ContactsCRUD",
+                  "crudContactApp",
                   "-",
                   {
                     "Ref": "env"
@@ -97,12 +97,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "contactappLambdaRolee440dd39",
+            "contactappLambdaRole5db07cf9",
             {
               "Fn::Join": [
                 "",
                 [
-                  "contactappLambdaRolee440dd39",
+                  "contactappLambdaRole5db07cf9",
                   "-",
                   {
                     "Ref": "env"
@@ -182,14 +182,14 @@
               ],
               "Resource": [
                 {
-                  "Ref": "storageContactsDynamoDBArn"
+                  "Ref": "storagedynamoContactAppArn"
                 },
                 {
                   "Fn::Join": [
                     "/",
                     [
                       {
-                        "Ref": "storageContactsDynamoDBArn"
+                        "Ref": "storagedynamoContactAppArn"
                       },
                       "index/*"
                     ]

@@ -22,7 +22,7 @@ const express = require("express");
 const ddbClient = new DynamoDBClient({ region: process.env.TABLE_REGION });
 const ddbDocClient = DynamoDBDocumentClient.from(ddbClient);
 
-let tableName = "ContactsTable";
+let tableName = "Contacts";
 if (process.env.ENV && process.env.ENV !== "NONE") {
   tableName = tableName + "-" + process.env.ENV;
 }
@@ -96,7 +96,6 @@ app.get(path, async function (req, res) {
  * HTTP Get method to query objects *
  ************************************/
 
-// /contacts/:userId
 app.get(path + hashKeyPath, async function (req, res) {
   const condition = {};
   condition[partitionKeyName] = {
@@ -136,6 +135,7 @@ app.get(path + hashKeyPath, async function (req, res) {
  * HTTP Get method for get single object *
  *****************************************/
 
+// /contacts/object/:userId/:contactId
 app.get(
   path + "/object" + hashKeyPath + sortKeyPath,
   async function (req, res) {

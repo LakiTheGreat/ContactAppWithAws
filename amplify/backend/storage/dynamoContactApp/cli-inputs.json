@@ -1,6 +1,6 @@
 {
-  "resourceName": "ContactsDynamoDB",
-  "tableName": "ContactsTable",
+  "resourceName": "dynamoContactApp",
+  "tableName": "Contacts",
   "partitionKey": {
     "fieldName": "userId",
     "fieldType": "string"

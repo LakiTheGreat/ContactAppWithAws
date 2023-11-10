@@ -1,32 +1,32 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-contactapp-dev-90654-authRole",
-      "UnauthRoleArn": "arn:aws:iam::739894200830:role/amplify-contactapp-dev-90654-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::739894200830:role/amplify-contactapp-dev-90654-authRole",
+      "AuthRoleName": "amplify-contactapp-dev-141736-authRole",
+      "UnauthRoleArn": "arn:aws:iam::739894200830:role/amplify-contactapp-dev-141736-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::739894200830:role/amplify-contactapp-dev-141736-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-contactapp-dev-90654-deployment",
-      "UnauthRoleName": "amplify-contactapp-dev-90654-unauthRole",
-      "StackName": "amplify-contactapp-dev-90654",
-      "StackId": "arn:aws:cloudformation:us-east-1:739894200830:stack/amplify-contactapp-dev-90654/9e9ef610-7d44-11ee-b09f-0ad4585418c7",
-      "AmplifyAppId": "dpipikdmpqzi7",
-      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-contactapp-dev-90654-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
+      "DeploymentBucketName": "amplify-contactapp-dev-141736-deployment",
+      "UnauthRoleName": "amplify-contactapp-dev-141736-unauthRole",
+      "StackName": "amplify-contactapp-dev-141736",
+      "StackId": "arn:aws:cloudformation:us-east-1:739894200830:stack/amplify-contactapp-dev-141736/85063810-7fcb-11ee-a5d2-12b0a168a1af",
+      "AmplifyAppId": "d1e71nawn2eyw0",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-contactapp-dev-141736-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
       "function": {
-        "ContactsCRUD": {
-          "deploymentBucketName": "amplify-contactapp-dev-90654-deployment",
-          "s3Key": "amplify-builds/ContactsCRUD-726d6f506d6650554f58-build.zip"
+        "crudContactApp": {
+          "deploymentBucketName": "amplify-contactapp-dev-141736-deployment",
+          "s3Key": "amplify-builds/crudContactApp-2b6f57796b744531722f-build.zip"
         }
       },
-      "api": {
-        "ContactsApi": {}
+      "auth": {
+        "contactapp": {}
       },
       "storage": {
-        "ContactsDynamoDB": {}
+        "dynamoContactApp": {}
       },
-      "auth": {
-        "contactapp8c1079e9": {}
+      "api": {
+        "apiContactApp": {}
       }
     }
   }

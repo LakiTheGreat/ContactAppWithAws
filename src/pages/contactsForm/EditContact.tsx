@@ -25,12 +25,12 @@ export default function EditContact() {
         title="Edit contact"
         onSubmit={handleEdit}
         value={{
-          firstName: data[0].firstName,
-          lastName: data[0].lastName,
-          email: data[0].email,
-          phoneNumber: data[0].phoneNumber,
-          isFavorite: data[0].isFavorite,
-          labels: data[0].labels,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          email: data.email,
+          phoneNumber: data.phoneNumber,
+          isFavorite: data.isFavorite,
+          labels: data.labels,
         }}
       />
     </Page>

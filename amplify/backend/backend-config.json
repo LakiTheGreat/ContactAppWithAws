@@ -1,6 +1,6 @@
 {
   "api": {
-    "ContactsApi": {
+    "apiContactApp": {
       "dependsOn": [
         {
           "attributes": [
@@ -8,7 +8,7 @@
             "Arn"
           ],
           "category": "function",
-          "resourceName": "ContactsCRUD"
+          "resourceName": "crudContactApp"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -16,8 +16,7 @@
     }
   },
   "auth": {
-    "contactapp8c1079e9": {
-      "customAuth": false,
+    "contactapp": {
       "dependsOn": [],
       "frontendAuthConfig": {
         "mfaConfiguration": "OFF",
@@ -32,19 +31,18 @@
           "EMAIL"
         ],
         "socialProviders": [],
-        "usernameAttributes": [
-          "EMAIL"
-        ],
+        "usernameAttributes": [],
         "verificationMechanisms": [
           "EMAIL"
         ]
       },
       "providerPlugin": "awscloudformation",
-      "service": "Cognito"
+      "service": "Cognito",
+      "serviceType": "managed"
     }
   },
   "function": {
-    "ContactsCRUD": {
+    "crudContactApp": {
       "build": true,
       "dependsOn": [
         {
@@ -57,7 +55,7 @@
             "Arn"
           ],
           "category": "storage",
-          "resourceName": "ContactsDynamoDB"
+          "resourceName": "dynamoContactApp"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -65,25 +63,25 @@
     }
   },
   "parameters": {
-    "AMPLIFY_function_ContactsCRUD_deploymentBucketName": {
+    "AMPLIFY_function_crudContactApp_deploymentBucketName": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "ContactsCRUD"
+          "resourceName": "crudContactApp"
         }
       ]
     },
-    "AMPLIFY_function_ContactsCRUD_s3Key": {
+    "AMPLIFY_function_crudContactApp_s3Key": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "ContactsCRUD"
+          "resourceName": "crudContactApp"
         }
       ]
     }
   },
   "storage": {
-    "ContactsDynamoDB": {
+    "dynamoContactApp": {
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"
     }
