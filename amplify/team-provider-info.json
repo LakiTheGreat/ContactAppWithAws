@@ -16,7 +16,7 @@
       "function": {
         "crudContactApp": {
           "deploymentBucketName": "amplify-contactapp-dev-141736-deployment",
-          "s3Key": "amplify-builds/crudContactApp-5a3738333075316a634c-build.zip"
+          "s3Key": "amplify-builds/crudContactApp-4f4c493266597343304f-build.zip"
         }
       },
       "auth": {

@@ -78,7 +78,7 @@ export default function AllContacts() {
           onPageSizeChange={(newPageSize: number) => setPageSize(newPageSize)}
           rowsPerPageOptions={[5, 10, 20, 50, 100]}
           initialState={{
-            sorting: { sortModel: [{ field: "name", sort: "asc" }] },
+            sorting: { sortModel: [{ field: "firstName", sort: "asc" }] },
           }}
           rows={filteredContacts}
           columns={columns}
