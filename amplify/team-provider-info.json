@@ -20,7 +20,7 @@
         },
         "labelCRUD": {
           "deploymentBucketName": "amplify-contactapp-dev-141736-deployment",
-          "s3Key": "amplify-builds/labelCRUD-744a6d2f307949464b78-build.zip"
+          "s3Key": "amplify-builds/labelCRUD-4d6638667a753237584c-build.zip"
         }
       },
       "auth": {

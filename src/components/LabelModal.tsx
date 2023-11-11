@@ -4,6 +4,10 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { useEffect, useState } from "react";
+
+import { useCreateLabelMutation } from "api/labels";
 
 interface Props {
   isOpen: boolean;
@@ -11,6 +15,17 @@ interface Props {
 }
 
 export default function LabelModal({ isOpen, handleClose }: Props) {
+  const [labelName, setLabelName] = useState<string>("");
+  const [createLabel, { data, isLoading }] = useCreateLabelMutation(undefined);
+
+  const handleCreatelabel = () => {
+    createLabel(labelName);
+  };
+
+  useEffect(() => {
+    data && handleClose();
+  }, [data]);
+
   return (
     <Modal
       open={isOpen}
@@ -39,14 +54,24 @@ export default function LabelModal({ isOpen, handleClose }: Props) {
             label="Enter label name"
             variant="outlined"
             fullWidth
+            onChange={(e) => setLabelName(e.target.value)}
           />
           <Stack direction="row" justifyContent="flex-end" gap={1}>
-            <Button onClick={handleClose} variant="outlined">
+            <Button
+              onClick={handleClose}
+              variant="outlined"
+              disabled={isLoading}
+            >
               Cancel
             </Button>
-            <Button onClick={handleClose} variant="contained">
+            <LoadingButton
+              onClick={handleCreatelabel}
+              variant="contained"
+              disabled={!labelName.length}
+              loading={isLoading}
+            >
               Save
-            </Button>
+            </LoadingButton>
           </Stack>
         </Stack>
       </Card>

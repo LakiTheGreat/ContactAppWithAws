@@ -16,3 +16,16 @@ export async function getAllLabels(): Promise<
     };
   }
 }
+
+export async function createLabel(
+  labelName: string
+): Promise<{ data: any } | { error: FetchBaseQueryError }> {
+  try {
+    const data = await API.post(apiName, `${path}`, { body: { labelName } });
+    return { data: data };
+  } catch (error) {
+    return {
+      error: error as FetchBaseQueryError,
+    };
+  }
+}

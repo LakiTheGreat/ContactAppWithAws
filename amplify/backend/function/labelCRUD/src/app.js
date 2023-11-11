@@ -221,14 +221,26 @@ app.put(path, async function (req, res) {
  *************************************/
 
 app.post(path, async function (req, res) {
+  const labelId = randomUUID();
+  const userId =
+    req.apiGateway.event.requestContext.identity.cognitoAuthenticationProvider.split(
+      ":CognitoSignIn:"
+    )[1];
+
   if (userIdPresent) {
-    req.body["userId"] =
-      req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
+    req.body["userId"] = userId || UNAUTH;
   }
+
+  const label = req.body;
+  const updatedLabel = {
+    ...label,
+    labelId,
+    userId,
+  };
 
   let putItemParams = {
     TableName: tableName,
-    Item: req.body,
+    Item: updatedLabel,
   };
   try {
     let data = await ddbDocClient.send(new PutCommand(putItemParams));
