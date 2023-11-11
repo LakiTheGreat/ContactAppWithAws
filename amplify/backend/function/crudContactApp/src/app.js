@@ -250,6 +250,7 @@ app.delete(
   async function (req, res) {
     const userId = getUserIdFromRequest(req);
     const params = {};
+
     if (userIdPresent && req.apiGateway) {
       params[partitionKeyName] = userId || UNAUTH;
     } else {
@@ -262,6 +263,7 @@ app.delete(
       } catch (err) {
         res.statusCode = 500;
         res.json({ error: "Wrong column type " + err });
+        return; // Stop execution if there's an error
       }
     }
 
@@ -274,15 +276,34 @@ app.delete(
       } catch (err) {
         res.statusCode = 500;
         res.json({ error: "Wrong column type " + err });
+        return; // Stop execution if there's an error
       }
     }
 
-    let removeItemParams = {
+    // Check if the item exists before attempting to delete
+    const getItemParams = {
       TableName: tableName,
       Key: params,
     };
 
     try {
+      const getItemResult = await ddbDocClient.send(
+        new GetCommand(getItemParams)
+      );
+
+      if (!getItemResult.Item) {
+        // Item does not exist, handle accordingly
+        res.statusCode = 404;
+        res.json({ error: "Item not found", url: req.url });
+        return; // Stop execution if the item does not exist
+      }
+
+      // Item exists, proceed with deletion
+      let removeItemParams = {
+        TableName: tableName,
+        Key: params,
+      };
+
       let data = await ddbDocClient.send(new DeleteCommand(removeItemParams));
       res.json({ url: req.url, data: data });
     } catch (err) {
@@ -291,6 +312,90 @@ app.delete(
     }
   }
 );
+
+// /contacts/deleteMany
+
+app.post(path + "/deleteMany", async function (req, res) {
+  const userId = getUserIdFromRequest(req);
+  const selectedIds = req.body;
+
+  const deleteOneContact = async (userId, contactId) => {
+    const params = {
+      TableName: tableName,
+      Key: {
+        [partitionKeyName]: userId || UNAUTH,
+        [sortKeyName]: contactId,
+      },
+    };
+
+    try {
+      // Check if the item exists before attempting to delete
+      const getItemResult = await ddbDocClient.send(new GetCommand(params));
+
+      if (!getItemResult.Item) {
+        // Item does not exist, handle accordingly
+        return { success: false, contactId, error: "Item not found" };
+      }
+
+      // Item exists, proceed with deletion
+      await ddbDocClient.send(new DeleteCommand(params));
+      return { success: true, contactId };
+    } catch (error) {
+      return { success: false, contactId, error: error.message };
+    }
+  };
+
+  try {
+    const results = await Promise.all(
+      selectedIds.map((contactId) => deleteOneContact(userId, contactId))
+    );
+
+    // Check if all promises were fulfilled successfully
+    const allFulfilled = results.every((result) => result.success);
+
+    if (allFulfilled) {
+      return res.json({ data: results });
+    } else {
+      // Some promises were rejected, handle the errors
+      const errors = results.filter((result) => !result.success);
+      console.error("Error deleting contacts:", errors);
+      return res.status(500).json({ error: "Some deletions failed", errors });
+    }
+  } catch (error) {
+    console.error("Error deleting contacts:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// app.post(path + "/deleteMany", async function (req, res) {
+//   const userId = getUserIdFromRequest(req);
+//   const selectedIds = req.body;
+
+//   // Move the deleteOneContact function declaration above its usage
+//   const deleteOneContact = async (userId, contactId) => {
+//     const params = {};
+//     params[partitionKeyName] = userId || UNAUTH;
+//     params[sortKeyName] = contactId;
+
+//     let removeItemParams = {
+//       TableName: tableName,
+//       Key: params,
+//     };
+//     return await ddbDocClient.send(new DeleteCommand(removeItemParams));
+//   };
+
+//   const deletePromises = selectedIds.map((contactId) =>
+//     deleteOneContact(userId, contactId)
+//   );
+
+//   try {
+//     const results = await Promise.all(deletePromises);
+//     return res.json({ data: results });
+//   } catch (error) {
+//     console.error("Error deleting contacts:", error);
+//     return res.status(500).json({ error: "Internal Server Error" });
+//   }
+// });
 
 app.listen(3000, function () {
   console.log("App started");

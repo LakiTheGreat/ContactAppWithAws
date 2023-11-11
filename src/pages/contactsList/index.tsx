@@ -12,6 +12,7 @@ import useContactsColumns from "./useContactsColumns";
 import useConfirmDialog from "hooks/useConfirmDialog";
 import { CONTACTS_ROUTES } from "routes/paths";
 import {
+  useDeleteManyContactsMutation,
   useDeleteOneContactMutation,
   useEditContactMutation,
   useGetAllContactsQuery,
@@ -35,20 +36,57 @@ export default function AllContacts() {
   const { data, isLoading } = useGetAllContactsQuery(undefined);
   const [
     deleteContact,
-    { data: deleteContactData, isLoading: deleteContactIsLoading },
+    {
+      data: deleteContactData,
+      isLoading: deleteContactIsLoading,
+      isError: deleteContactIsError,
+    },
   ] = useDeleteOneContactMutation();
+
+  const [
+    deleteManyContacts,
+    {
+      data: deleteManyContactData,
+      isLoading: deleteManyContactIsLoading,
+      isError: deleteManyContactIsError,
+    },
+  ] = useDeleteManyContactsMutation();
 
   const [editContact] = useEditContactMutation();
 
-  const isSuccess = deleteContactData?.data.$metadata.httpStatusCode === 200;
-
   useEffect(() => {
-    isSuccess &&
-      enqueueSnackbar("Contact successfully deleted", {
+    deleteContactData &&
+      enqueueSnackbar("Contact successfully deleted.", {
         variant: "success",
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSuccess]);
+  }, [deleteContactData]);
+
+  useEffect(() => {
+    deleteContactIsError &&
+      enqueueSnackbar("Contact was not deleted. Something went wrong!", {
+        variant: "error",
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deleteContactIsError]);
+
+  useEffect(() => {
+    deleteManyContactData &&
+      enqueueSnackbar("Multiple contacts were successfully deleted.", {
+        variant: "success",
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deleteManyContactData]);
+  useEffect(() => {
+    deleteManyContactIsError &&
+      enqueueSnackbar(
+        "Something went wrong. Some or all contacts were not deleted!",
+        {
+          variant: "error",
+        }
+      );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deleteManyContactIsError]);
 
   const defaultValues: SidebarFilters = {
     favoritesOnly: false,
@@ -66,7 +104,7 @@ export default function AllContacts() {
   };
 
   const handleBatchDelete = () => {
-    console.log("handleBatchDelete", selectedIds);
+    deleteManyContacts(selectedIds);
   };
 
   const handleFavorite = (contact: SingleContact) => {
@@ -100,7 +138,8 @@ export default function AllContacts() {
     filteredContacts = applyFilterForContacts(data, values);
   }
 
-  const somethingIsLoading = isLoading || deleteContactIsLoading;
+  const somethingIsLoading =
+    isLoading || deleteContactIsLoading || deleteManyContactIsLoading;
 
   return (
     <Page title="List">

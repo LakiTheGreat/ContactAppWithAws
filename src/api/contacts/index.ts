@@ -1,6 +1,7 @@
 import { api } from "api/api";
 import {
   createContact,
+  deleteManyContacts,
   deleteOneContact,
   editContact,
   // createOneContact,
@@ -30,6 +31,10 @@ const contactsApiEndpoints = api.injectEndpoints({
       queryFn: deleteOneContact,
       invalidatesTags: ["Contact"],
     }),
+    deleteManyContacts: build.mutation({
+      queryFn: deleteManyContacts,
+      invalidatesTags: ["Contact"],
+    }),
   }),
   overrideExisting: false,
 });
@@ -40,4 +45,5 @@ export const {
   useCreateContactMutation,
   useEditContactMutation,
   useDeleteOneContactMutation,
+  useDeleteManyContactsMutation,
 } = contactsApiEndpoints;
