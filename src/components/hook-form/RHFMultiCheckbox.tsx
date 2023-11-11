@@ -9,7 +9,8 @@ import {
   Typography,
   Stack,
 } from "@mui/material";
-import firstCharToUpperCase from "utils/firstCharToUpperCase";
+
+import { Label } from "types";
 
 // ----------------------------------------------------------------------
 
@@ -36,13 +37,13 @@ export function RHFCheckbox({ name, ...other }: RHFCheckboxProps) {
 
 // ----------------------------------------------------------------------
 
-export interface Options {
-  label: string;
-}
+// export interface Options {
+//   label: Label;
+// }
 interface RHFMultiCheckboxProps
   extends Omit<FormControlLabelProps, "control" | "label"> {
   name: string;
-  options: Options[];
+  options: Label[];
 }
 
 export function RHFMultiCheckbox({
@@ -51,7 +52,6 @@ export function RHFMultiCheckbox({
   ...other
 }: RHFMultiCheckboxProps) {
   const { control } = useFormContext();
-  console.log(control);
 
   return (
     <Controller
@@ -67,18 +67,16 @@ export function RHFMultiCheckbox({
           <FormGroup>
             {options.map((option) => (
               <FormControlLabel
-                key={option.label}
+                key={option.labelId}
                 control={
                   <Checkbox
-                    checked={field.value.includes(option.label)}
-                    onChange={() => field.onChange(onSelected(option.label))}
+                    checked={field.value.includes(option.labelId)}
+                    onChange={() => field.onChange(onSelected(option.labelId))}
                   />
                 }
                 label={
                   <Stack direction="row" alignItems="center" gap={1}>
-                    <Typography variant="body2">
-                      {firstCharToUpperCase(option.label)}
-                    </Typography>
+                    <Typography variant="body2">{option.labelName}</Typography>
                   </Stack>
                 }
                 {...other}

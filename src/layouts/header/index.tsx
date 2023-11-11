@@ -12,7 +12,7 @@ import cssStyles from "utils/cssStyles";
 import { HEADER, NAVBAR } from "config";
 // import Logo from "components/Logo";
 import Logo from "components/Logo";
-import { signOut } from "api/asyncFunctions";
+import { signOut } from "api/asyncFunctions/contacts";
 import { useAppSelector } from "hooks/storeHooks";
 
 // ----------------------------------------------------------------------

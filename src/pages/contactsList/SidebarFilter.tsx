@@ -6,17 +6,15 @@ import Typography from "@mui/material/Typography";
 import Drawer from "@mui/material/Drawer";
 
 import Iconify from "components/Iconify";
-import {
-  Options,
-  RHFMultiCheckbox,
-} from "components/hook-form/RHFMultiCheckbox";
+import { RHFMultiCheckbox } from "components/hook-form/RHFMultiCheckbox";
 import RHFSwitch from "components/hook-form/RHFSwitch";
+import { Label } from "types";
 
 type Props = {
   open: boolean;
   onResetAll: VoidFunction;
   onClose: VoidFunction;
-  labels: Options[];
+  labels: Label[];
 };
 
 export default function SidebarFilter({
@@ -61,7 +59,7 @@ Props) {
 
               {labels && (
                 <RHFMultiCheckbox
-                  name="labels"
+                  name="arrayOfLabelIds"
                   options={labels}
                   sx={{ width: 1 }}
                 />

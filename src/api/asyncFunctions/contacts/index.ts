@@ -43,6 +43,7 @@ export async function getAllContacts(): Promise<
     };
   }
 }
+
 export async function getContactById(
   contactId: string
 ): Promise<{ data: SingleContact } | { error: FetchBaseQueryError }> {

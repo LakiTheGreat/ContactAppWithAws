@@ -22,8 +22,7 @@ const express = require("express");
 const ddbClient = new DynamoDBClient({ region: process.env.TABLE_REGION });
 const ddbDocClient = DynamoDBDocumentClient.from(ddbClient);
 
-let tableName = "Contacts";
-
+let tableName = "Labels";
 if (process.env.ENV && process.env.ENV !== "NONE") {
   tableName = tableName + "-" + process.env.ENV;
 }
@@ -31,10 +30,10 @@ if (process.env.ENV && process.env.ENV !== "NONE") {
 const userIdPresent = true;
 const partitionKeyName = "userId";
 const partitionKeyType = "S";
-const sortKeyName = "contactId";
+const sortKeyName = "labelId";
 const sortKeyType = "S";
 const hasSortKey = sortKeyName !== "";
-const path = "/contacts";
+const path = "/labels";
 const UNAUTH = "UNAUTH";
 const hashKeyPath = "/:" + partitionKeyName;
 const sortKeyPath = hasSortKey ? "/:" + sortKeyName : "";
@@ -74,6 +73,7 @@ const getUserIdFromRequest = (req) => {
  * HTTP Get method to list objects *
  ************************************/
 
+// /labels
 app.get(path, async function (req, res) {
   const userId = getUserIdFromRequest(req);
 
@@ -142,55 +142,65 @@ app.get(path + hashKeyPath, async function (req, res) {
  * HTTP Get method for get single object *
  *****************************************/
 
-// /contacts/object/:contactId
-app.get(path + "/object" + sortKeyPath, async function (req, res) {
-  const userId = getUserIdFromRequest(req);
+app.get(
+  path + "/object" + hashKeyPath + sortKeyPath,
+  async function (req, res) {
+    const params = {};
+    if (userIdPresent && req.apiGateway) {
+      params[partitionKeyName] =
+        req.apiGateway.event.requestContext.identity.cognitoIdentityId ||
+        UNAUTH;
+    } else {
+      params[partitionKeyName] = req.params[partitionKeyName];
+      try {
+        params[partitionKeyName] = convertUrlType(
+          req.params[partitionKeyName],
+          partitionKeyType
+        );
+      } catch (err) {
+        res.statusCode = 500;
+        res.json({ error: "Wrong column type " + err });
+      }
+    }
+    if (hasSortKey) {
+      try {
+        params[sortKeyName] = convertUrlType(
+          req.params[sortKeyName],
+          sortKeyType
+        );
+      } catch (err) {
+        res.statusCode = 500;
+        res.json({ error: "Wrong column type " + err });
+      }
+    }
 
-  const params = {};
-  if (userIdPresent && req.apiGateway) {
-    params[partitionKeyName] = userId || UNAUTH;
-  } else {
-    params[partitionKeyName] = userId;
-  }
-  if (hasSortKey) {
+    let getItemParams = {
+      TableName: tableName,
+      Key: params,
+    };
+
     try {
-      params[sortKeyName] = convertUrlType(
-        req.params[sortKeyName],
-        sortKeyType
-      );
+      const data = await ddbDocClient.send(new GetCommand(getItemParams));
+      if (data.Item) {
+        res.json(data.Item);
+      } else {
+        res.json(data);
+      }
     } catch (err) {
       res.statusCode = 500;
-      res.json({ error: "Wrong column type " + err });
+      res.json({ error: "Could not load items: " + err.message });
     }
   }
-
-  let getItemParams = {
-    TableName: tableName,
-    Key: params,
-  };
-
-  try {
-    const data = await ddbDocClient.send(new GetCommand(getItemParams));
-    if (data.Item) {
-      res.json(data.Item);
-    } else {
-      res.json(data);
-    }
-  } catch (err) {
-    res.statusCode = 500;
-    res.json({ error: "Could not load items: " + err.message });
-  }
-});
+);
 
 /************************************
  * HTTP put method for insert object *
  *************************************/
 
-// /contacts
 app.put(path, async function (req, res) {
-  const userId = getUserIdFromRequest(req);
   if (userIdPresent) {
-    req.body["userId"] = userId || UNAUTH;
+    req.body["userId"] =
+      req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
   }
 
   let putItemParams = {
@@ -209,28 +219,16 @@ app.put(path, async function (req, res) {
 /************************************
  * HTTP post method for insert object *
  *************************************/
-// /contacts
+
 app.post(path, async function (req, res) {
-  const contactId = randomUUID();
-  const userId =
-    req.apiGateway.event.requestContext.identity.cognitoAuthenticationProvider.split(
-      ":CognitoSignIn:"
-    )[1];
-
   if (userIdPresent) {
-    req.body["userId"] = userId || UNAUTH;
+    req.body["userId"] =
+      req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
   }
-
-  const contact = req.body;
-  const updatedContact = {
-    ...contact,
-    contactId,
-    userId,
-  };
 
   let putItemParams = {
     TableName: tableName,
-    Item: updatedContact,
+    Item: req.body,
   };
   try {
     let data = await ddbDocClient.send(new PutCommand(putItemParams));
@@ -244,16 +242,15 @@ app.post(path, async function (req, res) {
 /**************************************
  * HTTP remove method to delete object *
  ***************************************/
-// /contacts/object/:contactId
-app.delete(
-  path + "/object" + sortKeyPath,
-  // path + "/object" + hashKeyPath + sortKeyPath,
-  async function (req, res) {
-    const userId = getUserIdFromRequest(req);
-    const params = {};
 
+app.delete(
+  path + "/object" + hashKeyPath + sortKeyPath,
+  async function (req, res) {
+    const params = {};
     if (userIdPresent && req.apiGateway) {
-      params[partitionKeyName] = userId || UNAUTH;
+      params[partitionKeyName] =
+        req.apiGateway.event.requestContext.identity.cognitoIdentityId ||
+        UNAUTH;
     } else {
       params[partitionKeyName] = req.params[partitionKeyName];
       try {
@@ -264,10 +261,8 @@ app.delete(
       } catch (err) {
         res.statusCode = 500;
         res.json({ error: "Wrong column type " + err });
-        return; // Stop execution if there's an error
       }
     }
-
     if (hasSortKey) {
       try {
         params[sortKeyName] = convertUrlType(
@@ -277,34 +272,15 @@ app.delete(
       } catch (err) {
         res.statusCode = 500;
         res.json({ error: "Wrong column type " + err });
-        return; // Stop execution if there's an error
       }
     }
 
-    // Check if the item exists before attempting to delete
-    const getItemParams = {
+    let removeItemParams = {
       TableName: tableName,
       Key: params,
     };
 
     try {
-      const getItemResult = await ddbDocClient.send(
-        new GetCommand(getItemParams)
-      );
-
-      if (!getItemResult.Item) {
-        // Item does not exist, handle accordingly
-        res.statusCode = 404;
-        res.json({ error: "Item not found", url: req.url });
-        return; // Stop execution if the item does not exist
-      }
-
-      // Item exists, proceed with deletion
-      let removeItemParams = {
-        TableName: tableName,
-        Key: params,
-      };
-
       let data = await ddbDocClient.send(new DeleteCommand(removeItemParams));
       res.json({ url: req.url, data: data });
     } catch (err) {
@@ -313,90 +289,6 @@ app.delete(
     }
   }
 );
-
-// /contacts/deleteMany
-
-app.post(path + "/deleteMany", async function (req, res) {
-  const userId = getUserIdFromRequest(req);
-  const selectedIds = req.body;
-
-  const deleteOneContact = async (userId, contactId) => {
-    const params = {
-      TableName: tableName,
-      Key: {
-        [partitionKeyName]: userId || UNAUTH,
-        [sortKeyName]: contactId,
-      },
-    };
-
-    try {
-      // Check if the item exists before attempting to delete
-      const getItemResult = await ddbDocClient.send(new GetCommand(params));
-
-      if (!getItemResult.Item) {
-        // Item does not exist, handle accordingly
-        return { success: false, contactId, error: "Item not found" };
-      }
-
-      // Item exists, proceed with deletion
-      await ddbDocClient.send(new DeleteCommand(params));
-      return { success: true, contactId };
-    } catch (error) {
-      return { success: false, contactId, error: error.message };
-    }
-  };
-
-  try {
-    const results = await Promise.all(
-      selectedIds.map((contactId) => deleteOneContact(userId, contactId))
-    );
-
-    // Check if all promises were fulfilled successfully
-    const allFulfilled = results.every((result) => result.success);
-
-    if (allFulfilled) {
-      return res.json({ data: results });
-    } else {
-      // Some promises were rejected, handle the errors
-      const errors = results.filter((result) => !result.success);
-      console.error("Error deleting contacts:", errors);
-      return res.status(500).json({ error: "Some deletions failed", errors });
-    }
-  } catch (error) {
-    console.error("Error deleting contacts:", error);
-    return res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
-// app.post(path + "/deleteMany", async function (req, res) {
-//   const userId = getUserIdFromRequest(req);
-//   const selectedIds = req.body;
-
-//   // Move the deleteOneContact function declaration above its usage
-//   const deleteOneContact = async (userId, contactId) => {
-//     const params = {};
-//     params[partitionKeyName] = userId || UNAUTH;
-//     params[sortKeyName] = contactId;
-
-//     let removeItemParams = {
-//       TableName: tableName,
-//       Key: params,
-//     };
-//     return await ddbDocClient.send(new DeleteCommand(removeItemParams));
-//   };
-
-//   const deletePromises = selectedIds.map((contactId) =>
-//     deleteOneContact(userId, contactId)
-//   );
-
-//   try {
-//     const results = await Promise.all(deletePromises);
-//     return res.json({ data: results });
-//   } catch (error) {
-//     console.error("Error deleting contacts:", error);
-//     return res.status(500).json({ error: "Internal Server Error" });
-//   }
-// });
 
 app.listen(3000, function () {
   console.log("App started");

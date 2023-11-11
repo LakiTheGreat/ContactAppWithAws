@@ -13,6 +13,19 @@
           "delete"
         ]
       }
+    },
+    "/labels": {
+      "name": "/labels",
+      "lambdaFunction": "labelCRUD",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
+      }
     }
   }
 }

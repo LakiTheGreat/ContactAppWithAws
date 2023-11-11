@@ -9,6 +9,14 @@
           ],
           "category": "function",
           "resourceName": "crudContactApp"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "labelCRUD"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -60,6 +68,25 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    },
+    "labelCRUD": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributeEnvMap": {
+            "Arn": "TABLE_ARN",
+            "Name": "TABLE_NAME"
+          },
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "storage",
+          "resourceName": "dynamoContactAppLabels"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "parameters": {
@@ -78,10 +105,30 @@
           "resourceName": "crudContactApp"
         }
       ]
+    },
+    "AMPLIFY_function_labelCRUD_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "labelCRUD"
+        }
+      ]
+    },
+    "AMPLIFY_function_labelCRUD_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "labelCRUD"
+        }
+      ]
     }
   },
   "storage": {
     "dynamoContactApp": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    },
+    "dynamoContactAppLabels": {
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"
     }

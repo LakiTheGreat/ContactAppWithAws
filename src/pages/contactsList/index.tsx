@@ -22,6 +22,7 @@ import applyFilterForContacts from "utils/applyFilterForContacts";
 import useResponsive from "hooks/useResponsive";
 import { SidebarFilters, SingleContact } from "types";
 import { useSnackbar } from "notistack";
+import { useGetAllLabelsQuery } from "api/labels";
 
 export default function AllContacts() {
   const { enqueueSnackbar } = useSnackbar();
@@ -33,6 +34,7 @@ export default function AllContacts() {
   const [pageSize, setPageSize] = useState<number>(15);
   const [open, setOpen] = useState<boolean>(false);
 
+  const { data: labelData } = useGetAllLabelsQuery(undefined);
   const { data, isLoading } = useGetAllContactsQuery(undefined);
   const [
     deleteContact,
@@ -90,7 +92,7 @@ export default function AllContacts() {
 
   const defaultValues: SidebarFilters = {
     favoritesOnly: false,
-    labels: [],
+    arrayOfLabelIds: [],
   };
   const methods = useForm({
     defaultValues,
@@ -173,7 +175,7 @@ export default function AllContacts() {
             <SidebarFilter
               open={open}
               onResetAll={handleResetFilter}
-              labels={[{ label: "work" }, { label: "home" }]}
+              labels={labelData}
               onClose={() => setOpen(false)}
             />
           </FormProvider>

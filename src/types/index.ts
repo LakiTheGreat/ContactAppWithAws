@@ -21,10 +21,11 @@ export type SingeContactFormValues = {
 };
 
 export type Label = {
-  _id: string;
+  userId: string;
+  labelId: string;
   labelName: string;
 };
 export type SidebarFilters = {
   favoritesOnly: boolean;
-  labels: string[];
+  arrayOfLabelIds: string[];
 };

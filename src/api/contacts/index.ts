@@ -7,7 +7,7 @@ import {
   // createOneContact,
   getAllContacts,
   getContactById,
-} from "api/asyncFunctions";
+} from "api/asyncFunctions/contacts";
 
 const contactsApiEndpoints = api.injectEndpoints({
   endpoints: (build) => ({

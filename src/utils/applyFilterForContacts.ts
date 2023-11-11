@@ -11,14 +11,14 @@ export default function applyFilterForContacts(
       return contact;
     }
   });
-  // const filterByProfiles = data.filter((user) => {
-  //   if (filters.profiles.length !== 0) {
+  // const filterByLabels = filterByFavorites.filter((contact) => {
+  //   if (filters.arrayOfLabelIds.length !== 0) {
   //     // use the some() method to check if any profile has a profile_name that matches any of the filterNames
-  //     return user.profiles.some((profile) =>
+  //     return contact.labels.some((profile) =>
   //       filters.profiles.includes(profile.profile_name)
   //     );
   //   } else {
-  //     return user;
+  //     return contact;
   //   }
   // });
 
