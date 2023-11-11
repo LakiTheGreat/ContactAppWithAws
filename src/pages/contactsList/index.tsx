@@ -18,7 +18,7 @@ import useResponsive from "hooks/useResponsive";
 import { SidebarFilters, SingleContact } from "types";
 
 export default function AllContacts() {
-  const [pageSize, setPageSize] = useState<number>(5);
+  const [pageSize, setPageSize] = useState<number>(15);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [open, setOpen] = useState<boolean>(false);
 
@@ -80,11 +80,12 @@ export default function AllContacts() {
           <DataGrid
             pageSize={pageSize}
             onPageSizeChange={(newPageSize: number) => setPageSize(newPageSize)}
-            rowsPerPageOptions={[5, 10, 20, 50, 100]}
+            rowsPerPageOptions={[15, 30, 50, 100]}
             initialState={{
               sorting: { sortModel: [{ field: "firstName", sort: "asc" }] },
             }}
             rows={filteredContacts}
+            rowHeight={40}
             columns={columns}
             loading={isLoading}
             getRowId={(row) => row.contactId}
