@@ -68,7 +68,7 @@ export default function EditContact() {
           phoneNumber: data.phoneNumber,
           labels: data?.labels,
         }}
-        labels={labelData}
+        labelObjects={labelData}
         labelDataIsLoading={labelDataIsLoading}
       />
     </Page>

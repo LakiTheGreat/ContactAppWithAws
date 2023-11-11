@@ -31,7 +31,7 @@ interface Props {
   labelDataIsLoading: boolean;
   isSuccess: boolean;
   onSubmit: (data: SingeContactFormValues) => void;
-  labels: Label[];
+  labelObjects: Label[];
 }
 
 export default function ContactForm({
@@ -41,7 +41,7 @@ export default function ContactForm({
   isLoading,
   labelDataIsLoading,
   isSuccess,
-  labels,
+  labelObjects,
 }: Props) {
   const NewContactSchema = Yup.object().shape({
     firstName: Yup.string().required("Must enter first name"),
@@ -96,7 +96,6 @@ export default function ContactForm({
     control,
     handleSubmit,
     reset,
-    getValues,
     formState: { isDirty },
   } = methods;
 
@@ -123,25 +122,14 @@ export default function ContactForm({
                   <Skeleton variant="rounded" width={240} height={65} />
                 </>
               )}
-              {labels && (
+              {labelObjects && (
                 <Controller
                   name="labels"
                   control={control}
                   render={({ field, fieldState: { error } }) => {
-                    const selectedValues = field.value
-                      ? field.value.map((item) => item)
-                      : [];
-                    // console.log("selectedValues", selectedValues);
-                    // console.log(getValues());
+                    const selectedValues = field.value || [];
                     const handleChange = (e: any) => {
-                      console.log("e", e.target.value);
-                      console.log("field", field.value);
-
-                      const selectedLabels = field.value.filter((label) =>
-                        e.target.value.includes(label)
-                      );
-                      console.log("selectedLabels", selectedLabels);
-                      field.onChange(selectedLabels);
+                      field.onChange(e.target.value);
                     };
 
                     return (
@@ -160,7 +148,7 @@ export default function ContactForm({
                               <Chip
                                 key={value}
                                 label={
-                                  labels.find(
+                                  labelObjects.find(
                                     (label: Label) => label.labelId === value
                                   )?.labelName
                                 }
@@ -169,7 +157,7 @@ export default function ContactForm({
                           </div>
                         )}
                       >
-                        {labels?.map((label: Label) => (
+                        {labelObjects?.map((label: Label) => (
                           <MenuItem key={label.labelId} value={label.labelId}>
                             {label.labelName}
                           </MenuItem>

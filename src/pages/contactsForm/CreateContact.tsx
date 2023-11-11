@@ -39,7 +39,7 @@ export default function CreateContact() {
         onSubmit={handleCreate}
         isLoading={isLoading}
         isSuccess={isSuccess}
-        labels={labelData}
+        labelObjects={labelData}
         labelDataIsLoading={labelDataIsLoading}
       />
     </Page>
