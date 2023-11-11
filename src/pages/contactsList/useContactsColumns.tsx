@@ -58,8 +58,8 @@ export default function useContactsColumns(actions: Actions) {
       minWidth: 150,
       renderCell: ({ row }) => (
         <DataGridRowActions
-          onFavorite={() => actions.handleFavorite(row._id)}
-          onDelete={() => actions.handleDelete(row)}
+          onFavorite={() => actions.handleFavorite(row.contactId)}
+          onDelete={() => actions.handleDelete(row.contactId)}
           onEdit={() => actions.handleEdit(row.contactId)}
           isFavorite={row.isFavorite}
         />

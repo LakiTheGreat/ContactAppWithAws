@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
 import { DataGrid } from "@mui/x-data-grid";
@@ -11,22 +11,41 @@ import DataGridToolbar from "components/DataGridToolbar";
 import useContactsColumns from "./useContactsColumns";
 import useConfirmDialog from "hooks/useConfirmDialog";
 import { CONTACTS_ROUTES } from "routes/paths";
-import { useGetAllContactsQuery } from "api/contacts";
+import {
+  useDeleteOneContactMutation,
+  useGetAllContactsQuery,
+} from "api/contacts";
 import SidebarFilter from "./SidebarFilter";
 import applyFilterForContacts from "utils/applyFilterForContacts";
 import useResponsive from "hooks/useResponsive";
 import { SidebarFilters, SingleContact } from "types";
+import { useSnackbar } from "notistack";
 
 export default function AllContacts() {
-  const [pageSize, setPageSize] = useState<number>(15);
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const [open, setOpen] = useState<boolean>(false);
-
+  const { enqueueSnackbar } = useSnackbar();
   const [getConfirmation, Confirmation] = useConfirmDialog();
   const navigate = useNavigate();
-
   const isDesktop = useResponsive("up", "lg");
+
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [pageSize, setPageSize] = useState<number>(15);
+  const [open, setOpen] = useState<boolean>(false);
+
   const { data, isLoading } = useGetAllContactsQuery(undefined);
+  const [
+    deleteContact,
+    { data: deleteContactData, isLoading: deleteContactIsLoading },
+  ] = useDeleteOneContactMutation();
+
+  const isSuccess = deleteContactData?.data.$metadata.httpStatusCode === 200;
+
+  useEffect(() => {
+    isSuccess &&
+      enqueueSnackbar("Contact successfully deleted", {
+        variant: "success",
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess]);
 
   const defaultValues: SidebarFilters = {
     favoritesOnly: false,
@@ -42,7 +61,6 @@ export default function AllContacts() {
   const handleResetFilter = () => {
     reset();
   };
-  // console.log("values", values);
 
   const handleBatchDelete = () => {
     console.log("handleBatchDelete", selectedIds);
@@ -52,16 +70,16 @@ export default function AllContacts() {
     console.log("handleFavorite", _id);
   };
 
-  const handleEdit = (_id: string) => {
-    navigate(`${CONTACTS_ROUTES.edit}/${_id}`);
+  const handleEdit = (contactId: string) => {
+    navigate(`${CONTACTS_ROUTES.edit}/${contactId}`);
   };
-  const handleDelete = async (_id: string) => {
+  const handleDelete = async (contactId: string) => {
     const isConfirmed = await getConfirmation({
       title: "Delete contact",
       contentText: "Are you sure you want to delete this contact?",
       confirmLabel: `Delete`,
     });
-    console.log("handleDelete", _id, isConfirmed);
+    isConfirmed && deleteContact(contactId);
   };
 
   const columns = useContactsColumns({
@@ -70,9 +88,13 @@ export default function AllContacts() {
     handleEdit,
   });
   let filteredContacts: SingleContact[] = [];
+
   if (data) {
     filteredContacts = applyFilterForContacts(data, values);
   }
+
+  const somethingIsLoading = isLoading || deleteContactIsLoading;
+
   return (
     <Page title="List">
       <Stack alignItems="center">
@@ -87,7 +109,7 @@ export default function AllContacts() {
             rows={filteredContacts}
             rowHeight={40}
             columns={columns}
-            loading={isLoading}
+            loading={somethingIsLoading}
             getRowId={(row) => row.contactId}
             components={{ Toolbar: DataGridToolbar }}
             componentsProps={{

@@ -243,9 +243,10 @@ app.post(path, async function (req, res) {
 /**************************************
  * HTTP remove method to delete object *
  ***************************************/
-// /contacts/object/:userId/:contactId
+// /contacts/object/:contactId
 app.delete(
-  path + "/object" + hashKeyPath + sortKeyPath,
+  path + "/object" + sortKeyPath,
+  // path + "/object" + hashKeyPath + sortKeyPath,
   async function (req, res) {
     const userId = getUserIdFromRequest(req);
     const params = {};
@@ -263,6 +264,7 @@ app.delete(
         res.json({ error: "Wrong column type " + err });
       }
     }
+
     if (hasSortKey) {
       try {
         params[sortKeyName] = convertUrlType(
