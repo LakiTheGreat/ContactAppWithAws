@@ -13,6 +13,7 @@ import useConfirmDialog from "hooks/useConfirmDialog";
 import { CONTACTS_ROUTES } from "routes/paths";
 import {
   useDeleteOneContactMutation,
+  useEditContactMutation,
   useGetAllContactsQuery,
 } from "api/contacts";
 import SidebarFilter from "./SidebarFilter";
@@ -36,6 +37,8 @@ export default function AllContacts() {
     deleteContact,
     { data: deleteContactData, isLoading: deleteContactIsLoading },
   ] = useDeleteOneContactMutation();
+
+  const [editContact] = useEditContactMutation();
 
   const isSuccess = deleteContactData?.data.$metadata.httpStatusCode === 200;
 
@@ -66,8 +69,12 @@ export default function AllContacts() {
     console.log("handleBatchDelete", selectedIds);
   };
 
-  const handleFavorite = (_id: string) => {
-    console.log("handleFavorite", _id);
+  const handleFavorite = (contact: SingleContact) => {
+    const newContact: SingleContact = {
+      ...contact,
+      isFavorite: contact.isFavorite ? false : true,
+    };
+    editContact(newContact);
   };
 
   const handleEdit = (contactId: string) => {

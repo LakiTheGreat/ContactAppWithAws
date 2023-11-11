@@ -4,11 +4,12 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
 import DataGridRowActions from "components/DataGridRowActions";
+import { SingleContact } from "types";
 
 type Actions = {
-  handleFavorite: (_id: string) => void;
-  handleDelete: (_id: string) => void;
-  handleEdit: (_id: string) => void;
+  handleFavorite: (contact: SingleContact) => void;
+  handleDelete: (contactId: string) => void;
+  handleEdit: (contactId: string) => void;
 };
 
 export default function useContactsColumns(actions: Actions) {
@@ -58,7 +59,7 @@ export default function useContactsColumns(actions: Actions) {
       minWidth: 150,
       renderCell: ({ row }) => (
         <DataGridRowActions
-          onFavorite={() => actions.handleFavorite(row.contactId)}
+          onFavorite={() => actions.handleFavorite(row)}
           onDelete={() => actions.handleDelete(row.contactId)}
           onEdit={() => actions.handleEdit(row.contactId)}
           isFavorite={row.isFavorite}
