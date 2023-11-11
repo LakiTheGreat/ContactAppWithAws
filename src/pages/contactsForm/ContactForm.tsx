@@ -97,7 +97,7 @@ export default function ContactForm({
   } = methods;
 
   useEffect(() => {
-    isSuccess && reset();
+    isSuccess && !value && reset();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess]);
 

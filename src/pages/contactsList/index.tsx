@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Card from "@mui/material/Card";
+import Stack from "@mui/material/Stack";
 import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -13,7 +14,7 @@ import { CONTACTS_ROUTES } from "routes/paths";
 import { useGetAllContactsQuery } from "api/contacts";
 import SidebarFilter from "./SidebarFilter";
 import applyFilterForContacts from "utils/applyFilterForContacts";
-
+import useResponsive from "hooks/useResponsive";
 import { SidebarFilters, SingleContact } from "types";
 
 export default function AllContacts() {
@@ -24,6 +25,7 @@ export default function AllContacts() {
   const [getConfirmation, Confirmation] = useConfirmDialog();
   const navigate = useNavigate();
 
+  const isDesktop = useResponsive("up", "lg");
   const { data, isLoading } = useGetAllContactsQuery(undefined);
 
   const defaultValues: SidebarFilters = {
@@ -73,40 +75,42 @@ export default function AllContacts() {
   }
   return (
     <Page title="List">
-      <Card sx={{ m: 5 }}>
-        <DataGrid
-          pageSize={pageSize}
-          onPageSizeChange={(newPageSize: number) => setPageSize(newPageSize)}
-          rowsPerPageOptions={[5, 10, 20, 50, 100]}
-          initialState={{
-            sorting: { sortModel: [{ field: "firstName", sort: "asc" }] },
-          }}
-          rows={filteredContacts}
-          columns={columns}
-          loading={isLoading}
-          getRowId={(row) => row.contactId}
-          components={{ Toolbar: DataGridToolbar }}
-          componentsProps={{
-            toolbar: {
-              numSelected: selectedIds.length,
-              onDelete: handleBatchDelete,
-              setOpen: setOpen,
-              onClose: () => setOpen(false),
-            },
-          }}
-          onSelectionModelChange={(ids) => setSelectedIds(ids as string[])}
-          disableExtendRowFullWidth={true}
-        />
-        <FormProvider methods={methods}>
-          <SidebarFilter
-            open={open}
-            onResetAll={handleResetFilter}
-            labels={[{ label: "work" }, { label: "home" }]}
-            onClose={() => setOpen(false)}
+      <Stack alignItems="center">
+        <Card sx={{ m: 5, width: isDesktop ? "1152px" : "100%" }}>
+          <DataGrid
+            pageSize={pageSize}
+            onPageSizeChange={(newPageSize: number) => setPageSize(newPageSize)}
+            rowsPerPageOptions={[5, 10, 20, 50, 100]}
+            initialState={{
+              sorting: { sortModel: [{ field: "firstName", sort: "asc" }] },
+            }}
+            rows={filteredContacts}
+            columns={columns}
+            loading={isLoading}
+            getRowId={(row) => row.contactId}
+            components={{ Toolbar: DataGridToolbar }}
+            componentsProps={{
+              toolbar: {
+                numSelected: selectedIds.length,
+                onDelete: handleBatchDelete,
+                setOpen: setOpen,
+                onClose: () => setOpen(false),
+              },
+            }}
+            onSelectionModelChange={(ids) => setSelectedIds(ids as string[])}
+            disableExtendRowFullWidth={true}
           />
-        </FormProvider>
-        <Confirmation />
-      </Card>
+          <FormProvider methods={methods}>
+            <SidebarFilter
+              open={open}
+              onResetAll={handleResetFilter}
+              labels={[{ label: "work" }, { label: "home" }]}
+              onClose={() => setOpen(false)}
+            />
+          </FormProvider>
+          <Confirmation />
+        </Card>
+      </Stack>
     </Page>
   );
 }

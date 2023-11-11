@@ -50,12 +50,7 @@ export async function getContactById(
     // const user = await Auth.currentAuthenticatedUser();
     // const userId = user.attributes.sub;
 
-    const data = await API.get(
-      apiName,
-      `${path}/object/${contactId}`,
-      // `${path}/object/${userId}/${contactId}`,
-      {}
-    );
+    const data = await API.get(apiName, `${path}/object/${contactId}`, {});
     return { data: data };
   } catch (error) {
     return {
@@ -68,6 +63,18 @@ export async function createContact(
 ): Promise<{ data: any } | { error: FetchBaseQueryError }> {
   try {
     const data = await API.post(apiName, `${path}`, { body: contact });
+    return { data: data };
+  } catch (error) {
+    return {
+      error: error as FetchBaseQueryError,
+    };
+  }
+}
+export async function editContact(
+  contact: SingleContact
+): Promise<{ data: any } | { error: FetchBaseQueryError }> {
+  try {
+    const data = await API.put(apiName, `${path}`, { body: contact });
     return { data: data };
   } catch (error) {
     return {

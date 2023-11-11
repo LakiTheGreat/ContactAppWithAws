@@ -1,5 +1,7 @@
 import { api } from "api/api";
 import {
+  createContact,
+  editContact,
   // createOneContact,
   getAllContacts,
   getContactById,
@@ -15,10 +17,14 @@ const contactsApiEndpoints = api.injectEndpoints({
       queryFn: getContactById,
       providesTags: ["Contact"],
     }),
-    // createOneContact: build.mutation({
-    //   queryFn: createOneContact,
-    //   invalidatesTags: ["Contact"],
-    // }),
+    createContact: build.mutation({
+      queryFn: createContact,
+      invalidatesTags: ["Contact"],
+    }),
+    editContact: build.mutation({
+      queryFn: editContact,
+      invalidatesTags: ["Contact"],
+    }),
   }),
   overrideExisting: false,
 });
@@ -26,5 +32,6 @@ const contactsApiEndpoints = api.injectEndpoints({
 export const {
   useGetAllContactsQuery,
   useGetContactByIdQuery,
-  // useCreateOneContactMutation,
+  useCreateContactMutation,
+  useEditContactMutation,
 } = contactsApiEndpoints;

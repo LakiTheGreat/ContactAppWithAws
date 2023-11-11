@@ -4,14 +4,22 @@ import { skipToken } from "@reduxjs/toolkit/dist/query/react";
 import Page from "components/Page";
 import ContactForm from "./ContactForm";
 
-import { useGetContactByIdQuery } from "api/contacts";
+import { useEditContactMutation, useGetContactByIdQuery } from "api/contacts";
 import LoadingScreen from "components/LoadingScreen";
 import { SingeContactFormValues, SingleContact } from "types";
 import Page404 from "components/Page404";
+import { useEffect } from "react";
+import { useSnackbar } from "notistack";
 
 export default function EditContact() {
   const { id } = useParams();
   const { data, isLoading } = useGetContactByIdQuery(id ?? skipToken);
+  const { enqueueSnackbar } = useSnackbar();
+
+  const [
+    editContact,
+    { data: editContactData, isLoading: editContactIsLoading },
+  ] = useEditContactMutation();
 
   const handleEdit = (value: SingeContactFormValues) => {
     if (!data) return;
@@ -21,10 +29,18 @@ export default function EditContact() {
       userId: data.userId,
       contactId: data.contactId,
     };
-    console.log("Edit contact:", value);
+    editContact(contact);
   };
 
-  const isSuccess = false; ///////////////////////////////////////////////////////
+  const isSuccess = editContactData?.data.$metadata.httpStatusCode === 200;
+
+  useEffect(() => {
+    isSuccess &&
+      enqueueSnackbar("Contact successfully edited", {
+        variant: "success",
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess]);
 
   if (isLoading) {
     return <LoadingScreen />;
@@ -39,7 +55,7 @@ export default function EditContact() {
       <ContactForm
         title="Edit contact"
         onSubmit={handleEdit}
-        isLoading={false}
+        isLoading={editContactIsLoading}
         isSuccess={isSuccess}
         value={{
           firstName: data.firstName,

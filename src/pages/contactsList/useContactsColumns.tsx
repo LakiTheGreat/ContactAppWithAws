@@ -17,7 +17,7 @@ export default function useContactsColumns(actions: Actions) {
       field: "firstName",
       headerName: "First name",
       flex: 1,
-      minWidth: 350,
+      minWidth: 170,
       renderCell: ({ value }) => (
         <Stack gap={2} direction="row" alignItems="center">
           <Typography variant="subtitle2">{value}</Typography>
@@ -28,7 +28,7 @@ export default function useContactsColumns(actions: Actions) {
       field: "lastName",
       headerName: "Last name",
       flex: 1,
-      minWidth: 350,
+      minWidth: 170,
       renderCell: ({ value }) => (
         <Stack gap={2} direction="row" alignItems="center">
           <Typography variant="subtitle2">{value}</Typography>
@@ -47,7 +47,7 @@ export default function useContactsColumns(actions: Actions) {
       field: "phoneNumber",
       headerName: "Phone number",
       flex: 1,
-      minWidth: 100,
+      minWidth: 200,
       valueGetter: ({ row }) => row.phoneNumber,
     },
 

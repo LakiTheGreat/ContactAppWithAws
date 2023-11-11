@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import Page from "components/Page";
 import ContactForm from "./ContactForm";
 import { SingeContactFormValues, UnsavedSingleContact } from "types";
-import { useCreateContactMutation } from "api/auth";
+import { useCreateContactMutation } from "api/contacts";
 
 export default function CreateContact() {
   const [createContact, { data, isLoading }] = useCreateContactMutation();

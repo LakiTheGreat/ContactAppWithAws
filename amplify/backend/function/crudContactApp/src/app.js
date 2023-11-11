@@ -60,15 +60,21 @@ const convertUrlType = (param, type) => {
   }
 };
 
+//userId = userName from cognito
+const getUserIdFromRequest = (req) => {
+  const userId =
+    req.apiGateway.event.requestContext.identity.cognitoAuthenticationProvider.split(
+      ":CognitoSignIn:"
+    )[1];
+  return userId;
+};
+
 /************************************
  * HTTP Get method to list objects *
  ************************************/
 
 app.get(path, async function (req, res) {
-  const userId =
-    req.apiGateway.event.requestContext.identity.cognitoAuthenticationProvider.split(
-      ":CognitoSignIn:"
-    )[1];
+  const userId = getUserIdFromRequest(req);
 
   var params = {
     TableName: tableName,
@@ -137,10 +143,7 @@ app.get(path + hashKeyPath, async function (req, res) {
 
 // /contacts/object/:contactId
 app.get(path + "/object" + sortKeyPath, async function (req, res) {
-  const userId =
-    req.apiGateway.event.requestContext.identity.cognitoAuthenticationProvider.split(
-      ":CognitoSignIn:"
-    )[1];
+  const userId = getUserIdFromRequest(req);
 
   const params = {};
   if (userIdPresent && req.apiGateway) {
@@ -182,10 +185,11 @@ app.get(path + "/object" + sortKeyPath, async function (req, res) {
  * HTTP put method for insert object *
  *************************************/
 
+// /contacts
 app.put(path, async function (req, res) {
+  const userId = getUserIdFromRequest(req);
   if (userIdPresent) {
-    req.body["userId"] =
-      req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
+    req.body["userId"] = userId || UNAUTH;
   }
 
   let putItemParams = {
@@ -204,7 +208,7 @@ app.put(path, async function (req, res) {
 /************************************
  * HTTP post method for insert object *
  *************************************/
-
+// /contacts
 app.post(path, async function (req, res) {
   const contactId = randomUUID();
   const userId =
@@ -239,15 +243,14 @@ app.post(path, async function (req, res) {
 /**************************************
  * HTTP remove method to delete object *
  ***************************************/
-
+// /contacts/object/:userId/:contactId
 app.delete(
   path + "/object" + hashKeyPath + sortKeyPath,
   async function (req, res) {
+    const userId = getUserIdFromRequest(req);
     const params = {};
     if (userIdPresent && req.apiGateway) {
-      params[partitionKeyName] =
-        req.apiGateway.event.requestContext.identity.cognitoIdentityId ||
-        UNAUTH;
+      params[partitionKeyName] = userId || UNAUTH;
     } else {
       params[partitionKeyName] = req.params[partitionKeyName];
       try {
