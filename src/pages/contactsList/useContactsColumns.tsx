@@ -20,7 +20,7 @@ export default function useContactsColumns(actions: Actions) {
       minWidth: 170,
       renderCell: ({ value }) => (
         <Stack gap={2} direction="row" alignItems="center">
-          <Typography variant="subtitle2">{value}</Typography>
+          <Typography variant="body2">{value}</Typography>
         </Stack>
       ),
     },
@@ -31,7 +31,7 @@ export default function useContactsColumns(actions: Actions) {
       minWidth: 170,
       renderCell: ({ value }) => (
         <Stack gap={2} direction="row" alignItems="center">
-          <Typography variant="subtitle2">{value}</Typography>
+          <Typography variant="body2">{value}</Typography>
         </Stack>
       ),
     },
