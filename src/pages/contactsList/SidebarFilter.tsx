@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import Drawer from "@mui/material/Drawer";
+import Skeleton from "@mui/lab/Skeleton";
 
 import Iconify from "components/Iconify";
 import { RHFMultiCheckbox } from "components/hook-form/RHFMultiCheckbox";
@@ -15,6 +16,7 @@ type Props = {
   onResetAll: VoidFunction;
   onClose: VoidFunction;
   labels: Label[];
+  labelIsLoading: boolean;
 };
 
 export default function SidebarFilter({
@@ -22,6 +24,7 @@ export default function SidebarFilter({
   onResetAll,
   onClose,
   labels,
+  labelIsLoading,
 }: // profilesAreLoading,
 Props) {
   const handleClick = () => {
@@ -56,7 +59,13 @@ Props) {
             <Stack spacing={1}>
               <RHFSwitch name="favoritesOnly" label="Favorites only" />
               <Typography variant="subtitle2">Labels</Typography>
-
+              {labelIsLoading && (
+                <Stack sx={{ pt: 2 }} gap={2}>
+                  <Skeleton variant="rounded" width={150} height={22} />
+                  <Skeleton variant="rounded" width={150} height={22} />
+                  <Skeleton variant="rounded" width={150} height={22} />
+                </Stack>
+              )}
               {labels && (
                 <RHFMultiCheckbox
                   name="arrayOfLabelIds"

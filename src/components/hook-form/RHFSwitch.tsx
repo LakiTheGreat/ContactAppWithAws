@@ -13,10 +13,9 @@ export default function RHFSwitch({ name, label }: Props) {
     <Controller
       name={name}
       control={control}
-      defaultValue={false} // Set the initial value
       render={({ field }) => (
         <FormControlLabel
-          control={<Switch {...field} color="primary" />}
+          control={<Switch {...field} color="primary" checked={field.value} />}
           label={label}
         />
       )}

@@ -11,16 +11,17 @@ export default function applyFilterForContacts(
       return contact;
     }
   });
-  // const filterByLabels = filterByFavorites.filter((contact) => {
-  //   if (filters.arrayOfLabelIds.length !== 0) {
-  //     // use the some() method to check if any profile has a profile_name that matches any of the filterNames
-  //     return contact.labels.some((profile) =>
-  //       filters.profiles.includes(profile.profile_name)
-  //     );
-  //   } else {
-  //     return contact;
-  //   }
-  // });
+
+  const filterByLabels = filterByFavorites.filter((contact) => {
+    if (filters.arrayOfLabelIds.length !== 0) {
+      // use the some() method to check if any profile has a profile_name that matches any of the filterNames
+      return contact.labels.some((labelId) =>
+        filters.arrayOfLabelIds.includes(labelId)
+      );
+    } else {
+      return contact;
+    }
+  });
 
   // return filterByProfiles.filter((user) => {
   //   return (
@@ -29,5 +30,5 @@ export default function applyFilterForContacts(
   //   );
   // });
 
-  return filterByFavorites;
+  return filterByLabels;
 }

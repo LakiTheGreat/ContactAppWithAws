@@ -34,7 +34,8 @@ export default function AllContacts() {
   const [pageSize, setPageSize] = useState<number>(15);
   const [open, setOpen] = useState<boolean>(false);
 
-  const { data: labelData } = useGetAllLabelsQuery(undefined);
+  const { data: labelData, isLoading: labelIsLoading } =
+    useGetAllLabelsQuery(undefined);
   const { data, isLoading } = useGetAllContactsQuery(undefined);
   const [
     deleteContact,
@@ -177,6 +178,7 @@ export default function AllContacts() {
               onResetAll={handleResetFilter}
               labels={labelData}
               onClose={() => setOpen(false)}
+              labelIsLoading={labelIsLoading}
             />
           </FormProvider>
           <Confirmation />
