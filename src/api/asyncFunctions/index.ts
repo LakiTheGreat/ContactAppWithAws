@@ -1,7 +1,7 @@
 import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query/fetchBaseQuery";
 import { CognitoUser } from "amazon-cognito-identity-js";
 import { API, Auth } from "aws-amplify";
-import { SingeContactFormValues } from "types";
+import { SingleContact, UnsavedSingleContact } from "types";
 
 const apiName = "apiContactApp";
 const path = "/contacts";
@@ -45,7 +45,7 @@ export async function getAllContacts(): Promise<
 }
 export async function getContactById(
   contactId: string
-): Promise<{ data: any } | { error: FetchBaseQueryError }> {
+): Promise<{ data: SingleContact } | { error: FetchBaseQueryError }> {
   try {
     // const user = await Auth.currentAuthenticatedUser();
     // const userId = user.attributes.sub;
@@ -64,7 +64,7 @@ export async function getContactById(
   }
 }
 export async function createContact(
-  contact: SingeContactFormValues
+  contact: UnsavedSingleContact
 ): Promise<{ data: any } | { error: FetchBaseQueryError }> {
   try {
     const data = await API.post(apiName, `${path}`, { body: contact });

@@ -1,7 +1,7 @@
-import { SidebarFilters } from "__mocks__/types";
+import { SidebarFilters, SingleContact } from "types";
 
 export default function applyFilterForContacts(
-  contacts: any[],
+  contacts: SingleContact[],
   filters: SidebarFilters
 ) {
   const filterByFavorites = contacts.filter((contact) => {

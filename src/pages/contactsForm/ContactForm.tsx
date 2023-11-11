@@ -16,14 +16,14 @@ import InputLabel from "@mui/material/InputLabel";
 // import Resizer from "react-image-file-resizer";
 
 import FormProvider from "components/hook-form/FormProvider";
-import { SingeContactFormValues } from "__mocks__/types";
+
 import mockedLabels from "__mocks__/mockedLabels.json";
 // import RHFUploadAvatar from "components/hook-form/RHFUpload";
 // import { extractExtensions } from "utils/extractExtensions";
 import firstCharToUpperCase from "utils/firstCharToUpperCase";
 import useResponsive from "hooks/useResponsive";
 import { useEffect } from "react";
-// import { useCreateOneContactMutation } from "api/contacts";
+import { SingeContactFormValues } from "types";
 
 interface Props {
   title: string;
@@ -85,7 +85,6 @@ export default function ContactForm({
       lastName: value?.lastName || "",
       email: value?.email || "",
       phoneNumber: value?.phoneNumber || "",
-      isFavorite: value?.isFavorite || false,
       labels: value?.labels || [],
     },
   });
@@ -120,7 +119,7 @@ export default function ContactForm({
                 control={control}
                 render={({ field, fieldState: { error } }) => {
                   const selectedValues = field.value
-                    ? field.value.map((item) => item._id)
+                    ? field.value.map((item) => item)
                     : [];
 
                   const handleChange = (e: any) => {

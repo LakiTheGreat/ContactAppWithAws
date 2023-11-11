@@ -1,15 +1,22 @@
 import { useSnackbar } from "notistack";
+import { useEffect } from "react";
+
 import Page from "components/Page";
 import ContactForm from "./ContactForm";
-import { SingeContactFormValues } from "__mocks__/types";
+import { SingeContactFormValues, UnsavedSingleContact } from "types";
 import { useCreateContactMutation } from "api/auth";
-import { useEffect } from "react";
 
 export default function CreateContact() {
   const [createContact, { data, isLoading }] = useCreateContactMutation();
   const { enqueueSnackbar } = useSnackbar();
+
   const handleCreate = (value: SingeContactFormValues) => {
-    createContact(value);
+    const unsavedContact: UnsavedSingleContact = {
+      ...value,
+      isFavorite: false,
+    };
+
+    createContact(unsavedContact);
   };
 
   const isSuccess = data?.data.$metadata.httpStatusCode === 200;

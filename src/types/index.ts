@@ -1,12 +1,23 @@
 export type SingleContact = {
-  _id: string;
+  userId: string;
+  contactId: string;
   // image: string;
   firstName: string;
   lastName: string;
   email: string;
   phoneNumber: string;
   isFavorite: boolean;
-  labels: Label[];
+  labels: string[];
+};
+
+export type UnsavedSingleContact = Omit<SingleContact, "userId" | "contactId">;
+
+export type SingeContactFormValues = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  labels: string[];
 };
 
 export type Label = {
@@ -17,5 +28,3 @@ export type SidebarFilters = {
   favoritesOnly: boolean;
   labels: string[];
 };
-
-export type SingeContactFormValues = Omit<SingleContact, "_id">;

@@ -13,7 +13,8 @@ import { CONTACTS_ROUTES } from "routes/paths";
 import { useGetAllContactsQuery } from "api/contacts";
 import SidebarFilter from "./SidebarFilter";
 import applyFilterForContacts from "utils/applyFilterForContacts";
-import { SidebarFilters } from "__mocks__/types";
+
+import { SidebarFilters, SingleContact } from "types";
 
 export default function AllContacts() {
   const [pageSize, setPageSize] = useState<number>(5);
@@ -66,7 +67,7 @@ export default function AllContacts() {
     handleDelete,
     handleEdit,
   });
-  let filteredContacts = [];
+  let filteredContacts: SingleContact[] = [];
   if (data) {
     filteredContacts = applyFilterForContacts(data, values);
   }

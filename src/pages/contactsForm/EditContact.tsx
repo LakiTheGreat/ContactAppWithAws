@@ -3,15 +3,24 @@ import { skipToken } from "@reduxjs/toolkit/dist/query/react";
 
 import Page from "components/Page";
 import ContactForm from "./ContactForm";
-import { SingeContactFormValues } from "__mocks__/types";
+
 import { useGetContactByIdQuery } from "api/contacts";
 import LoadingScreen from "components/LoadingScreen";
+import { SingeContactFormValues, SingleContact } from "types";
+import Page404 from "components/Page404";
 
 export default function EditContact() {
   const { id } = useParams();
   const { data, isLoading } = useGetContactByIdQuery(id ?? skipToken);
 
   const handleEdit = (value: SingeContactFormValues) => {
+    if (!data) return;
+    const contact: SingleContact = {
+      ...value,
+      isFavorite: data.isFavorite,
+      userId: data.userId,
+      contactId: data.contactId,
+    };
     console.log("Edit contact:", value);
   };
 
@@ -19,6 +28,10 @@ export default function EditContact() {
 
   if (isLoading) {
     return <LoadingScreen />;
+  }
+
+  if (!data) {
+    return <Page404 />;
   }
 
   return (
@@ -33,8 +46,7 @@ export default function EditContact() {
           lastName: data.lastName,
           email: data.email,
           phoneNumber: data.phoneNumber,
-          isFavorite: data.isFavorite,
-          labels: data.labels,
+          labels: data?.labels,
         }}
       />
     </Page>
