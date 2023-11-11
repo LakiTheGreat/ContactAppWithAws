@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
@@ -5,11 +6,13 @@ import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import Drawer from "@mui/material/Drawer";
 import Skeleton from "@mui/lab/Skeleton";
+import AddIcon from "@mui/icons-material/Add";
 
 import Iconify from "components/Iconify";
 import { RHFMultiCheckbox } from "components/hook-form/RHFMultiCheckbox";
 import RHFSwitch from "components/hook-form/RHFSwitch";
 import { Label } from "types";
+import LabelModal from "components/LabelModal";
 
 type Props = {
   open: boolean;
@@ -25,11 +28,16 @@ export default function SidebarFilter({
   onClose,
   labels,
   labelIsLoading,
-}: // profilesAreLoading,
-Props) {
+}: Props) {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
   const handleClick = () => {
     onResetAll();
     onClose();
+  };
+
+  const handleCreateNewLabel = () => {
+    setIsOpen(true);
   };
 
   return (
@@ -73,6 +81,17 @@ Props) {
                   sx={{ width: 1 }}
                 />
               )}
+              <Button
+                onClick={handleCreateNewLabel}
+                startIcon={<AddIcon />}
+                variant="text"
+              >
+                Create new label
+              </Button>
+              <LabelModal
+                isOpen={isOpen}
+                handleClose={() => setIsOpen(false)}
+              />
             </Stack>
           </Stack>
 
