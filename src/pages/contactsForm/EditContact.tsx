@@ -10,11 +10,15 @@ import { SingeContactFormValues, SingleContact } from "types";
 import Page404 from "components/Page404";
 import { useEffect } from "react";
 import { useSnackbar } from "notistack";
+import { useGetAllLabelsQuery } from "api/labels";
 
 export default function EditContact() {
   const { id } = useParams();
-  const { data, isLoading } = useGetContactByIdQuery(id ?? skipToken);
   const { enqueueSnackbar } = useSnackbar();
+
+  const { data, isLoading } = useGetContactByIdQuery(id ?? skipToken);
+  const { data: labelData, isLoading: labelDataIsLoading } =
+    useGetAllLabelsQuery(undefined);
 
   const [
     editContact,
@@ -64,6 +68,8 @@ export default function EditContact() {
           phoneNumber: data.phoneNumber,
           labels: data?.labels,
         }}
+        labels={labelData}
+        labelDataIsLoading={labelDataIsLoading}
       />
     </Page>
   );

@@ -5,9 +5,12 @@ import Page from "components/Page";
 import ContactForm from "./ContactForm";
 import { SingeContactFormValues, UnsavedSingleContact } from "types";
 import { useCreateContactMutation } from "api/contacts";
+import { useGetAllLabelsQuery } from "api/labels";
 
 export default function CreateContact() {
   const [createContact, { data, isLoading }] = useCreateContactMutation();
+  const { data: labelData, isLoading: labelDataIsLoading } =
+    useGetAllLabelsQuery(undefined);
   const { enqueueSnackbar } = useSnackbar();
 
   const handleCreate = (value: SingeContactFormValues) => {
@@ -36,6 +39,8 @@ export default function CreateContact() {
         onSubmit={handleCreate}
         isLoading={isLoading}
         isSuccess={isSuccess}
+        labels={labelData}
+        labelDataIsLoading={labelDataIsLoading}
       />
     </Page>
   );

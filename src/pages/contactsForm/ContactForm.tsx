@@ -17,20 +17,21 @@ import InputLabel from "@mui/material/InputLabel";
 
 import FormProvider from "components/hook-form/FormProvider";
 
-import mockedLabels from "__mocks__/mockedLabels.json";
 // import RHFUploadAvatar from "components/hook-form/RHFUpload";
 // import { extractExtensions } from "utils/extractExtensions";
-import firstCharToUpperCase from "utils/firstCharToUpperCase";
 import useResponsive from "hooks/useResponsive";
 import { useEffect } from "react";
-import { SingeContactFormValues } from "types";
+import { Label, SingeContactFormValues } from "types";
+import { Skeleton } from "@mui/material";
 
 interface Props {
   title: string;
   value?: SingeContactFormValues;
   isLoading: boolean;
+  labelDataIsLoading: boolean;
   isSuccess: boolean;
   onSubmit: (data: SingeContactFormValues) => void;
+  labels: Label[];
 }
 
 export default function ContactForm({
@@ -38,7 +39,9 @@ export default function ContactForm({
   value,
   onSubmit,
   isLoading,
+  labelDataIsLoading,
   isSuccess,
+  labels,
 }: Props) {
   const NewContactSchema = Yup.object().shape({
     firstName: Yup.string().required("Must enter first name"),
@@ -93,6 +96,7 @@ export default function ContactForm({
     control,
     handleSubmit,
     reset,
+    getValues,
     formState: { isDirty },
   } = methods;
 
@@ -114,55 +118,67 @@ export default function ContactForm({
             <Typography variant="h4">{title}</Typography>
             <FormControl sx={{ width: "240px" }}>
               <InputLabel id="select-label">Labels</InputLabel>
-              <Controller
-                name="labels"
-                control={control}
-                render={({ field, fieldState: { error } }) => {
-                  const selectedValues = field.value
-                    ? field.value.map((item) => item)
-                    : [];
+              {labelDataIsLoading && (
+                <>
+                  <Skeleton variant="rounded" width={240} height={65} />
+                </>
+              )}
+              {labels && (
+                <Controller
+                  name="labels"
+                  control={control}
+                  render={({ field, fieldState: { error } }) => {
+                    const selectedValues = field.value
+                      ? field.value.map((item) => item)
+                      : [];
+                    // console.log("selectedValues", selectedValues);
+                    // console.log(getValues());
+                    const handleChange = (e: any) => {
+                      console.log("e", e.target.value);
+                      console.log("field", field.value);
 
-                  const handleChange = (e: any) => {
-                    const selectedLabels = mockedLabels.filter((label) =>
-                      e.target.value.includes(label._id)
+                      const selectedLabels = field.value.filter((label) =>
+                        e.target.value.includes(label)
+                      );
+                      console.log("selectedLabels", selectedLabels);
+                      field.onChange(selectedLabels);
+                    };
+
+                    return (
+                      <Select
+                        name="labels"
+                        multiple
+                        value={selectedValues}
+                        onChange={handleChange}
+                        label="Labels"
+                        variant="outlined"
+                        fullWidth
+                        error={!!error}
+                        renderValue={(selected) => (
+                          <div>
+                            {selected.map((value) => (
+                              <Chip
+                                key={value}
+                                label={
+                                  labels.find(
+                                    (label: Label) => label.labelId === value
+                                  )?.labelName
+                                }
+                              />
+                            ))}
+                          </div>
+                        )}
+                      >
+                        {labels?.map((label: Label) => (
+                          <MenuItem key={label.labelId} value={label.labelId}>
+                            {label.labelName}
+                          </MenuItem>
+                        ))}
+                      </Select>
                     );
-                    field.onChange(selectedLabels);
-                  };
-
-                  return (
-                    <Select
-                      name="labels"
-                      multiple
-                      value={selectedValues}
-                      onChange={handleChange}
-                      label="Labels"
-                      variant="outlined"
-                      fullWidth
-                      error={!!error}
-                      renderValue={(selected) => (
-                        <div>
-                          {selected.map((value) => (
-                            <Chip
-                              key={value}
-                              label={
-                                mockedLabels.find(
-                                  (label) => label._id === value
-                                )?.labelName
-                              }
-                            />
-                          ))}
-                        </div>
-                      )}
-                    >
-                      {mockedLabels?.map((label) => (
-                        <MenuItem key={label._id} value={label._id}>
-                          {firstCharToUpperCase(label.labelName)}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  );
-                }}
-              />
+                  }}
+                />
+              )}
             </FormControl>
           </Stack>
           <Stack gap={2}>
