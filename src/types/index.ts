@@ -32,3 +32,9 @@ export type SidebarFilters = {
   favoritesOnly: boolean;
   arrayOfLabelIds: string[];
 };
+
+export type MatchedLabel = {
+  labelName: string;
+  labelId: string;
+  count: number;
+};

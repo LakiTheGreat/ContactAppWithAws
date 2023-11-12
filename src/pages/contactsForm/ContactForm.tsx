@@ -13,7 +13,7 @@ import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import LoadingButton from "@mui/lab/LoadingButton";
 import InputLabel from "@mui/material/InputLabel";
-import Skeleton from "@mui/lab/Skeleton";
+import Skeleton from "@mui/material/Skeleton";
 // import Resizer from "react-image-file-resizer";
 
 import FormProvider from "components/hook-form/FormProvider";

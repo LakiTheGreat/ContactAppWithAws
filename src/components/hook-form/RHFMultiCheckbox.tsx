@@ -12,7 +12,7 @@ import {
   Box,
 } from "@mui/material";
 
-import { Label } from "types";
+import { Label, MatchedLabel } from "types";
 import { IconButtonAnimate } from "components/animate";
 import EditLabel from "pages/labelsForm/EditLabel";
 import { useEffect, useState } from "react";
@@ -20,6 +20,7 @@ import useConfirmDialog from "hooks/useConfirmDialog";
 import { useDeleteOneLabelMutation } from "api/labels";
 import { useSnackbar } from "notistack";
 import CheckboxSkeleton from "components/CheckboxSkeleton";
+import getNotification from "utils/getNotificaton";
 
 // ----------------------------------------------------------------------
 
@@ -49,13 +50,19 @@ export function RHFCheckbox({ name, ...other }: RHFCheckboxProps) {
 // export interface Options {
 //   label: Label;
 // }
+
 interface RHFMultiCheckboxProps
   extends Omit<FormControlLabelProps, "control" | "label"> {
   name: string;
   options: Label[];
+  matchedLabels: MatchedLabel[];
 }
 
-export function RHFMultiCheckbox({ name, options }: RHFMultiCheckboxProps) {
+export function RHFMultiCheckbox({
+  name,
+  options,
+  matchedLabels,
+}: RHFMultiCheckboxProps) {
   const { control } = useFormContext();
   const [getConfirmation, Confirmation] = useConfirmDialog();
   const { enqueueSnackbar } = useSnackbar();
@@ -95,6 +102,13 @@ export function RHFMultiCheckbox({ name, options }: RHFMultiCheckboxProps) {
   };
   if (isLoading) return <CheckboxSkeleton />;
 
+  const getMatchedLabelCount = (labelId: string) => {
+    const matchedLabel = matchedLabels.find((item) => item.labelId === labelId);
+    if (matchedLabel && matchedLabel.count !== 0) {
+      return getNotification(matchedLabel.count);
+    }
+  };
+
   return (
     <Controller
       name={name}
@@ -120,7 +134,7 @@ export function RHFMultiCheckbox({ name, options }: RHFMultiCheckboxProps) {
                   justifyContent="space-between"
                   key={option.labelId}
                 >
-                  <Stack direction="row" alignItems="center">
+                  <Stack direction="row" alignItems="center" gap={1}>
                     <Checkbox
                       checked={field.value.includes(option.labelId)}
                       onChange={() =>
@@ -128,6 +142,7 @@ export function RHFMultiCheckbox({ name, options }: RHFMultiCheckboxProps) {
                       }
                     />
                     <Typography variant="body1">{option.labelName}</Typography>
+                    {getMatchedLabelCount(option.labelId)}
                   </Stack>
                   <Stack direction="row">
                     <Box>
