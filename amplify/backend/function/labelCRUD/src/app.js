@@ -203,15 +203,16 @@ app.get(
  *************************************/
 
 app.put(path, async function (req, res) {
+  const userId = getUserIdFromRequest(req);
   if (userIdPresent) {
-    req.body["userId"] =
-      req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
+    req.body["userId"] = userId || UNAUTH;
   }
 
   let putItemParams = {
     TableName: tableName,
     Item: req.body,
   };
+
   try {
     let data = await ddbDocClient.send(new PutCommand(putItemParams));
     res.json({ success: "put call succeed!", url: req.url, data: data });

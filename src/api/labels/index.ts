@@ -1,5 +1,9 @@
 import { api } from "api/api";
-import { createLabel, getAllLabels } from "api/asyncFunctions/labels";
+import {
+  createLabel,
+  editLabel,
+  getAllLabels,
+} from "api/asyncFunctions/labels";
 
 const labelsApiEndpoints = api.injectEndpoints({
   endpoints: (build) => ({
@@ -15,10 +19,10 @@ const labelsApiEndpoints = api.injectEndpoints({
       queryFn: createLabel,
       invalidatesTags: ["Label"],
     }),
-    // editContact: build.mutation({
-    //   queryFn: editContact,
-    //   invalidatesTags: ["Contact"],
-    // }),
+    editLabel: build.mutation({
+      queryFn: editLabel,
+      invalidatesTags: ["Label"],
+    }),
     // deleteOneContact: build.mutation({
     //   queryFn: deleteOneContact,
     //   invalidatesTags: ["Contact"],
@@ -31,5 +35,8 @@ const labelsApiEndpoints = api.injectEndpoints({
   overrideExisting: false,
 });
 
-export const { useGetAllLabelsQuery, useCreateLabelMutation } =
-  labelsApiEndpoints;
+export const {
+  useGetAllLabelsQuery,
+  useCreateLabelMutation,
+  useEditLabelMutation,
+} = labelsApiEndpoints;
