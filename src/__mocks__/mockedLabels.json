@@ -1,0 +1,14 @@
+[
+  {
+    "_id": "l1",
+    "labelName": "work"
+  },
+  {
+    "_id": "l2",
+    "labelName": "family"
+  },
+  {
+    "_id": "l3",
+    "labelName": "friends"
+  }
+]
