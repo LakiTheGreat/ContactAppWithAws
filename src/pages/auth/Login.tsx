@@ -31,8 +31,8 @@ export default function Login() {
         },
         brand: {
           primary: {
-            "10": tokens.colors.blue["100"],
-            "80": tokens.colors.blue["60"],
+            "10": tokens.colors.blue["10"], // forgot password on hover
+            "80": tokens.colors.blue["60"], // signIn button color
             "90": tokens.colors.blue["40"],
             "100": tokens.colors.blue["20"],
           },
