@@ -6,6 +6,7 @@ import { useSnackbar } from "notistack";
 import { useEditLabelMutation } from "api/labels";
 import LabelForm from "./LabelForm";
 import { Label, LabelFormValues } from "types";
+import useResponsive from "hooks/useResponsive";
 
 interface Props {
   isOpen: boolean;
@@ -15,6 +16,7 @@ interface Props {
 
 export default function EditLabel({ isOpen, handleClose, label }: Props) {
   const { enqueueSnackbar } = useSnackbar();
+  const isMobile = useResponsive("down", "sm");
   const [editLabel, { data, isLoading, isError }] =
     useEditLabelMutation(undefined);
 
@@ -60,7 +62,7 @@ export default function EditLabel({ isOpen, handleClose, label }: Props) {
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          width: "500px",
+          width: isMobile ? "90%" : "500px",
           padding: "20px",
           borderBottom: "solid 20px white",
         }}

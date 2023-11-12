@@ -39,12 +39,7 @@ export default function LabelForm({
     },
   });
 
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { isDirty },
-  } = methods;
+  const { control, handleSubmit } = methods;
   return (
     <Stack gap={2}>
       <Typography id="modal-modal-title" variant="h6" component="h2">
