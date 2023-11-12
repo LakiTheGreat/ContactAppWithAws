@@ -147,7 +147,7 @@ export default function AllContacts() {
   return (
     <Page title="List">
       <Stack alignItems="center">
-        <Card sx={{ m: 5, width: isDesktop ? "1152px" : "100%" }}>
+        <Card sx={{ m: 5, width: isDesktop ? "1152px" : "90%" }}>
           <DataGrid
             pageSize={pageSize}
             onPageSizeChange={(newPageSize: number) => setPageSize(newPageSize)}
