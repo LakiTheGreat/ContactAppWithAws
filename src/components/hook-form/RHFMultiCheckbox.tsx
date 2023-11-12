@@ -105,6 +105,12 @@ export function RHFMultiCheckbox({ name, options }: RHFMultiCheckboxProps) {
             ? field.value.filter((value: string) => value !== option)
             : [...field.value, option];
 
+        if (!options.length)
+          return (
+            <Typography textAlign="center" variant="body1">
+              You have no lablels. Feel free to create them.
+            </Typography>
+          );
         return (
           <>
             <FormGroup>
