@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 
 import DataGridRowActions from "components/DataGridRowActions";
 import { SingleContact } from "types";
+import useResponsive from "hooks/useResponsive";
 
 type Actions = {
   handleFavorite: (contact: SingleContact) => void;
@@ -13,12 +14,13 @@ type Actions = {
 };
 
 export default function useContactsColumns(actions: Actions) {
+  const isMobile = useResponsive("down", "sm");
   const columns: GridColDef[] = [
     {
       field: "firstName",
       headerName: "First name",
       flex: 1,
-      minWidth: 170,
+      minWidth: isMobile ? 120 : 170,
       renderCell: ({ value }) => (
         <Stack gap={2} direction="row" alignItems="center">
           <Typography variant="body2">{value}</Typography>
@@ -29,7 +31,7 @@ export default function useContactsColumns(actions: Actions) {
       field: "lastName",
       headerName: "Last name",
       flex: 1,
-      minWidth: 170,
+      minWidth: isMobile ? 120 : 170,
       renderCell: ({ value }) => (
         <Stack gap={2} direction="row" alignItems="center">
           <Typography variant="body2">{value}</Typography>
@@ -41,14 +43,14 @@ export default function useContactsColumns(actions: Actions) {
       field: "email",
       headerName: "Email",
       flex: 1,
-      minWidth: 250,
+      minWidth: isMobile ? 220 : 250,
       valueGetter: ({ row }) => row.email,
     },
     {
       field: "phoneNumber",
       headerName: "Phone number",
       flex: 1,
-      minWidth: 200,
+      minWidth: isMobile ? 150 : 200,
       valueGetter: ({ row }) => row.phoneNumber,
     },
 
