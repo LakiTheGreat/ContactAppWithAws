@@ -261,55 +261,69 @@ app.post(path, async function (req, res) {
  * HTTP remove method to delete object *
  ***************************************/
 
-app.delete(
-  path + "/object" + hashKeyPath + sortKeyPath,
-  async function (req, res) {
-    const params = {};
-    if (userIdPresent && req.apiGateway) {
-      params[partitionKeyName] =
-        req.apiGateway.event.requestContext.identity.cognitoIdentityId ||
-        UNAUTH;
-    } else {
-      params[partitionKeyName] = req.params[partitionKeyName];
-      try {
-        params[partitionKeyName] = convertUrlType(
-          req.params[partitionKeyName],
-          partitionKeyType
-        );
-      } catch (err) {
-        res.statusCode = 500;
-        res.json({ error: "Wrong column type " + err });
-      }
+app.delete(path + "/object" + sortKeyPath, async function (req, res) {
+  const userId = getUserIdFromRequest(req);
+  const params = {};
+
+  if (userIdPresent && req.apiGateway) {
+    params[partitionKeyName] = userId || UNAUTH;
+  } else {
+    params[partitionKeyName] = req.params[partitionKeyName];
+    try {
+      params[partitionKeyName] = convertUrlType(
+        req.params[partitionKeyName],
+        partitionKeyType
+      );
+    } catch (err) {
+      res.statusCode = 500;
+      res.json({ error: "Wrong column type " + err });
+      return; // Stop execution if there's an error
     }
-    if (hasSortKey) {
-      try {
-        params[sortKeyName] = convertUrlType(
-          req.params[sortKeyName],
-          sortKeyType
-        );
-      } catch (err) {
-        res.statusCode = 500;
-        res.json({ error: "Wrong column type " + err });
-      }
+  }
+
+  if (hasSortKey) {
+    try {
+      params[sortKeyName] = convertUrlType(
+        req.params[sortKeyName],
+        sortKeyType
+      );
+    } catch (err) {
+      res.statusCode = 500;
+      res.json({ error: "Wrong column type " + err });
+      return; // Stop execution if there's an error
+    }
+  }
+
+  // Check if the item exists before attempting to delete
+  const getItemParams = {
+    TableName: tableName,
+    Key: params,
+  };
+
+  try {
+    const getItemResult = await ddbDocClient.send(
+      new GetCommand(getItemParams)
+    );
+
+    if (!getItemResult.Item) {
+      // Item does not exist, handle accordingly
+      res.statusCode = 404;
+      res.json({ error: "Item not found", url: req.url });
+      return; // Stop execution if the item does not exist
     }
 
+    // Item exists, proceed with deletion
     let removeItemParams = {
       TableName: tableName,
       Key: params,
     };
 
-    try {
-      let data = await ddbDocClient.send(new DeleteCommand(removeItemParams));
-      res.json({ url: req.url, data: data });
-    } catch (err) {
-      res.statusCode = 500;
-      res.json({ error: err, url: req.url });
-    }
+    let data = await ddbDocClient.send(new DeleteCommand(removeItemParams));
+    res.json({ url: req.url, data: data });
+  } catch (err) {
+    res.statusCode = 500;
+    res.json({ error: err, url: req.url });
   }
-);
-
-app.listen(3000, function () {
-  console.log("App started");
 });
 
 // Export the app object. When executing the application local this does nothing. However,

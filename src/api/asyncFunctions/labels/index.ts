@@ -43,3 +43,16 @@ export async function editLabel(
     };
   }
 }
+
+export async function deleteOneLabel(
+  labelId: string
+): Promise<{ data: any } | { error: FetchBaseQueryError }> {
+  try {
+    const data = await API.del(apiName, `${path}/object/${labelId}`, {});
+    return { data: data };
+  } catch (error) {
+    return {
+      error: error as FetchBaseQueryError,
+    };
+  }
+}

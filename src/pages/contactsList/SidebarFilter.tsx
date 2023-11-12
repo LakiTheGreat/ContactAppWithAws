@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import Drawer from "@mui/material/Drawer";
-import Skeleton from "@mui/lab/Skeleton";
+
 import AddIcon from "@mui/icons-material/Add";
 
 import Iconify from "components/Iconify";
@@ -13,6 +13,7 @@ import { RHFMultiCheckbox } from "components/hook-form/RHFMultiCheckbox";
 import RHFSwitch from "components/hook-form/RHFSwitch";
 import { Label } from "types";
 import CreateLabel from "pages/labelsForm/CreateLabel";
+import CheckboxSkeleton from "components/CheckboxSkeleton";
 
 type Props = {
   open: boolean;
@@ -67,13 +68,7 @@ export default function SidebarFilter({
             <Stack spacing={1}>
               <RHFSwitch name="favoritesOnly" label="Favorites only" />
               <Typography variant="subtitle2">Labels</Typography>
-              {labelIsLoading && (
-                <Stack sx={{ pt: 2 }} gap={2}>
-                  <Skeleton variant="rounded" width={150} height={22} />
-                  <Skeleton variant="rounded" width={150} height={22} />
-                  <Skeleton variant="rounded" width={150} height={22} />
-                </Stack>
-              )}
+              {labelIsLoading && <CheckboxSkeleton />}
               {labels && (
                 <RHFMultiCheckbox
                   name="arrayOfLabelIds"

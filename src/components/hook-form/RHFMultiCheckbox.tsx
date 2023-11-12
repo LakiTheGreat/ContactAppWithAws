@@ -15,7 +15,11 @@ import {
 import { Label } from "types";
 import { IconButtonAnimate } from "components/animate";
 import EditLabel from "pages/labelsForm/EditLabel";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useConfirmDialog from "hooks/useConfirmDialog";
+import { useDeleteOneLabelMutation } from "api/labels";
+import { useSnackbar } from "notistack";
+import CheckboxSkeleton from "components/CheckboxSkeleton";
 
 // ----------------------------------------------------------------------
 
@@ -53,14 +57,43 @@ interface RHFMultiCheckboxProps
 
 export function RHFMultiCheckbox({ name, options }: RHFMultiCheckboxProps) {
   const { control } = useFormContext();
-
+  const [getConfirmation, Confirmation] = useConfirmDialog();
+  const { enqueueSnackbar } = useSnackbar();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [labelToEdit, setLabelToEdit] = useState<Label | null>(null);
+  const [deleteLabel, { data, isLoading, isError }] =
+    useDeleteOneLabelMutation(undefined);
+
+  useEffect(() => {
+    data &&
+      enqueueSnackbar("Label successfully deleted.", {
+        variant: "success",
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+
+  useEffect(() => {
+    isError &&
+      enqueueSnackbar("Label was not deleted. Something went wrong!", {
+        variant: "error",
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isError]);
 
   const handleOpenEditModal = (label: Label) => {
     setLabelToEdit(label);
     setIsOpen(true);
   };
+
+  const handleDelete = async (label: Label) => {
+    const isConfirmed = await getConfirmation({
+      title: "Delete label",
+      contentText: `Are you sure you want to delete this label: ${label.labelName}?`,
+      confirmLabel: `Delete`,
+    });
+    isConfirmed && deleteLabel(label.labelId);
+  };
+  if (isLoading) return <CheckboxSkeleton />;
 
   return (
     <Controller
@@ -104,6 +137,7 @@ export function RHFMultiCheckbox({ name, options }: RHFMultiCheckboxProps) {
                       <IconButtonAnimate
                         size="small"
                         aria-label={"Delete label icon"}
+                        onClick={() => handleDelete(option)}
                       >
                         <DeleteOutlineIcon />
                       </IconButtonAnimate>
@@ -117,6 +151,7 @@ export function RHFMultiCheckbox({ name, options }: RHFMultiCheckboxProps) {
               handleClose={() => setIsOpen(false)}
               label={labelToEdit}
             />
+            <Confirmation />
           </>
         );
       }}
