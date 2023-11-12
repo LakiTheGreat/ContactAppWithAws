@@ -12,7 +12,7 @@ import {
   Box,
 } from "@mui/material";
 
-import { Label, MatchedLabel } from "types";
+import { Label, MatchedLabel, SingleContact } from "types";
 import { IconButtonAnimate } from "components/animate";
 import EditLabel from "pages/labelsForm/EditLabel";
 import { useEffect, useState } from "react";
@@ -21,6 +21,8 @@ import { useDeleteOneLabelMutation } from "api/labels";
 import { useSnackbar } from "notistack";
 import CheckboxSkeleton from "components/CheckboxSkeleton";
 import getNotification from "utils/getNotificaton";
+import useGetLabelCount from "hooks/useGetLabelCount";
+import { useEditContactMutation } from "api/contacts";
 
 // ----------------------------------------------------------------------
 
@@ -55,13 +57,13 @@ interface RHFMultiCheckboxProps
   extends Omit<FormControlLabelProps, "control" | "label"> {
   name: string;
   options: Label[];
-  matchedLabels: MatchedLabel[];
+  contacts: SingleContact[];
 }
 
 export function RHFMultiCheckbox({
   name,
   options,
-  matchedLabels,
+  contacts,
 }: RHFMultiCheckboxProps) {
   const { control } = useFormContext();
   const [getConfirmation, Confirmation] = useConfirmDialog();
@@ -70,6 +72,12 @@ export function RHFMultiCheckbox({
   const [labelToEdit, setLabelToEdit] = useState<Label | null>(null);
   const [deleteLabel, { data, isLoading, isError }] =
     useDeleteOneLabelMutation(undefined);
+  const [editContact] = useEditContactMutation(undefined);
+
+  const matchedLabels: MatchedLabel[] = useGetLabelCount({
+    contacts: contacts,
+    labels: options,
+  });
 
   useEffect(() => {
     data &&
@@ -93,12 +101,28 @@ export function RHFMultiCheckbox({
   };
 
   const handleDelete = async (label: Label) => {
+    const removeDeletedLabelFromContacts = () => {
+      const contactsWithDeletedLabel = contacts.filter((contact) =>
+        contact.labels.includes(label.labelId)
+      );
+
+      contactsWithDeletedLabel.map((contact) => {
+        const filteredLabels = contact.labels.filter(
+          (lab) => lab !== label.labelId
+        );
+        const updatedContact = { ...contact, labels: filteredLabels };
+        editContact(updatedContact);
+      });
+    };
+
     const isConfirmed = await getConfirmation({
       title: "Delete label",
       contentText: `Are you sure you want to delete this label: ${label.labelName}?`,
       confirmLabel: `Delete`,
     });
+
     isConfirmed && deleteLabel(label.labelId);
+    removeDeletedLabelFromContacts();
   };
   if (isLoading) return <CheckboxSkeleton />;
 
@@ -123,7 +147,7 @@ export function RHFMultiCheckbox({
         if (!options.length)
           return (
             <Typography textAlign="center" variant="body1">
-              You have no lablels. Feel free to create them.
+              You have no lablels. Feel free to create one.
             </Typography>
           );
         return (

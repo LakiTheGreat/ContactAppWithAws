@@ -11,11 +11,10 @@ import AddIcon from "@mui/icons-material/Add";
 import Iconify from "components/Iconify";
 import { RHFMultiCheckbox } from "components/hook-form/RHFMultiCheckbox";
 import RHFSwitch from "components/hook-form/RHFSwitch";
-import { Label, MatchedLabel, SingleContact } from "types";
+import { Label, SingleContact } from "types";
 import CreateLabel from "pages/labelsForm/CreateLabel";
 import CheckboxSkeleton from "components/CheckboxSkeleton";
 import useGetChipsWithNumberOfContacts from "utils/useGetChipsWithNumberOfContacts";
-import useGetLabelCount from "hooks/useGetLabelCount";
 
 type Props = {
   open: boolean;
@@ -47,10 +46,6 @@ export default function SidebarFilter({
 
   const [favoriteContacts] = useGetChipsWithNumberOfContacts({
     contacts: data,
-  });
-  const matchedLabels: MatchedLabel[] = useGetLabelCount({
-    contacts: data,
-    labels: labels,
   });
 
   return (
@@ -89,7 +84,7 @@ export default function SidebarFilter({
                   name="arrayOfLabelIds"
                   options={labels}
                   sx={{ width: 1 }}
-                  matchedLabels={matchedLabels}
+                  contacts={data}
                 />
               )}
               <Button
