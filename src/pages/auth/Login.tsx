@@ -9,11 +9,13 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
 import Logo from "components/Logo";
+import useResponsive from "hooks/useResponsive";
 
 export default function Login() {
   const { tokens } = useTheme();
+  const isMobile = useResponsive("down", "sm");
   const theme: Theme = {
-    name: "Auth Example Theme",
+    name: "ContactAppTheme",
     tokens: {
       colors: {
         background: {
@@ -64,7 +66,7 @@ export default function Login() {
 
   return (
     <Stack
-      sx={{ height: "100%" }}
+      sx={{ height: isMobile ? "auto" : "100%", pt: isMobile ? 10 : 0 }}
       justifyContent="center"
       alignItems="center"
       gap={2}
