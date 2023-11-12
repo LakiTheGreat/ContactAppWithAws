@@ -11,9 +11,10 @@ import AddIcon from "@mui/icons-material/Add";
 import Iconify from "components/Iconify";
 import { RHFMultiCheckbox } from "components/hook-form/RHFMultiCheckbox";
 import RHFSwitch from "components/hook-form/RHFSwitch";
-import { Label } from "types";
+import { Label, SingleContact } from "types";
 import CreateLabel from "pages/labelsForm/CreateLabel";
 import CheckboxSkeleton from "components/CheckboxSkeleton";
+import useGetChipsWithNumberOfContacts from "utils/useGetChipsWithNumberOfContacts";
 
 type Props = {
   open: boolean;
@@ -21,6 +22,7 @@ type Props = {
   onClose: VoidFunction;
   labels: Label[];
   labelIsLoading: boolean;
+  data: SingleContact[];
 };
 
 export default function SidebarFilter({
@@ -29,6 +31,7 @@ export default function SidebarFilter({
   onClose,
   labels,
   labelIsLoading,
+  data,
 }: Props) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -40,6 +43,10 @@ export default function SidebarFilter({
   const handleCreateNewLabel = () => {
     setIsOpen(true);
   };
+
+  const [allContacts, favoriteContacts] = useGetChipsWithNumberOfContacts({
+    contacts: data,
+  });
 
   return (
     <>
@@ -66,7 +73,10 @@ export default function SidebarFilter({
         <Stack justifyContent="space-between" sx={{ height: "100%" }}>
           <Stack spacing={3} sx={{ p: 3 }}>
             <Stack spacing={1}>
-              <RHFSwitch name="favoritesOnly" label="Favorites only" />
+              <Box>
+                <RHFSwitch name="favoritesOnly" label="Favorites only" />
+                {favoriteContacts}
+              </Box>
               <Typography variant="subtitle2">Labels</Typography>
               {labelIsLoading && <CheckboxSkeleton />}
               {labels && (

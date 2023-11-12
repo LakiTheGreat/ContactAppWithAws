@@ -179,6 +179,7 @@ export default function AllContacts() {
               labels={labelData}
               onClose={() => setOpen(false)}
               labelIsLoading={labelIsLoading}
+              data={data}
             />
           </FormProvider>
           <Confirmation />

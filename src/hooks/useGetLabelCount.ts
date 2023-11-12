@@ -1,14 +1,21 @@
 // import mockedContacts from "__mocks__/mockedContacts.json";
 // import mockedLabels from "__mocks__/mockedLabels.json";
-// import getNotification from "utils/getNotificaton";
+import { Label, SingleContact } from "types";
+import getNotification from "utils/getNotificaton";
 
-export default function useGetLabelCount() {
-  //   // Create a map to store label counts
-  //   const labelCounts = new Map();
-  //   // Initialize label counts with 0 for each label
-  //   mockedLabels.forEach((label) => {
-  //     labelCounts.set(label.labelName, 0);
-  //   });
+interface Props {
+  contacts: SingleContact[] | undefined;
+  labels: Label[] | undefined;
+}
+
+export default function useGetLabelCount({ contacts, labels }: Props) {
+  if (!contacts || !labels) return;
+  // Create a map to store label counts
+  const labelCounts = new Map();
+  // Initialize label counts with 0 for each label
+  labels.forEach((label) => {
+    labelCounts.set(label.labelName, 0);
+  });
   //   // Count the number of times each label appears in contacts
   //   mockedContacts.forEach((contact) => {
   //     contact.labels.forEach((label) => {
