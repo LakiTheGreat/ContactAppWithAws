@@ -44,11 +44,17 @@ export default function ContactForm({
   labelObjects,
 }: Props) {
   const NewContactSchema = Yup.object().shape({
-    firstName: Yup.string().required("Must enter first name"),
-    lastName: Yup.string().required("Must enter last name"),
+    firstName: Yup.string()
+      .required("Must enter first name")
+      .max(50, "Max. characters is 50"),
+    lastName: Yup.string()
+      .required("Must enter last name")
+      .max(50, "Max. characters is 50"),
     // image: Yup.string().required("Must add image"),
     email: Yup.string().required("Must add email"),
-    phoneNumber: Yup.string().required("Must add phone number"),
+    phoneNumber: Yup.string()
+      .required("Must add phone number")
+      .max(30, "Max. characters is 30"),
   });
 
   const isDesktop = useResponsive("up", "lg");

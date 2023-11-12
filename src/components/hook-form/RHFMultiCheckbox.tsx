@@ -103,7 +103,8 @@ export function RHFMultiCheckbox({
   if (isLoading) return <CheckboxSkeleton />;
 
   const getMatchedLabelCount = (labelId: string) => {
-    const matchedLabel = matchedLabels.find((item) => item.labelId === labelId);
+    const matchedLabel =
+      matchedLabels && matchedLabels.find((item) => item.labelId === labelId);
     if (matchedLabel && matchedLabel.count !== 0) {
       return getNotification(matchedLabel.count);
     }

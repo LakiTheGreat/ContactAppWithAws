@@ -26,7 +26,10 @@ export default function LabelForm({
   onSubmit,
 }: Props) {
   const NewLabelSchema = Yup.object().shape({
-    labelName: Yup.string().required("Please enter label name"),
+    labelName: Yup.string()
+      .required("Please enter label name")
+      .min(3, "Label must have at least 3 characters")
+      .max(15, "Label can't have more than 15 characters"),
   });
 
   const methods = useForm<LabelFormValues>({
