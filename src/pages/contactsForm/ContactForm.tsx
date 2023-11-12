@@ -58,7 +58,7 @@ export default function ContactForm({
   });
 
   const isDesktop = useResponsive("up", "lg");
-
+  const isMobile = useResponsive("down", "sm");
   // const handleDropAvatar = useCallback((acceptedFiles: File[]) => {
   //   const file = acceptedFiles[0];
 
@@ -115,7 +115,7 @@ export default function ContactForm({
       <Stack gap={3} sx={{ width: isDesktop ? "1152px" : "100%" }}>
         <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
           <Stack
-            direction="row"
+            direction={isMobile ? "column" : "row"}
             justifyContent="space-between"
             alignItems="center"
             sx={{ mb: 1 }}
@@ -125,7 +125,7 @@ export default function ContactForm({
               <InputLabel id="select-label">Labels</InputLabel>
               {labelDataIsLoading && (
                 <>
-                  <Skeleton variant="rounded" width={240} height={65} />
+                  <Skeleton variant="rounded" width={240} height={56} />
                 </>
               )}
               {labelObjects && (
@@ -265,7 +265,7 @@ export default function ContactForm({
                 size="large"
                 aria-label="reset"
                 variant="outlined"
-                sx={{ width: "fit-content" }}
+                sx={{ width: isMobile ? "100%" : "fit-content" }}
                 disabled={!isDirty || isLoading}
               >
                 Reset
@@ -276,7 +276,7 @@ export default function ContactForm({
                 aria-label="submit"
                 type="submit"
                 variant="contained"
-                sx={{ width: "fit-content" }}
+                sx={{ width: isMobile ? "100%" : "fit-content" }}
               >
                 {value ? "Save" : "Create"}
               </LoadingButton>

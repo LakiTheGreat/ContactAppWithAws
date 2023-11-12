@@ -5,6 +5,7 @@ import Container from "@mui/material/Container";
 import { HEADER } from "../../../config";
 import { NavSectionHorizontal } from "../../../components/nav-section";
 import { navConfigFunction } from "./NavConfig";
+import useResponsive from "hooks/useResponsive";
 
 // ----------------------------------------------------------------------
 
@@ -18,7 +19,7 @@ const RootStyle = styled("div")(({ theme }) => ({
   zIndex: theme.zIndex.appBar,
   padding: theme.spacing(1, 0),
   boxShadow: theme.customShadows.z8,
-  top: HEADER.DASHBOARD_DESKTOP_OFFSET_HEIGHT,
+
   backgroundColor: theme.palette.background.default,
 }));
 
@@ -26,8 +27,15 @@ const RootStyle = styled("div")(({ theme }) => ({
 
 function NavbarHorizontal() {
   const navConfig = navConfigFunction();
+  const isMobile = useResponsive("down", "sm");
   return (
-    <RootStyle>
+    <RootStyle
+      sx={{
+        top: isMobile
+          ? HEADER.DASHBOARD_DESKTOP_OFFSET_HEIGHT + 140
+          : HEADER.DASHBOARD_DESKTOP_OFFSET_HEIGHT,
+      }}
+    >
       <Container maxWidth={false}>
         <NavSectionHorizontal navConfig={navConfig} />
       </Container>
