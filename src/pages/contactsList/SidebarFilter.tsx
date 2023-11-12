@@ -12,7 +12,7 @@ import Iconify from "components/Iconify";
 import { RHFMultiCheckbox } from "components/hook-form/RHFMultiCheckbox";
 import RHFSwitch from "components/hook-form/RHFSwitch";
 import { Label } from "types";
-import LabelModal from "components/LabelModal";
+import CreateLabel from "pages/labelsForm/CreateLabel";
 
 type Props = {
   open: boolean;
@@ -88,7 +88,7 @@ export default function SidebarFilter({
               >
                 Create new label
               </Button>
-              <LabelModal
+              <CreateLabel
                 isOpen={isOpen}
                 handleClose={() => setIsOpen(false)}
               />

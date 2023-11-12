@@ -19,6 +19,9 @@ export type SingeContactFormValues = {
   phoneNumber: string;
   labels: string[];
 };
+export type LabelFormValues = {
+  labelName: string;
+};
 
 export type Label = {
   userId: string;

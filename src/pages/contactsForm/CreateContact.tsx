@@ -8,7 +8,8 @@ import { useCreateContactMutation } from "api/contacts";
 import { useGetAllLabelsQuery } from "api/labels";
 
 export default function CreateContact() {
-  const [createContact, { data, isLoading }] = useCreateContactMutation();
+  const [createContact, { data, isLoading, isError }] =
+    useCreateContactMutation();
   const { data: labelData, isLoading: labelDataIsLoading } =
     useGetAllLabelsQuery(undefined);
   const { enqueueSnackbar } = useSnackbar();
@@ -22,15 +23,23 @@ export default function CreateContact() {
     createContact(unsavedContact);
   };
 
-  const isSuccess = data?.data.$metadata.httpStatusCode === 200;
-
+  const isSuccess = data;
+  
   useEffect(() => {
-    isSuccess &&
+    data &&
       enqueueSnackbar("Contact successfully created", {
         variant: "success",
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSuccess]);
+  }, [data]);
+
+  useEffect(() => {
+    isError &&
+      enqueueSnackbar("Contact was not created. Something went wrong!", {
+        variant: "error",
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isError]);
 
   return (
     <Page title="Create new contact">

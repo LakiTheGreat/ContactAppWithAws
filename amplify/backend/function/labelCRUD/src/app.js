@@ -92,6 +92,11 @@ app.get(path, async function (req, res) {
 
   try {
     const data = await ddbDocClient.send(new QueryCommand(params));
+    // Check if data.Items is not empty
+    if (data.Items && data.Items.length > 0) {
+      // Sort the array based on the labelName field
+      data.Items.sort((a, b) => (a.labelName > b.labelName ? 1 : -1));
+    }
     res.json(data.Items);
   } catch (err) {
     res.statusCode = 500;

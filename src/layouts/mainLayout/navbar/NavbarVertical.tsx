@@ -17,7 +17,7 @@ import CollapseButton from "./CollapseButton";
 import { NAVBAR } from "../../../config";
 import { CONTACTS_ROUTES } from "routes/paths";
 import Logo from "components/Logo";
-import LabelModal from "components/LabelModal";
+import LabelModal from "pages/labelsForm/CreateLabel";
 import { signOut } from "api/asyncFunctions/contacts";
 
 const RootStyle = styled("div")(({ theme }) => ({
