@@ -72,7 +72,8 @@ export function RHFMultiCheckbox({
   const [labelToEdit, setLabelToEdit] = useState<Label | null>(null);
   const [deleteLabel, { data, isLoading, isError }] =
     useDeleteOneLabelMutation(undefined);
-  const [editContact] = useEditContactMutation(undefined);
+  const [editContact, { isLoading: editContactIsLoading }] =
+    useEditContactMutation(undefined);
 
   const matchedLabels: MatchedLabel[] = useGetLabelCount({
     contacts: contacts,
@@ -121,10 +122,12 @@ export function RHFMultiCheckbox({
       confirmLabel: `Delete`,
     });
 
-    isConfirmed && deleteLabel(label.labelId);
-    removeDeletedLabelFromContacts();
+    if (isConfirmed) {
+      deleteLabel(label.labelId);
+      removeDeletedLabelFromContacts();
+    }
   };
-  if (isLoading) return <CheckboxSkeleton />;
+  if (isLoading || editContactIsLoading) return <CheckboxSkeleton />;
 
   const getMatchedLabelCount = (labelId: string) => {
     const matchedLabel =
