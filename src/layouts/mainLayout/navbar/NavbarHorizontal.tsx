@@ -4,8 +4,9 @@ import Container from "@mui/material/Container";
 
 import { HEADER } from "../../../config";
 import { NavSectionHorizontal } from "../../../components/nav-section";
-import { navConfigFunction } from "./NavConfig";
 import useResponsive from "hooks/useResponsive";
+
+import { navConfigFunction } from "./NavConfig";
 
 // ----------------------------------------------------------------------
 

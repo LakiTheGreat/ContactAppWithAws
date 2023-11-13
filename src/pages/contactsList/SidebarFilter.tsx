@@ -11,10 +11,11 @@ import AddIcon from "@mui/icons-material/Add";
 import Iconify from "components/Iconify";
 import { RHFMultiCheckbox } from "components/hook-form/RHFMultiCheckbox";
 import RHFSwitch from "components/hook-form/RHFSwitch";
-import { Label, SingleContact } from "types";
 import CreateLabel from "pages/labelsForm/CreateLabel";
 import CheckboxSkeleton from "components/CheckboxSkeleton";
 import useGetChipsWithNumberOfContacts from "utils/useGetChipsWithNumberOfContacts";
+
+import { Label, SingleContact } from "types";
 
 type Props = {
   open: boolean;

@@ -4,10 +4,10 @@ import Modal from "@mui/material/Modal";
 import { useSnackbar } from "notistack";
 
 import { useCreateLabelMutation } from "api/labels";
-import { LabelFormValues } from "types";
-import LabelForm from "./LabelForm";
 import useResponsive from "hooks/useResponsive";
 
+import LabelForm from "./LabelForm";
+import { LabelFormValues } from "types";
 interface Props {
   isOpen: boolean;
   handleClose: () => void;

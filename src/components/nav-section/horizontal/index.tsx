@@ -1,12 +1,8 @@
 import { memo } from "react";
 import Stack from "@mui/material/Stack";
-import Box from "@mui/material/Box";
 
 import { NavSectionProps } from "../type";
 import { NavListRoot } from "./NavList";
-import Logo from "components/Logo";
-
-// ----------------------------------------------------------------------
 
 const hideScrollbar = {
   msOverflowStyle: "none",

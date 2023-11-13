@@ -1,5 +1,6 @@
 import { API } from "aws-amplify";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+
 import { Label } from "types";
 
 const apiName = "apiContactApp";

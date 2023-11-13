@@ -1,6 +1,7 @@
-import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query/fetchBaseQuery";
-import { CognitoUser } from "amazon-cognito-identity-js";
 import { API, Auth } from "aws-amplify";
+import { CognitoUser } from "amazon-cognito-identity-js";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query/fetchBaseQuery";
+
 import { SingleContact, UnsavedSingleContact } from "types";
 
 const apiName = "apiContactApp";
@@ -30,10 +31,6 @@ export async function getCurrentUser(): Promise<
 export async function getAllContacts(): Promise<
   { data: any } | { error: FetchBaseQueryError }
 > {
-  // const user: CognitoUser = await Auth.currentAuthenticatedUser();
-  // const username = await user.getUsername();
-  //   const token = user.getSignInUserSession()?.getAccessToken().getJwtToken();
-
   try {
     const data = await API.get(apiName, `${path}`, {});
     return { data: data };
@@ -48,9 +45,6 @@ export async function getContactById(
   contactId: string
 ): Promise<{ data: SingleContact } | { error: FetchBaseQueryError }> {
   try {
-    // const user = await Auth.currentAuthenticatedUser();
-    // const userId = user.attributes.sub;
-
     const data = await API.get(apiName, `${path}/object/${contactId}`, {});
     return { data: data };
   } catch (error) {
@@ -59,6 +53,7 @@ export async function getContactById(
     };
   }
 }
+
 export async function createContact(
   contact: UnsavedSingleContact
 ): Promise<{ data: any } | { error: FetchBaseQueryError }> {
@@ -71,6 +66,7 @@ export async function createContact(
     };
   }
 }
+
 export async function editContact(
   contact: SingleContact
 ): Promise<{ data: any } | { error: FetchBaseQueryError }> {

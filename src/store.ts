@@ -4,7 +4,7 @@ import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 
 import userReducer from "./storeSlices/userSlice";
-import { api } from "api/api";
+import { api } from "api";
 
 const persistConfig = {
   key: "contactApp",

@@ -1,11 +1,11 @@
 import { GridColDef } from "@mui/x-data-grid";
 import Stack from "@mui/material/Stack";
-// import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 
 import DataGridRowActions from "components/DataGridRowActions";
-import { SingleContact } from "types";
 import useResponsive from "hooks/useResponsive";
+
+import { SingleContact } from "types";
 
 type Actions = {
   handleFavorite: (contact: SingleContact) => void;

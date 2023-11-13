@@ -1,16 +1,16 @@
+import { useSnackbar } from "notistack";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { skipToken } from "@reduxjs/toolkit/dist/query/react";
 
 import Page from "components/Page";
-import ContactForm from "./ContactForm";
-
 import { useEditContactMutation, useGetContactByIdQuery } from "api/contacts";
 import LoadingScreen from "components/LoadingScreen";
-import { SingeContactFormValues, SingleContact } from "types";
 import Page404 from "components/Page404";
-import { useEffect } from "react";
-import { useSnackbar } from "notistack";
 import { useGetAllLabelsQuery } from "api/labels";
+
+import { SingeContactFormValues, SingleContact } from "types";
+import ContactForm from "./ContactForm";
 
 export default function EditContact() {
   const { id } = useParams();

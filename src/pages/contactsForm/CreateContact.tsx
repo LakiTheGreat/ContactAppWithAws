@@ -2,10 +2,11 @@ import { useSnackbar } from "notistack";
 import { useEffect } from "react";
 
 import Page from "components/Page";
-import ContactForm from "./ContactForm";
-import { SingeContactFormValues, UnsavedSingleContact } from "types";
 import { useCreateContactMutation } from "api/contacts";
 import { useGetAllLabelsQuery } from "api/labels";
+
+import { SingeContactFormValues, UnsavedSingleContact } from "types";
+import ContactForm from "./ContactForm";
 
 export default function CreateContact() {
   const [createContact, { data, isLoading, isError }] =
@@ -24,7 +25,7 @@ export default function CreateContact() {
   };
 
   const isSuccess = data;
-  
+
   useEffect(() => {
     data &&
       enqueueSnackbar("Contact successfully created", {

@@ -4,7 +4,6 @@ import { ReactNode } from "react";
 import { AUTH_ROUTES } from "routes/paths";
 import { useGetCurrentUserQuery } from "api/auth";
 import DashboardLayout from "layouts/mainLayout";
-import { useAppSelector } from "hooks/storeHooks";
 
 type Props = {
   children: ReactNode;
@@ -12,7 +11,6 @@ type Props = {
 
 export default function AuthGuard({ children }: Props) {
   const location = useLocation();
-  const user = useAppSelector((state) => state.user.authUser);
   const { data, isLoading } = useGetCurrentUserQuery(undefined);
 
   if (isLoading) {

@@ -65,6 +65,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/lodash": "^4.14.200",
     "@types/numeral": "^2.0.4",
     "@types/react-lazy-load-image-component": "^1.6.2"

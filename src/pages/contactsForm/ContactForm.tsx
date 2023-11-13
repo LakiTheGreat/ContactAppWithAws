@@ -1,9 +1,7 @@
-// import { useCallback } from "react";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
 import Chip from "@mui/material/Chip";
-// import Card from "@mui/material/Card";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
@@ -14,12 +12,8 @@ import FormControl from "@mui/material/FormControl";
 import LoadingButton from "@mui/lab/LoadingButton";
 import InputLabel from "@mui/material/InputLabel";
 import Skeleton from "@mui/material/Skeleton";
-// import Resizer from "react-image-file-resizer";
 
 import FormProvider from "components/hook-form/FormProvider";
-
-// import RHFUploadAvatar from "components/hook-form/RHFUpload";
-// import { extractExtensions } from "utils/extractExtensions";
 import useResponsive from "hooks/useResponsive";
 import { useEffect } from "react";
 import { Label, SingeContactFormValues } from "types";
@@ -50,7 +44,6 @@ export default function ContactForm({
     lastName: Yup.string()
       .required("Must enter last name")
       .max(50, "Max. characters is 50"),
-    // image: Yup.string().required("Must add image"),
     email: Yup.string().required("Must add email"),
     phoneNumber: Yup.string()
       .required("Must add phone number")
@@ -59,32 +52,6 @@ export default function ContactForm({
 
   const isDesktop = useResponsive("up", "lg");
   const isMobile = useResponsive("down", "sm");
-  // const handleDropAvatar = useCallback((acceptedFiles: File[]) => {
-  //   const file = acceptedFiles[0];
-
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.addEventListener("load", () => {
-  //       new Promise((resolve) => {
-  //         Resizer.imageFileResizer(
-  //           file,
-  //           280,
-  //           280,
-  //           "JPEG",
-  //           90,
-  //           0,
-  //           (uri: any) => {
-  //             setValue("image", uri as string, { shouldDirty: true });
-  //             resolve(uri);
-  //           },
-  //           "base64"
-  //         );
-  //       });
-  //     });
-  //     reader.readAsDataURL(file);
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
 
   const methods = useForm<SingeContactFormValues>({
     resolver: yupResolver(NewContactSchema),
@@ -177,16 +144,6 @@ export default function ContactForm({
           </Stack>
           <Stack gap={2}>
             <Stack direction="row" gap={3}>
-              {/* <Card sx={{ mb: 0, py: 3, flex: 1 }}>
-                <Stack justifyContent="center" sx={{ height: "100%" }}>
-                  <RHFUploadAvatar
-                    name="image"
-                    accept={extractExtensions()}
-                    maxSize={3000000}
-                    onDrop={handleDropAvatar}
-                  />
-                </Stack>
-              </Card> */}
               <Stack flex={2}>
                 <Stack direction="row" gap={2}>
                   <Controller
