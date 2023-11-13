@@ -1,19 +1,20 @@
-# Contact App Frontend Shell
+# Contact App
 
-This is a barebones application. It's a frontend project developed in React. The concept behind this project is to offer a frontend template, essentially a sandbox, for other projects.
+This serves as an illustration of an application featuring straightforward business logic. The emphasis throughout the entire project was on leveraging AWS technologies. The focus wasn't directed towards UI/UX or comprehensive functionality, but rather on showcasing the seamless integration of fundamental AWS services—a valuable reference for future projects.
 
-"Shell" in this context means that the Contact app serves as a basic framework or structure with user interface components and some minimal functionality but lacks in-depth or fully implemented features. It provides a starting point for building a more complex application but doesn't perform any substantial actions on its own. Buttons and elements may be present, but they don't have real functionality beyond basic rendering or routing
+### What AWS services were implemented?
 
-All data is mocked and can be found in "__mock__" folder.
+1. Amplify: This versatile tool seamlessly manages various AWS services, providing robust capabilities for authorization, authentication, and CI/CD processes.
+2. API Gateway: Integral to the system, it facilitates streamlined access to resources within databases.
+3. Cognito: Serving as the user pool manager, Cognito ensures secure and efficient user authentication.
+4. IAM: Utilized for crafting roles and policies, IAM enhances access control and security measures.
+5. DynamoDB: This dynamic database solution excels in storing and retrieving data swiftly and efficiently.
+6. Lambda: At the core of backend services, Lambda offers scalability and an event-driven architecture for optimal performance.
+7. CodeCommit: Functioning as the repository for code, CodeCommit integrates seamlessly with Amplify, playing a key role in the CI/CD pipeline.
 
-### What this app HAS? 
-1.  Material UI, 
-2.  React-hook forms (with Yup),
-3.  React-router-dom
+### Other important technology?
 
-### What this app HAS NOT? 
-1.  No store of any kind,
-2.  Feching library
+1.  React Toolkit Query: that is used for async calling of Amplify CRUD functions anc caching the results.
 
 In the project directory, you can run:
 
@@ -21,14 +22,6 @@ In the project directory, you can run:
 
 To everything that is needed, and then:
 
-
 ### `npm start`
 
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-
-**Feel free to make any changes to the app, including the already installed libraries. There is no data storage or retrieval mechanisms in place, providing you with the flexibility to adapt this project to your specific requirements. We encourage you to tailor it according to your needs rather than pushing you towards predefined solutions.**
-
-P.S. There is a single component responsible for rendering all contacts, including those in 'All' and 'Favorites' categories, as well as contacts with existing and potential future labels. When the URL changes, the component dynamically updates the displayed data. Feel free to modify this approach according to your preferences.
-
-
