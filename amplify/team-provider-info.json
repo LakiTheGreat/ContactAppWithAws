@@ -13,6 +13,9 @@
       "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-contactapp-dev-141736-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
+      "auth": {
+        "contactapp": {}
+      },
       "function": {
         "crudContactApp": {
           "deploymentBucketName": "amplify-contactapp-dev-141736-deployment",
@@ -23,15 +26,9 @@
           "s3Key": "amplify-builds/labelCRUD-477766346f3368647358-build.zip"
         }
       },
-      "auth": {
-        "contactapp": {}
-      },
       "storage": {
         "dynamoContactApp": {},
         "dynamoContactAppLabels": {}
-      },
-      "api": {
-        "apiContactApp": {}
       }
     }
   }
