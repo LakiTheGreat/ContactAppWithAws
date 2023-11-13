@@ -11,6 +11,7 @@ This serves as an illustration of an application featuring straightforward busin
 5. DynamoDB: This dynamic database solution excels in storing and retrieving data swiftly and efficiently.
 6. Lambda: At the core of backend services, Lambda offers scalability and an event-driven architecture for optimal performance.
 7. CodeCommit: Functioning as the repository for code, CodeCommit integrates seamlessly with Amplify, playing a key role in the CI/CD pipeline.
+8. CloudWatch: Monitoring the usage of resources and data in the app.
 
 ### Other important technology?
 
