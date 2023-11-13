@@ -16,12 +16,12 @@ This serves as an illustration of an application featuring straightforward busin
 
 1.  React Toolkit Query: that is used for async calling of Amplify CRUD functions anc caching the results.
 
-In the project directory, you can run:
+In the project directory root folder (CONTACTAPP), you can run:
 
-### `npm install`, in frontend folder
+### `npm install`,
 
-To everything that is needed, and then:
+and then:
 
 ### `npm start`
 
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Open [http://localhost:3000](http://localhost:3000)
