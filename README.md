@@ -19,7 +19,7 @@ This serves as an illustration of an application featuring straightforward busin
 
 In the project directory root folder (CONTACTAPP), you can run:
 
-### `npm install`,
+### `npm install`
 
 and then:
 
