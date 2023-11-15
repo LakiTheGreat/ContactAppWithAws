@@ -2,6 +2,8 @@
 
 This serves as an illustration of an application featuring straightforward business logic. The emphasis throughout the entire project was on leveraging AWS technologies. The focus wasn't directed towards UI/UX or comprehensive functionality, but rather on showcasing the seamless integration of fundamental AWS services—a valuable reference for future projects.
 
+You can test the deployed app on this url: https://master.d1e71nawn2eyw0.amplifyapp.com/
+
 ### What AWS services were implemented?
 
 1. Amplify: This versatile tool seamlessly manages various AWS services, providing robust capabilities for authorization, authentication, and CI/CD processes.
