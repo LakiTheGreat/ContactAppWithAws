@@ -75,7 +75,7 @@ export default function AllContacts() {
 
   useEffect(() => {
     deleteManyContactData &&
-      enqueueSnackbar("Multiple contacts were successfully deleted.", {
+      enqueueSnackbar(`Number of deleted contacts: ${selectedIds.length}`, {
         variant: "success",
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
