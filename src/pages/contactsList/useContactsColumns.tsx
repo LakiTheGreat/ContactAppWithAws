@@ -74,6 +74,7 @@ export default function useContactsColumns(actions: Actions) {
       headerName: "",
       flex: 1,
       minWidth: 150,
+      sortable: false,
       renderCell: ({ row }) => (
         <DataGridRowActions
           onFavorite={() => actions.handleFavorite(row)}
