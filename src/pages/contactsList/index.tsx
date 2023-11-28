@@ -106,8 +106,13 @@ export default function AllContacts() {
     reset();
   };
 
-  const handleBatchDelete = () => {
-    deleteManyContacts(selectedIds);
+  const handleBatchDelete = async () => {
+    const isConfirmed = await getConfirmation({
+      title: "Delete multiple contacts",
+      contentText: `Are you sure you want to delete multiple contacts: ${selectedIds.length}`,
+      confirmLabel: `Delete`,
+    });
+    isConfirmed && deleteManyContacts(selectedIds);
   };
 
   const handleFavorite = (contact: SingleContact) => {
