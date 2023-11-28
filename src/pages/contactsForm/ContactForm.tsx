@@ -194,7 +194,7 @@ export default function ContactForm({
                   <RHFUploadAvatar
                     name="image"
                     accept={extractExtensions()}
-                    maxSize={3000000}
+                    // maxSize={3000000}
                     onDrop={handleDropAvatar}
                     helperText={<RHFUploadCaption />}
                   />
