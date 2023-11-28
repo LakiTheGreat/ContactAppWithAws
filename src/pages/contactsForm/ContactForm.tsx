@@ -117,7 +117,7 @@ export default function ContactForm({
   }, [isSuccess]);
 
   return (
-    <Stack alignItems="center" sx={{ m: 5 }}>
+    <Stack alignItems="center" sx={{ p: 5 }}>
       <Stack gap={3} sx={{ width: isDesktop ? "1152px" : "100%" }}>
         <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
           <Stack
