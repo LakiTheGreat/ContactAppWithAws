@@ -169,6 +169,12 @@ export default function ContactForm({
                           </div>
                         )}
                       >
+                        {!labelObjects.length && (
+                          <Typography sx={{ p: 1 }}>
+                            You have no labels created. Click on "filter" button
+                            in MyContacts to create a new one.
+                          </Typography>
+                        )}
                         {labelObjects?.map((label: Label) => (
                           <MenuItem key={label.labelId} value={label.labelId}>
                             {label.labelName}
