@@ -2,8 +2,10 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
 import Chip from "@mui/material/Chip";
+import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -12,11 +14,16 @@ import FormControl from "@mui/material/FormControl";
 import LoadingButton from "@mui/lab/LoadingButton";
 import InputLabel from "@mui/material/InputLabel";
 import Skeleton from "@mui/material/Skeleton";
+import Resizer from "react-image-file-resizer";
+import DeleteIcon from "@mui/icons-material/DeleteOutline";
 
 import FormProvider from "components/hook-form/FormProvider";
 import useResponsive from "hooks/useResponsive";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { Label, SingeContactFormValues } from "types";
+import RHFUploadAvatar from "components/hook-form/RHFUploadAvatar";
+import { extractExtensions } from "utils/extractExtensions";
+import RHFUploadCaption from "components/hook-form/RHFUploadCaption";
 
 interface Props {
   title: string;
@@ -53,10 +60,41 @@ export default function ContactForm({
   const isDesktop = useResponsive("up", "lg");
   const isMobile = useResponsive("down", "sm");
 
+  const handleRemoveImage = () => {
+    setValue("image", "");
+  };
+
+  const handleDropAvatar = useCallback((acceptedFiles: File[]) => {
+    const file = acceptedFiles[0];
+
+    if (file) {
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        new Promise((resolve) => {
+          Resizer.imageFileResizer(
+            file,
+            280,
+            280,
+            "JPEG",
+            90,
+            0,
+            (uri) => {
+              setValue("image", uri as string);
+              resolve(uri);
+            },
+            "base64"
+          );
+        });
+      });
+      reader.readAsDataURL(file);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const methods = useForm<SingeContactFormValues>({
     resolver: yupResolver(NewContactSchema),
     defaultValues: {
-      // image: value?.image || "",
+      image: value?.image || "",
       firstName: value?.firstName || "",
       lastName: value?.lastName || "",
       email: value?.email || "",
@@ -70,6 +108,7 @@ export default function ContactForm({
     handleSubmit,
     reset,
     formState: { isDirty },
+    setValue,
   } = methods;
 
   useEffect(() => {
@@ -144,7 +183,21 @@ export default function ContactForm({
           </Stack>
           <Stack gap={2}>
             <Stack direction="row" gap={3}>
-              <Stack flex={2}>
+              <Stack flex={2} gap={1}>
+                <Stack alignItems="center">
+                  <RHFUploadAvatar
+                    name="image"
+                    accept={extractExtensions()}
+                    maxSize={3000000}
+                    onDrop={handleDropAvatar}
+                    helperText={<RHFUploadCaption />}
+                  />
+                  <Box>
+                    <IconButton aria-label="remove" onClick={handleRemoveImage}>
+                      <DeleteIcon fontSize="small" />
+                    </IconButton>
+                  </Box>
+                </Stack>
                 <Stack direction="row" gap={2}>
                   <Controller
                     name="firstName"

@@ -6,6 +6,7 @@ import DataGridRowActions from "components/DataGridRowActions";
 import useResponsive from "hooks/useResponsive";
 
 import { SingleContact } from "types";
+import { Avatar } from "@mui/material";
 
 type Actions = {
   handleFavorite: (contact: SingleContact) => void;
@@ -18,14 +19,28 @@ export default function useContactsColumns(actions: Actions) {
   const columns: GridColDef[] = [
     {
       field: "firstName",
+      renderHeader: () => (
+        <Typography sx={{ ml: 8.5 }} variant="subtitle2">
+          First Name
+        </Typography>
+      ),
       headerName: "First name",
       flex: 1,
       minWidth: isMobile ? 120 : 170,
-      renderCell: ({ value }) => (
-        <Stack gap={2} direction="row" alignItems="center">
-          <Typography variant="body2">{value}</Typography>
-        </Stack>
-      ),
+      renderCell: ({ row }) => {
+        const initials = row.firstName.slice(0, 1) + row.lastName.slice(0, 1);
+
+        return (
+          <Stack gap={2} direction="row" alignItems="center" ml={2}>
+            <Avatar
+              alt="user image"
+              src={row?.image}
+              {...(initials && { children: initials })}
+            />
+            <Typography variant="subtitle2">{row.firstName}</Typography>
+          </Stack>
+        );
+      },
     },
     {
       field: "lastName",

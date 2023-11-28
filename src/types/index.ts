@@ -1,7 +1,7 @@
 export type SingleContact = {
   userId: string;
   contactId: string;
-  // image: string;
+  image: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -18,6 +18,7 @@ export type SingeContactFormValues = {
   email: string;
   phoneNumber: string;
   labels: string[];
+  image: string;
 };
 export type LabelFormValues = {
   labelName: string;

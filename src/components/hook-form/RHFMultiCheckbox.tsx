@@ -1,4 +1,3 @@
-// form
 import { useFormContext, Controller } from "react-hook-form";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -107,7 +106,7 @@ export function RHFMultiCheckbox({
         contact.labels.includes(label.labelId)
       );
 
-      contactsWithDeletedLabel.map((contact) => {
+      contactsWithDeletedLabel.forEach((contact) => {
         const filteredLabels = contact.labels.filter(
           (lab) => lab !== label.labelId
         );

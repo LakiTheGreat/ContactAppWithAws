@@ -156,7 +156,7 @@ export default function AllContacts() {
               sorting: { sortModel: [{ field: "firstName", sort: "asc" }] },
             }}
             rows={filteredContacts}
-            rowHeight={40}
+            rowHeight={50}
             columns={columns}
             loading={somethingIsLoading}
             getRowId={(row) => row.contactId}

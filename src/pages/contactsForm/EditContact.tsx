@@ -24,7 +24,7 @@ export default function EditContact() {
     editContact,
     { data: editContactData, isLoading: editContactIsLoading },
   ] = useEditContactMutation();
-
+  console.log("useGetContact", data);
   const handleEdit = (value: SingeContactFormValues) => {
     if (!data) return;
     const contact: SingleContact = {
@@ -34,6 +34,7 @@ export default function EditContact() {
       contactId: data.contactId,
     };
     editContact(contact);
+    console.log("editedt contact", contact);
   };
 
   const isSuccess = editContactData?.data.$metadata.httpStatusCode === 200;
@@ -67,6 +68,7 @@ export default function EditContact() {
           email: data.email,
           phoneNumber: data.phoneNumber,
           labels: data?.labels,
+          image: data?.image,
         }}
         labelObjects={labelData}
         labelDataIsLoading={labelDataIsLoading}
