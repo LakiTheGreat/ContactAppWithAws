@@ -11,9 +11,10 @@ import useOffSetTop from "hooks/useOffSetTop";
 import cssStyles from "utils/cssStyles";
 import { HEADER } from "config";
 import Logo from "components/Logo";
-import { signOut } from "api/asyncFunctions/contacts";
+
 import { useAppSelector } from "hooks/storeHooks";
 import useResponsive from "hooks/useResponsive";
+import { signOut } from "api/asyncFunctions/auth";
 
 // ----------------------------------------------------------------------
 

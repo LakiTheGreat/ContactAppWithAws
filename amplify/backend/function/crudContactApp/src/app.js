@@ -13,16 +13,21 @@ const {
   GetCommand,
   PutCommand,
   QueryCommand,
-  ScanCommand,
 } = require("@aws-sdk/lib-dynamodb");
 const awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
 const bodyParser = require("body-parser");
 const express = require("express");
+const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
+
+let region = "us-east-1";
 
 const ddbClient = new DynamoDBClient({ region: process.env.TABLE_REGION });
 const ddbDocClient = DynamoDBDocumentClient.from(ddbClient);
+const s3Client = new S3Client({ region: region });
 
 let tableName = "Contacts";
+let bucketName = "images141736-dev";
 
 if (process.env.ENV && process.env.ENV !== "NONE") {
   tableName = tableName + "-" + process.env.ENV;
@@ -38,6 +43,8 @@ const path = "/contacts";
 const UNAUTH = "UNAUTH";
 const hashKeyPath = "/:" + partitionKeyName;
 const sortKeyPath = hasSortKey ? "/:" + sortKeyName : "";
+
+const PRESIGNED_URL_EXPIRATION_SECONDS = 300;
 
 // declare a new express app
 const app = express();
@@ -70,12 +77,32 @@ const getUserIdFromRequest = (req) => {
   return userId;
 };
 
+const getPresignedUrl = async (key, cognitoIdentityId) => {
+  try {
+    const command = new GetObjectCommand({
+      Bucket: bucketName,
+      // Key: `public/${key}`,
+      Key: `private/${cognitoIdentityId}/${key}`,
+    });
+
+    const presignedUrl = await getSignedUrl(s3Client, command, {
+      expiresIn: PRESIGNED_URL_EXPIRATION_SECONDS,
+    });
+
+    return presignedUrl;
+  } catch (error) {
+    console.error("Error getting presigned URL:", error);
+    throw error;
+  }
+};
 /************************************
  * HTTP Get method to list objects *
  ************************************/
 
 app.get(path, async function (req, res) {
   const userId = getUserIdFromRequest(req);
+  const cognitoIdentityId =
+    req.apiGateway.event.requestContext.identity.cognitoIdentityId;
 
   var params = {
     TableName: tableName,
@@ -92,7 +119,16 @@ app.get(path, async function (req, res) {
 
   try {
     const data = await ddbDocClient.send(new QueryCommand(params));
-    res.json(data.Items);
+    const itemsWithPresignedUrl = await Promise.all(
+      data.Items.map(async (item) => {
+        const presignedUrl = await getPresignedUrl(
+          item.image,
+          cognitoIdentityId
+        );
+        return { ...item, image: presignedUrl };
+      })
+    );
+    res.json(itemsWithPresignedUrl);
   } catch (err) {
     res.statusCode = 500;
     res.json({ error: "Could not load items: " + err.message });
@@ -131,6 +167,7 @@ app.get(path + hashKeyPath, async function (req, res) {
 
   try {
     const data = await ddbDocClient.send(new QueryCommand(queryParams));
+
     res.json(data.Items);
   } catch (err) {
     res.statusCode = 500;
@@ -145,7 +182,8 @@ app.get(path + hashKeyPath, async function (req, res) {
 // /contacts/object/:contactId
 app.get(path + "/object" + sortKeyPath, async function (req, res) {
   const userId = getUserIdFromRequest(req);
-
+  const cognitoIdentityId =
+    req.apiGateway.event.requestContext.identity.cognitoIdentityId;
   const params = {};
   if (userIdPresent && req.apiGateway) {
     params[partitionKeyName] = userId || UNAUTH;
@@ -172,7 +210,12 @@ app.get(path + "/object" + sortKeyPath, async function (req, res) {
   try {
     const data = await ddbDocClient.send(new GetCommand(getItemParams));
     if (data.Item) {
-      res.json(data.Item);
+      const presignedUrl = await getPresignedUrl(
+        data.Item.image,
+        cognitoIdentityId
+      );
+      const itemWithPresignedUrl = { ...data.Item, image: presignedUrl };
+      res.json(itemWithPresignedUrl);
     } else {
       res.json(data);
     }

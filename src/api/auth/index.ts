@@ -1,5 +1,5 @@
 import { api } from "api";
-import { getCurrentUser } from "api/asyncFunctions/contacts";
+import { getCurrentUser } from "api/asyncFunctions/auth";
 
 const authApiEndpoints = api.injectEndpoints({
   endpoints: (build) => ({

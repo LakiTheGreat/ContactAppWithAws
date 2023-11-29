@@ -1,32 +1,10 @@
-import { API, Auth, Storage } from "aws-amplify";
-import { CognitoUser } from "amazon-cognito-identity-js";
+import { API, Storage } from "aws-amplify";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query/fetchBaseQuery";
 
 import { SingleContact, UnsavedSingleContact } from "types";
 
 const apiName = "apiContactApp";
 const path = "/contacts";
-
-export async function signOut() {
-  try {
-    await Auth.signOut();
-  } catch (error) {
-    console.log("error signing out: ", error);
-  }
-}
-
-export async function getCurrentUser(): Promise<
-  { data: CognitoUser } | { error: FetchBaseQueryError }
-> {
-  try {
-    const user = await Auth.currentAuthenticatedUser();
-    return { data: user };
-  } catch (error) {
-    return {
-      error: error as FetchBaseQueryError,
-    };
-  }
-}
 
 export async function getAllContacts(): Promise<
   { data: any } | { error: FetchBaseQueryError }
@@ -117,9 +95,7 @@ export async function uploadImageToS3(
       level: "private",
     });
 
-    const imageUrl = await Storage.get(result.key, { level: "private" });
-
-    return { data: imageUrl };
+    return { data: result.key };
   } catch (error) {
     return {
       error: error as FetchBaseQueryError,
