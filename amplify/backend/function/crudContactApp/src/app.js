@@ -125,7 +125,7 @@ app.get(path, async function (req, res) {
           item.image,
           cognitoIdentityId
         );
-        return { ...item, image: presignedUrl };
+        return { ...item, image: presignedUrl, imageKey: item.image };
       })
     );
     res.json(itemsWithPresignedUrl);
@@ -214,7 +214,11 @@ app.get(path + "/object" + sortKeyPath, async function (req, res) {
         data.Item.image,
         cognitoIdentityId
       );
-      const itemWithPresignedUrl = { ...data.Item, image: presignedUrl };
+      const itemWithPresignedUrl = {
+        ...data.Item,
+        image: presignedUrl,
+        imageKey: data.Item.image,
+      };
       res.json(itemWithPresignedUrl);
     } else {
       res.json(data);

@@ -5,11 +5,11 @@ import Typography from "@mui/material/Typography";
 import DataGridRowActions from "components/DataGridRowActions";
 import useResponsive from "hooks/useResponsive";
 
-import { SingleContact } from "types";
+import { SingleContactWithImageKey } from "types";
 import { Avatar } from "@mui/material";
 
 type Actions = {
-  handleFavorite: (contact: SingleContact) => void;
+  handleFavorite: (contact: SingleContactWithImageKey) => void;
   handleDelete: (contactId: string) => void;
   handleEdit: (contactId: string) => void;
 };

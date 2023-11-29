@@ -10,6 +10,10 @@ export type SingleContact = {
   labels: string[];
 };
 
+export type SingleContactWithImageKey = SingleContact & {
+  imageKey: string;
+};
+
 export type UnsavedSingleContact = Omit<SingleContact, "userId" | "contactId">;
 
 export type SingeContactFormValues = {

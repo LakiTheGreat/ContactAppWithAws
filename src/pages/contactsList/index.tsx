@@ -20,7 +20,11 @@ import {
 import SidebarFilter from "./SidebarFilter";
 import applyFilterForContacts from "utils/applyFilterForContacts";
 import useResponsive from "hooks/useResponsive";
-import { SidebarFilters, SingleContact } from "types";
+import {
+  SidebarFilters,
+  SingleContact,
+  SingleContactWithImageKey,
+} from "types";
 import { useSnackbar } from "notistack";
 import { useGetAllLabelsQuery } from "api/labels";
 
@@ -115,9 +119,10 @@ export default function AllContacts() {
     isConfirmed && deleteManyContacts(selectedIds);
   };
 
-  const handleFavorite = (contact: SingleContact) => {
+  const handleFavorite = (contact: SingleContactWithImageKey) => {
     const newContact: SingleContact = {
       ...contact,
+      image: contact.imageKey,
       isFavorite: contact.isFavorite ? false : true,
     };
     editContact(newContact);

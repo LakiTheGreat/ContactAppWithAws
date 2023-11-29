@@ -36,8 +36,10 @@ export default function EditContact() {
     if (!data) return;
 
     if (!value.imageForUpload) {
-      const contact: SingleContact = {
-        ...value,
+      const { imageForUpload, ...rest } = value;
+      const contact: any = {
+        ...rest,
+        image: data.imageKey,
         isFavorite: data.isFavorite,
         userId: data.userId,
         contactId: data.contactId,
