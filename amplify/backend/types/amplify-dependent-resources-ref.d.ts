@@ -53,6 +53,10 @@ export type AmplifyDependentResourcesAttributes = {
       "SortKeyName": "string",
       "SortKeyType": "string",
       "StreamArn": "string"
+    },
+    "images": {
+      "BucketName": "string",
+      "Region": "string"
     }
   }
 }

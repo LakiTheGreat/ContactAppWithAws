@@ -19,6 +19,7 @@ export type SingeContactFormValues = {
   phoneNumber: string;
   labels: string[];
   image: string;
+  imageForUpload?: File;
 };
 export type LabelFormValues = {
   labelName: string;

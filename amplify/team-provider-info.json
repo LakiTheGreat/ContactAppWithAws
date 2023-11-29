@@ -28,7 +28,8 @@
       },
       "storage": {
         "dynamoContactApp": {},
-        "dynamoContactAppLabels": {}
+        "dynamoContactAppLabels": {},
+        "images": {}
       },
       "api": {
         "apiContactApp": {}

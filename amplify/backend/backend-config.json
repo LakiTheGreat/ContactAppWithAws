@@ -131,6 +131,11 @@
     "dynamoContactAppLabels": {
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"
+    },
+    "images": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "S3"
     }
   }
 }

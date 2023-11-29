@@ -4,7 +4,11 @@ import { useParams } from "react-router-dom";
 import { skipToken } from "@reduxjs/toolkit/dist/query/react";
 
 import Page from "components/Page";
-import { useEditContactMutation, useGetContactByIdQuery } from "api/contacts";
+import {
+  useEditContactMutation,
+  useGetContactByIdQuery,
+  useUploadImageToS3Mutation,
+} from "api/contacts";
 import LoadingScreen from "components/LoadingScreen";
 import Page404 from "components/Page404";
 import { useGetAllLabelsQuery } from "api/labels";
@@ -24,20 +28,41 @@ export default function EditContact() {
     editContact,
     { data: editContactData, isLoading: editContactIsLoading },
   ] = useEditContactMutation();
-  console.log("useGetContact", data);
-  const handleEdit = (value: SingeContactFormValues) => {
+
+  const [uploadImageToS3, { isLoading: imageIsLoading }] =
+    useUploadImageToS3Mutation();
+
+  const handleEdit = async (value: SingeContactFormValues) => {
     if (!data) return;
-    const contact: SingleContact = {
-      ...value,
-      isFavorite: data.isFavorite,
-      userId: data.userId,
-      contactId: data.contactId,
-    };
-    editContact(contact);
-    console.log("editedt contact", contact);
+
+    if (!value.imageForUpload) {
+      const contact: SingleContact = {
+        ...value,
+        isFavorite: data.isFavorite,
+        userId: data.userId,
+        contactId: data.contactId,
+      };
+      editContact(contact);
+    }
+
+    if (value.imageForUpload) {
+      const res = await uploadImageToS3(value.imageForUpload);
+
+      if ("data" in res) {
+        const contact: SingleContact = {
+          ...value,
+          image: res.data,
+          isFavorite: data.isFavorite,
+          userId: data.userId,
+          contactId: data.contactId,
+        };
+        editContact(contact);
+      }
+    }
   };
 
   const isSuccess = editContactData?.data.$metadata.httpStatusCode === 200;
+  const somethingIsLoading = imageIsLoading || editContactIsLoading;
 
   useEffect(() => {
     isSuccess &&
@@ -60,7 +85,7 @@ export default function EditContact() {
       <ContactForm
         title="Edit contact"
         onSubmit={handleEdit}
-        isLoading={editContactIsLoading}
+        isLoading={somethingIsLoading}
         isSuccess={isSuccess}
         value={{
           firstName: data.firstName,

@@ -6,6 +6,7 @@ import {
   editContact,
   getAllContacts,
   getContactById,
+  uploadImageToS3,
 } from "api/asyncFunctions/contacts";
 
 const contactsApiEndpoints = api.injectEndpoints({
@@ -20,6 +21,10 @@ const contactsApiEndpoints = api.injectEndpoints({
     }),
     createContact: build.mutation({
       queryFn: createContact,
+      invalidatesTags: ["Contact"],
+    }),
+    uploadImageToS3: build.mutation({
+      queryFn: uploadImageToS3,
       invalidatesTags: ["Contact"],
     }),
     editContact: build.mutation({
@@ -42,6 +47,7 @@ export const {
   useGetAllContactsQuery,
   useGetContactByIdQuery,
   useCreateContactMutation,
+  useUploadImageToS3Mutation,
   useEditContactMutation,
   useDeleteOneContactMutation,
   useDeleteManyContactsMutation,

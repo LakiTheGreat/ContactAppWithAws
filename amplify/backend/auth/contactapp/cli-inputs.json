@@ -2,7 +2,7 @@
   "version": "1",
   "cognitoConfig": {
     "identityPoolName": "contactapp_identitypool_fc05a310",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "contacfc05a310",
     "userPoolName": "contactapp_userpool_fc05a310",
     "autoVerifiedAttributes": [
@@ -37,6 +37,21 @@
     "resourceName": "contactapp",
     "sharedId": "fc05a310",
     "serviceName": "Cognito",
-    "useDefault": "manual"
+    "useDefault": "manual",
+    "authRoleArn": {
+      "Fn::GetAtt": [
+        "AuthRole",
+        "Arn"
+      ]
+    },
+    "unauthRoleArn": {
+      "Fn::GetAtt": [
+        "UnauthRole",
+        "Arn"
+      ]
+    },
+    "breakCircularDependency": true,
+    "useEnabledMfas": true,
+    "dependsOn": []
   }
 }

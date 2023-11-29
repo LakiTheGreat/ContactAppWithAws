@@ -66,8 +66,8 @@ export default function ContactForm({
 
   const handleDropAvatar = useCallback((acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
-
     if (file) {
+      setValue("imageForUpload", file);
       const reader = new FileReader();
       reader.addEventListener("load", () => {
         new Promise((resolve) => {

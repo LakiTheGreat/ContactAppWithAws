@@ -1,4 +1,4 @@
-import { API, Auth } from "aws-amplify";
+import { API, Auth, Storage } from "aws-amplify";
 import { CognitoUser } from "amazon-cognito-identity-js";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query/fetchBaseQuery";
 
@@ -101,6 +101,23 @@ export async function deleteManyContacts(
       body: selectedIds,
     });
     return { data: data };
+  } catch (error) {
+    return {
+      error: error as FetchBaseQueryError,
+    };
+  }
+}
+
+export async function uploadImageToS3(
+  photo: File
+): Promise<{ data: any } | { error: FetchBaseQueryError }> {
+  try {
+    const result = await Storage.put(photo.name, photo, {
+      contentType: photo.type,
+    });
+
+    const imageUrl = await Storage.get(result.key);
+    return { data: imageUrl };
   } catch (error) {
     return {
       error: error as FetchBaseQueryError,
