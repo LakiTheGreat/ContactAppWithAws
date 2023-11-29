@@ -2,7 +2,10 @@ import { useSnackbar } from "notistack";
 import { useEffect } from "react";
 
 import Page from "components/Page";
-import { useCreateContactMutation } from "api/contacts";
+import {
+  useCreateContactMutation,
+  useUploadImageToS3Mutation,
+} from "api/contacts";
 import { useGetAllLabelsQuery } from "api/labels";
 
 import { SingeContactFormValues, UnsavedSingleContact } from "types";
@@ -14,18 +17,32 @@ export default function CreateContact() {
   const { data: labelData, isLoading: labelDataIsLoading } =
     useGetAllLabelsQuery(undefined);
   const { enqueueSnackbar } = useSnackbar();
+  const [uploadImageToS3, { isLoading: imageIsLoading }] =
+    useUploadImageToS3Mutation();
 
-  const handleCreate = (value: SingeContactFormValues) => {
-    const unsavedContact: UnsavedSingleContact = {
-      ...value,
-      isFavorite: false,
-    };
-
-    createContact(unsavedContact);
+  const handleCreate = async (value: SingeContactFormValues) => {
+    if (!value.imageForUpload) {
+      const unsavedContact: UnsavedSingleContact = {
+        ...value,
+        isFavorite: false,
+      };
+      createContact(unsavedContact);
+    }
+    if (value.imageForUpload) {
+      const res = await uploadImageToS3(value.imageForUpload);
+      if ("data" in res) {
+        const unsavedContact: UnsavedSingleContact = {
+          ...value,
+          image: res.data,
+          isFavorite: false,
+        };
+        createContact(unsavedContact);
+      }
+    }
   };
 
   const isSuccess = data;
-
+  const somethingIsLoading = isLoading || imageIsLoading;
   useEffect(() => {
     data &&
       enqueueSnackbar("Contact successfully created", {
@@ -47,7 +64,7 @@ export default function CreateContact() {
       <ContactForm
         title="Create new contact"
         onSubmit={handleCreate}
-        isLoading={isLoading}
+        isLoading={somethingIsLoading}
         isSuccess={isSuccess}
         labelObjects={labelData}
         labelDataIsLoading={labelDataIsLoading}
