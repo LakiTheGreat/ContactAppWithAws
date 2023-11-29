@@ -114,9 +114,11 @@ export async function uploadImageToS3(
   try {
     const result = await Storage.put(photo.name, photo, {
       contentType: photo.type,
+      level: "private",
     });
 
-    const imageUrl = await Storage.get(result.key);
+    const imageUrl = await Storage.get(result.key, { level: "private" });
+
     return { data: imageUrl };
   } catch (error) {
     return {

@@ -42,6 +42,7 @@ export default function EditContact() {
         userId: data.userId,
         contactId: data.contactId,
       };
+
       editContact(contact);
     }
 
@@ -56,6 +57,7 @@ export default function EditContact() {
           userId: data.userId,
           contactId: data.contactId,
         };
+
         editContact(contact);
       }
     }
