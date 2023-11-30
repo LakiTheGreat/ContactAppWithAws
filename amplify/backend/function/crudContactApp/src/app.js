@@ -121,11 +121,15 @@ app.get(path, async function (req, res) {
     const data = await ddbDocClient.send(new QueryCommand(params));
     const itemsWithPresignedUrl = await Promise.all(
       data.Items.map(async (item) => {
-        const presignedUrl = await getPresignedUrl(
-          item.image,
-          cognitoIdentityId
-        );
-        return { ...item, image: presignedUrl, imageKey: item.image };
+        if (item.image !== "") {
+          const presignedUrl = await getPresignedUrl(
+            item.image,
+            cognitoIdentityId
+          );
+          return { ...item, image: presignedUrl, imageKey: item.image };
+        } else {
+          return { ...item, image: "", imageKey: "" };
+        }
       })
     );
     res.json(itemsWithPresignedUrl);
@@ -210,16 +214,25 @@ app.get(path + "/object" + sortKeyPath, async function (req, res) {
   try {
     const data = await ddbDocClient.send(new GetCommand(getItemParams));
     if (data.Item) {
-      const presignedUrl = await getPresignedUrl(
-        data.Item.image,
-        cognitoIdentityId
-      );
-      const itemWithPresignedUrl = {
-        ...data.Item,
-        image: presignedUrl,
-        imageKey: data.Item.image,
-      };
-      res.json(itemWithPresignedUrl);
+      if (data.Item.image !== "") {
+        const presignedUrl = await getPresignedUrl(
+          data.Item.image,
+          cognitoIdentityId
+        );
+        const itemWithPresignedUrl = {
+          ...data.Item,
+          image: presignedUrl,
+          imageKey: data.Item.image,
+        };
+        res.json(itemWithPresignedUrl);
+      } else {
+        const itemWithoutPresignedUrl = {
+          ...data.Item,
+          image: "",
+          imageKey: "",
+        };
+        res.json(itemWithoutPresignedUrl);
+      }
     } else {
       res.json(data);
     }

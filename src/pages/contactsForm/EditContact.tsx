@@ -39,7 +39,7 @@ export default function EditContact() {
       const { imageForUpload, ...rest } = value;
       const contact: any = {
         ...rest,
-        image: data.imageKey,
+        image: value.image.length ? data.imageKey : "", // if image is removed in form
         isFavorite: data.isFavorite,
         userId: data.userId,
         contactId: data.contactId,
