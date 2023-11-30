@@ -19,11 +19,13 @@ import DeleteIcon from "@mui/icons-material/DeleteOutline";
 
 import FormProvider from "components/hook-form/FormProvider";
 import useResponsive from "hooks/useResponsive";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Label, SingeContactFormValues } from "types";
 import RHFUploadAvatar from "components/hook-form/RHFUploadAvatar";
 import { extractExtensions } from "utils/extractExtensions";
 import RHFUploadCaption from "components/hook-form/RHFUploadCaption";
+import useConfirmDialog from "hooks/useConfirmDialog";
+import { useDeleteImageFromS3Mutation } from "api/contacts";
 
 interface Props {
   title: string;
@@ -44,6 +46,10 @@ export default function ContactForm({
   isSuccess,
   labelObjects,
 }: Props) {
+  const [getConfirmation, Confirmation] = useConfirmDialog();
+  const [deleteImageFromS3] = useDeleteImageFromS3Mutation();
+  const [imageKey, setImageKey] = useState<string>("");
+
   const NewContactSchema = Yup.object().shape({
     firstName: Yup.string()
       .required("Must enter first name")
@@ -60,8 +66,24 @@ export default function ContactForm({
   const isDesktop = useResponsive("up", "lg");
   const isMobile = useResponsive("down", "sm");
 
-  const handleRemoveImage = () => {
-    setValue("image", "");
+  const handleRemoveImage = async () => {
+    const isConfirmed = await getConfirmation({
+      title: "Delete image",
+      contentText: `This image will be permanently deleted. Contact will be save automatically. Are you sure?`,
+      confirmLabel: `Delete`,
+    });
+    if (isConfirmed) {
+      await deleteImageFromS3(imageKey);
+      setValue("image", "");
+      setValue("imageForUpload", undefined);
+      setValue("imageKey", "");
+
+      try {
+        await handleSubmit(onSubmit)();
+      } catch (error) {
+        console.error("Error submitting form", error);
+      }
+    }
   };
 
   const handleDropAvatar = useCallback((acceptedFiles: File[]) => {
@@ -94,12 +116,13 @@ export default function ContactForm({
   const methods = useForm<SingeContactFormValues>({
     resolver: yupResolver(NewContactSchema),
     defaultValues: {
-      image: value?.image || "",
       firstName: value?.firstName || "",
       lastName: value?.lastName || "",
       email: value?.email || "",
       phoneNumber: value?.phoneNumber || "",
       labels: value?.labels || [],
+      image: value?.image || "",
+      imageKey: value?.imageKey || "",
     },
   });
 
@@ -109,6 +132,7 @@ export default function ContactForm({
     reset,
     formState: { isDirty },
     setValue,
+    getValues,
   } = methods;
 
   useEffect(() => {
@@ -116,6 +140,11 @@ export default function ContactForm({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess]);
 
+  useEffect(() => {
+    value?.imageKey && setImageKey(value?.imageKey);
+  }, [value]);
+
+  const image = getValues("image");
   return (
     <Stack alignItems="center" sx={{ p: 5 }}>
       <Stack gap={3} sx={{ width: isDesktop ? "1152px" : "100%" }}>
@@ -199,7 +228,11 @@ export default function ContactForm({
                     helperText={<RHFUploadCaption />}
                   />
                   <Box>
-                    <IconButton aria-label="remove" onClick={handleRemoveImage}>
+                    <IconButton
+                      aria-label="remove"
+                      disabled={!image}
+                      onClick={handleRemoveImage}
+                    >
                       <DeleteIcon fontSize="small" />
                     </IconButton>
                   </Box>
@@ -299,6 +332,7 @@ export default function ContactForm({
             </Stack>
           </Stack>
         </FormProvider>
+        <Confirmation />
       </Stack>
     </Stack>
   );

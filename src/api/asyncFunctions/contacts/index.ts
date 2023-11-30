@@ -109,3 +109,19 @@ export async function uploadImageToS3(
     };
   }
 }
+
+export async function deleteImageFromS3(
+  key: string
+): Promise<{ data: any } | { error: FetchBaseQueryError }> {
+  try {
+    const result = await Storage.remove(key, {
+      level: "private",
+    });
+
+    return { data: result };
+  } catch (error) {
+    return {
+      error: error as FetchBaseQueryError,
+    };
+  }
+}

@@ -34,9 +34,8 @@ export default function EditContact() {
 
   const handleEdit = async (value: SingeContactFormValues) => {
     if (!data) return;
-
     if (!value.imageForUpload) {
-      const { imageForUpload, ...rest } = value;
+      const { imageForUpload, imageKey, ...rest } = value;
       const contact: any = {
         ...rest,
         image: value.image.length ? data.imageKey : "", // if image is removed in form
@@ -98,6 +97,7 @@ export default function EditContact() {
           phoneNumber: data.phoneNumber,
           labels: data?.labels,
           image: data?.image,
+          imageKey: data.imageKey,
         }}
         labelObjects={labelData}
         labelDataIsLoading={labelDataIsLoading}
