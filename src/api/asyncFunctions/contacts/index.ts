@@ -1,5 +1,6 @@
 import { API, Storage } from "aws-amplify";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query/fetchBaseQuery";
+import { v4 as uuidv4 } from "uuid";
 
 import {
   SingleContact,
@@ -96,7 +97,7 @@ export async function uploadImageToS3(
   photo: File
 ): Promise<{ data: any } | { error: FetchBaseQueryError }> {
   try {
-    const result = await Storage.put(photo.name, photo, {
+    const result = await Storage.put(`${photo.name}-${uuidv4()}`, photo, {
       contentType: photo.type,
       level: "private",
     });

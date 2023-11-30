@@ -37,6 +37,7 @@
     "react-scripts": "5.0.1",
     "redux-persist": "^6.0.0",
     "typescript": "^4.9.5",
+    "uuid": "^9.0.1",
     "web-vitals": "^2.1.4",
     "yup": "0.32.11"
   },
@@ -68,6 +69,7 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/lodash": "^4.14.200",
     "@types/numeral": "^2.0.4",
-    "@types/react-lazy-load-image-component": "^1.6.2"
+    "@types/react-lazy-load-image-component": "^1.6.2",
+    "@types/uuid": "^9.0.7"
   }
 }
