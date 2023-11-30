@@ -15,6 +15,7 @@ import { useGetAllLabelsQuery } from "api/labels";
 
 import { SingeContactFormValues, SingleContact } from "types";
 import ContactForm from "./ContactForm";
+import { imageResizer } from "utils/imageResizer";
 
 export default function EditContact() {
   const { id } = useParams();
@@ -48,7 +49,8 @@ export default function EditContact() {
     }
 
     if (value.imageForUpload) {
-      const res = await uploadImageToS3(value.imageForUpload);
+      const resizedImage = await imageResizer(value.imageForUpload);
+      const res = await uploadImageToS3(resizedImage);
 
       if ("data" in res) {
         const contact: SingleContact = {

@@ -8,7 +8,8 @@ export default function RHFUploadCaption() {
       textAlign="center"
       sx={{ mt: 2, display: "flex", color: "text" }}
     >
-      "Allowed formats: *.jpeg, *.jpg, *.png, *.dng"
+      All images will be compressed on upload
+      {/* "Allowed formats: *.jpeg, *.jpg, *.png, *.dng" */}
       {/* <br /> "Max size" {maxSize} */}
     </Typography>
   );
