@@ -7,6 +7,7 @@ import useResponsive from "hooks/useResponsive";
 
 import { SingleContactWithImageKey } from "types";
 import { Avatar } from "@mui/material";
+import AvatarWithSkeleton from "utils/AvatarWithSkeleton";
 
 type Actions = {
   handleFavorite: (contact: SingleContactWithImageKey) => void;
@@ -32,11 +33,20 @@ export default function useContactsColumns(actions: Actions) {
 
         return (
           <Stack gap={2} direction="row" alignItems="center" ml={2}>
-            <Avatar
-              alt="user image"
-              src={row?.image}
-              {...(initials && { children: initials })}
-            />
+            {row?.image ? (
+              <AvatarWithSkeleton
+                imageUrl={row?.image}
+                size={40}
+                initials={initials}
+              />
+            ) : (
+              <Avatar
+                alt="user image"
+                src={row?.image}
+                {...(initials && { children: initials })}
+              />
+            )}
+
             <Typography variant="subtitle2">{row.firstName}</Typography>
           </Stack>
         );
