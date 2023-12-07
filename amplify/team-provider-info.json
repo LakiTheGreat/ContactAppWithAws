@@ -19,7 +19,7 @@
       "function": {
         "crudContactApp": {
           "deploymentBucketName": "amplify-contactapp-dev-141736-deployment",
-          "s3Key": "amplify-builds/crudContactApp-4c4f4776725961313750-build.zip"
+          "s3Key": "amplify-builds/crudContactApp-69756367586c4b4f744c-build.zip"
         },
         "labelCRUD": {
           "deploymentBucketName": "amplify-contactapp-dev-141736-deployment",
@@ -33,6 +33,9 @@
       },
       "api": {
         "apiContactApp": {}
+      },
+      "analytics": {
+        "contactapp": {}
       }
     }
   }

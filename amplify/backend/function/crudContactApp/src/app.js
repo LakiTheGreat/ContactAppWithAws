@@ -17,17 +17,15 @@ const {
 const awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
 const bodyParser = require("body-parser");
 const express = require("express");
-const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
-const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 
-let region = "us-east-1";
+//custom functions imports
+const { sendSNSEmail } = require("./customFunctions/sendSNSEmailFunction");
+const { getPresignedUrl } = require("./customFunctions/getPresignedUrl");
+
+let tableName = "Contacts";
 
 const ddbClient = new DynamoDBClient({ region: process.env.TABLE_REGION });
 const ddbDocClient = DynamoDBDocumentClient.from(ddbClient);
-const s3Client = new S3Client({ region: region });
-
-let tableName = "Contacts";
-let bucketName = "images141736-dev";
 
 if (process.env.ENV && process.env.ENV !== "NONE") {
   tableName = tableName + "-" + process.env.ENV;
@@ -43,8 +41,6 @@ const path = "/contacts";
 const UNAUTH = "UNAUTH";
 const hashKeyPath = "/:" + partitionKeyName;
 const sortKeyPath = hasSortKey ? "/:" + sortKeyName : "";
-
-const PRESIGNED_URL_EXPIRATION_SECONDS = 300;
 
 // declare a new express app
 const app = express();
@@ -77,24 +73,6 @@ const getUserIdFromRequest = (req) => {
   return userId;
 };
 
-const getPresignedUrl = async (key, cognitoIdentityId) => {
-  try {
-    const command = new GetObjectCommand({
-      Bucket: bucketName,
-      // Key: `public/${key}`,
-      Key: `private/${cognitoIdentityId}/${key}`,
-    });
-
-    const presignedUrl = await getSignedUrl(s3Client, command, {
-      expiresIn: PRESIGNED_URL_EXPIRATION_SECONDS,
-    });
-
-    return presignedUrl;
-  } catch (error) {
-    console.error("Error getting presigned URL:", error);
-    throw error;
-  }
-};
 /************************************
  * HTTP Get method to list objects *
  ************************************/
@@ -294,6 +272,9 @@ app.post(path, async function (req, res) {
   };
   try {
     let data = await ddbDocClient.send(new PutCommand(putItemParams));
+    await sendSNSEmail(
+      `The user '${userId}' created contact - ${updatedContact.firstName} ${updatedContact.lastName}`
+    );
     res.json({ success: "post call succeed!", url: req.url, data: data });
   } catch (err) {
     res.statusCode = 500;

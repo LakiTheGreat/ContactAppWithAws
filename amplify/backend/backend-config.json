@@ -1,4 +1,10 @@
 {
+  "analytics": {
+    "contactapp": {
+      "providerPlugin": "awscloudformation",
+      "service": "Pinpoint"
+    }
+  },
   "api": {
     "apiContactApp": {
       "dependsOn": [
@@ -87,40 +93,6 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
-    }
-  },
-  "parameters": {
-    "AMPLIFY_function_crudContactApp_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "crudContactApp"
-        }
-      ]
-    },
-    "AMPLIFY_function_crudContactApp_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "crudContactApp"
-        }
-      ]
-    },
-    "AMPLIFY_function_labelCRUD_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "labelCRUD"
-        }
-      ]
-    },
-    "AMPLIFY_function_labelCRUD_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "labelCRUD"
-        }
-      ]
     }
   },
   "storage": {
