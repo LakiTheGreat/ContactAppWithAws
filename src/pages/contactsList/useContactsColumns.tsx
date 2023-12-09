@@ -27,7 +27,7 @@ export default function useContactsColumns(actions: Actions) {
       ),
       headerName: "First name",
       flex: 1,
-      minWidth: isMobile ? 120 : 170,
+      minWidth: 170,
       renderCell: ({ row }) => {
         const initials = row.firstName.slice(0, 1) + row.lastName.slice(0, 1);
 
