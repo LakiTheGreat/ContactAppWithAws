@@ -14,6 +14,9 @@ You can test the deployed app on this url: https://master.d1e71nawn2eyw0.amplify
 6. Lambda: At the core of backend services, Lambda offers scalability and an event-driven architecture for optimal performance.
 7. CodeCommit: Functioning as the repository for code, CodeCommit integrates seamlessly with Amplify, playing a key role in the CI/CD pipeline.
 8. CloudWatch: Monitoring the usage of resources and data in the app.
+9. S3: For storing contact images.
+10. SNS: For faning out messages to SQS and to process SQS messages.
+11. SQS: For queueing messages (decoupling of lambdas for creating contact and sending message to the admin about it).
 
 ### Other important technology?
 
