@@ -93,6 +93,11 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    },
+    "sendMessageFromQueue": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "parameters": {
@@ -125,6 +130,22 @@
         {
           "category": "function",
           "resourceName": "labelCRUD"
+        }
+      ]
+    },
+    "AMPLIFY_function_sendMessageFromQueue_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sendMessageFromQueue"
+        }
+      ]
+    },
+    "AMPLIFY_function_sendMessageFromQueue_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sendMessageFromQueue"
         }
       ]
     }

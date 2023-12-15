@@ -1,9 +1,10 @@
 const { SNSClient, PublishCommand } = require("@aws-sdk/client-sns");
 const snsClient = new SNSClient();
 
-const sendSNSEmail = async (message) => {
+const sendMessageToTopic = async (message) => {
   const ContactIsCreatedTopicArn =
     "arn:aws:sns:us-east-1:739894200830:ContactIsCreatedTopic";
+
   const params = {
     Message: message,
     TopicArn: ContactIsCreatedTopicArn,
@@ -22,4 +23,4 @@ const sendSNSEmail = async (message) => {
   }
 };
 
-module.exports = { sendSNSEmail };
+module.exports = { sendMessageToTopic };

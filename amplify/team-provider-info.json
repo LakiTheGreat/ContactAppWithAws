@@ -19,11 +19,15 @@
       "function": {
         "crudContactApp": {
           "deploymentBucketName": "amplify-contactapp-dev-141736-deployment",
-          "s3Key": "amplify-builds/crudContactApp-53614d2b65744e733553-build.zip"
+          "s3Key": "amplify-builds/crudContactApp-6b4432562b4a41487236-build.zip"
         },
         "labelCRUD": {
           "deploymentBucketName": "amplify-contactapp-dev-141736-deployment",
           "s3Key": "amplify-builds/labelCRUD-477766346f3368647358-build.zip"
+        },
+        "sendMessageFromQueue": {
+          "deploymentBucketName": "amplify-contactapp-dev-141736-deployment",
+          "s3Key": "amplify-builds/sendMessageFromQueue-6b34464864335a424539-build.zip"
         }
       },
       "storage": {

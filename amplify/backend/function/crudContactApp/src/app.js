@@ -19,7 +19,7 @@ const bodyParser = require("body-parser");
 const express = require("express");
 
 //custom functions imports
-const { sendSNSEmail } = require("./customFunctions/sendSNSEmailFunction");
+const { sendMessageToTopic } = require("./customFunctions/sendMessageToTopic");
 const { getPresignedUrl } = require("./customFunctions/getPresignedUrl");
 const {
   getUserIdFromRequest,
@@ -265,8 +265,8 @@ app.post(path, async function (req, res) {
   try {
     let data = await ddbDocClient.send(new PutCommand(putItemParams));
     const userUsername = await getUserUsername(userId);
-    await sendSNSEmail(
-      `User: "${userUsername}" \nCreated contact : "${updatedContact.firstName} ${updatedContact.lastName}"`
+    await sendMessageToTopic(
+      `User: "${userUsername}", Created contact : "${updatedContact.firstName} ${updatedContact.lastName}"`
     );
     res.json({ success: "post call succeed!", url: req.url, data: data });
   } catch (err) {
